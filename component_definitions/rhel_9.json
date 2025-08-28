@@ -1,0 +1,259 @@
+{
+  "component-definition": {
+    "uuid": "c1d2e3f4-a5b6-4c7d-8e9f-a0b1c2d3e4f5",
+    "metadata": {
+      "title": "Red Hat Enterprise Linux 9 Component Definition for ISA/IEC 62443-4-2 (SL-4 Target)",
+      "last-modified": "2025-08-28T20:15:00.000Z",
+      "version": "1.0-sl4",
+      "oscal-version": "1.0.0",
+      "role": [
+        {
+          "id": "creator",
+          "title": "System Administrator"
+        },
+        {
+          "id": "provider",
+          "title": "Component Provider"
+        }
+      ],
+      "party": [
+        {
+          "uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c",
+          "type": "organization",
+          "name": "Example Corporation"
+        },
+        {
+          "uuid": "f9a8b7c6-d5e4-4f3a-b92f-6e6e6e6e6e6e",
+          "type": "organization",
+          "name": "Red Hat, Inc."
+        }
+      ],
+      "responsible-party": [
+        {
+          "role-id": "creator",
+          "party-uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c"
+        }
+      ]
+    },
+    "import-profile": {
+      "href": "#a8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a"
+    },
+    "components": [
+      {
+        "uuid": "b2c3d4e5-f6a7-4b8c-9d0e-f1a2b3c4d5e6",
+        "type": "software",
+        "title": "Red Hat Enterprise Linux 9",
+        "description": "Red Hat Enterprise Linux is an enterprise-grade open source operating system. This definition describes its configuration to meet SL-4 for software applications running on the OS.",
+        "purpose": "Secure operating system for hosting industrial control system applications.",
+        "responsible-roles": [
+          {
+            "role-id": "provider",
+            "party-uuids": [
+              "f9a8b7c6-d5e4-4f3a-b92f-6e6e6e6e6e6e"
+            ]
+          }
+        ]
+      }
+    ],
+    "control-implementations": [
+      {
+        "uuid": "d3e4f5a6-b7c8-4d9e-a0f1-b2c3d4e5f6a7",
+        "source": "#a8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a",
+        "description": "This implementation describes how Red Hat Enterprise Linux 9 is configured to meet the SL-4 security requirements from the ISA/IEC 62443-4-2 catalog for software applications and general components.",
+        "implemented-requirements": [
+          {
+            "control-id": "cr-1.1",
+            "description": "RHEL 9 integrates with enterprise identity services (e.g., IdM/FreeIPA, Active Directory) via SSSD. Pluggable Authentication Modules (PAM) are configured to enforce unique user identification and multifactor authentication (MFA)."
+          },
+          {
+            "control-id": "cr-1.2",
+            "description": "Each software process or service runs under a unique, unprivileged user account via systemd. SELinux policies provide a distinct, cryptographically enforced security context for each process, authenticating its allowed operations."
+          },
+          {
+            "control-id": "cr-1.3",
+            "description": "User account management is centralized and delegated to the integrated enterprise identity provider (e.g., IdM, AD)."
+          },
+          {
+            "control-id": "cr-1.4",
+            "description": "User identifiers are managed by the integrated enterprise identity provider, ensuring uniqueness and consistency."
+          },
+          {
+            "control-id": "cr-1.5",
+            "description": "User authenticators are managed by the identity provider. System-level secrets and encryption keys are protected at a hardware level using LUKS with a TPM 2.0 module."
+          },
+          {
+            "control-id": "cr-1.7",
+            "description": "Password strength, generation, and lifetime restrictions are enforced system-wide by the `pam_pwquality` module."
+          },
+          {
+            "control-id": "cr-1.8",
+            "description": "RHEL 9 provides a complete suite of tools (OpenSSL, certmonger) for managing PKI certificates and can be integrated into an enterprise CA hierarchy."
+          },
+          {
+            "control-id": "cr-1.9",
+            "description": "System-wide cryptographic policies are set to FUTURE, enforcing the strongest available algorithms and key lengths. Private keys for critical services are stored in a hardware-level TPM 2.0 module."
+          },
+          {
+            "control-id": "cr-1.10",
+            "description": "Standard Linux login interfaces (SSH, console) are configured by default to obscure authenticator feedback."
+          },
+          {
+            "control-id": "cr-1.11",
+            "description": "The `pam_faillock` module is configured to lock user accounts after a specified number of consecutive failed login attempts."
+          },
+          {
+            "control-id": "cr-1.12",
+            "description": "A system use notification banner is configured in `/etc/issue.net` for remote logins and `/etc/motd` for all logins."
+          },
+          {
+            "control-id": "cr-1.14",
+            "description": "Symmetric keys used for LUKS full-disk encryption are protected by binding them to a hardware-level TPM 2.0 module."
+          },
+          {
+            "control-id": "cr-2.1",
+            "description": "Authorization is enforced through a combination of standard file permissions, Access Control Lists (ACLs), `sudo` for privilege management, and mandatory access control via SELinux. Supervisor override and dual approval are implemented as procedural controls requiring multiple authenticated `sudo` sessions."
+          },
+          {
+            "control-id": "cr-2.2",
+            "description": "Wireless interfaces are managed by NetworkManager and secured using `firewalld` policies that restrict traffic to and from wireless zones."
+          },
+          {
+            "control-id": "sar-2.4",
+            "description": "The system is configured to only allow execution of signed packages from trusted Red Hat and internal repositories. SELinux policies prevent unauthorized code execution, and the AIDE service provides file integrity monitoring to detect unauthorized changes."
+          },
+          {
+            "control-id": "cr-2.5",
+            "description": "Console sessions are configured with a short inactivity timeout. For graphical interfaces, the desktop environment's screen lock is enforced via system policy."
+          },
+          {
+            "control-id": "cr-2.6",
+            "description": "Remote SSH sessions are configured with a short, system-wide inactivity timeout in the `sshd_config` file."
+          },
+          {
+            "control-id": "cr-2.7",
+            "description": "Concurrent user sessions are limited via the `/etc/security/limits.conf` file."
+          },
+          {
+            "control-id": "cr-2.8",
+            "description": "The `auditd` service is configured to generate detailed audit records for all security-relevant events, including system calls, file access, and administrative actions."
+          },
+          {
+            "control-id": "cr-2.9",
+            "description": "Audit logs are forwarded in real-time to a centralized SIEM. The local `auditd` configuration includes alerts for when local disk buffer capacity reaches a predefined threshold."
+          },
+          {
+            "control-id": "cr-2.10",
+            "description": "The `auditd` service is configured for high availability and to buffer logs locally in case of a connection failure to the SIEM, triggering an alert."
+          },
+          {
+            "control-id": "cr-2.11",
+            "description": "The `chronyd` service synchronizes the system clock with a trusted, internal NTP source. Audit logs are immediately forwarded to a secure, write-only SIEM to protect timestamp integrity."
+          },
+          {
+            "control-id": "cr-2.12",
+            "description": "Non-repudiation is achieved through the immutable audit log, which links every system call and user action to a unique, authenticated user ID."
+          },
+          {
+            "control-id": "cr-3.1",
+            "description": "All network communication is protected by system-wide cryptographic policies enforcing TLS 1.3. The host-based firewall (`firewalld`) and SELinux ensure communication integrity between processes."
+          },
+          {
+            "control-id": "sar-3.2",
+            "description": "RHEL 9 protects against malicious code through layers of security: UEFI Secure Boot, Integrity Measurement Architecture (IMA), SELinux in enforcing mode, and regular security patching via `dnf`."
+          },
+          {
+            "control-id": "cr-3.3",
+            "description": "The OpenSCAP utility is used to perform scheduled, automated compliance scans against the system during normal operation to verify security functionality and configuration."
+          },
+          {
+            "control-id": "cr-3.4",
+            "description": "System integrity is ensured by UEFI Secure Boot and the Integrity Measurement Architecture (IMA) and Extended Verification Module (EVM). The `rpm` package manager verifies the authenticity and integrity of all software, and the AIDE service provides automated integrity checks and notifications for all system files."
+          },
+          {
+            "control-id": "cr-3.5",
+            "description": "The operating system provides secure libraries and APIs that, when used by applications, perform strict input validation. The kernel validates all system call arguments."
+          },
+          {
+            "control-id": "cr-3.6",
+            "description": "Systemd services are configured with deterministic restart and failure policies, ensuring predictable system state."
+          },
+          {
+            "control-id": "cr-3.7",
+            "description": "Kernel and system service error messages are logged with appropriate detail for administrators but are not exposed to unprivileged users, preventing information leakage."
+          },
+          {
+            "control-id": "cr-3.8",
+            "description": "Session integrity for all remote management is provided by the SSH protocol. Application traffic is protected by TLS."
+          },
+          {
+            "control-id": "cr-3.9",
+            "description": "Audit logs are immediately streamed to a centralized SIEM configured with write-once, read-many (WORM) storage to prevent modification or deletion."
+          },
+          {
+            "control-id": "cr-4.1",
+            "description": "Data confidentiality is ensured by LUKS for full-disk encryption (at rest) and system-wide crypto policies enforcing TLS for data in transit."
+          },
+          {
+            "control-id": "cr-4.2",
+            "description": "Temporary files are managed in isolated directories (`/tmp`, `/var/tmp`). The `wipe` utility is used as part of a procedural control to securely erase data from storage media before decommissioning. Erasure verification is a procedural control."
+          },
+          {
+            "control-id": "cr-4.3",
+            "description": "RHEL 9 can be run in FIPS 140-3 compliant mode, ensuring all cryptographic modules meet federal standards."
+          },
+          {
+            "control-id": "cr-5.1",
+            "description": "Network segmentation is implemented at the host level using `firewalld` zones and `nftables` rules to restrict traffic between network interfaces and services."
+          },
+          {
+            "control-id": "cr-6.1",
+            "description": "Audit logs are programmatically accessible to administrators via the `ausearch` and `journalctl` commands and are streamed in real-time to an external SIEM."
+          },
+          {
+            "control-id": "cr-6.2",
+            "description": "Continuous monitoring is provided by the `auditd` framework and Performance Co-Pilot (PCP), with all security-relevant data forwarded to a SIEM for correlation and alerting."
+          },
+          {
+            "control-id": "cr-7.1",
+            "description": "Denial of service is mitigated by configuring rate limiting in `firewalld` and by using systemd slices and cgroups to limit resource consumption by services and users."
+          },
+          {
+            "control-id": "cr-7.2",
+            "description": "Resource management with systemd and cgroups ensures that critical system and security services have guaranteed resource allocations."
+          },
+          {
+            "control-id": "cr-7.3",
+            "description": "System backups are performed using LVM snapshots and standard tools like `rsync`. Backup integrity is verified during restore operations."
+          },
+          {
+            "control-id": "cr-7.4",
+            "description": "The system can be recovered and reconstituted from backups or redeployed to a known secure state using an Ansible automation playbook."
+          },
+          {
+            "control-id": "cr-7.6",
+            "description": "All system configurations are managed as code via Ansible playbooks, providing a version-controlled, machine-readable report of all security settings. OpenSCAP provides on-demand reports."
+          },
+          {
+            "control-id": "cr-7.7",
+            "description": "The system is installed using a minimal profile. Unnecessary services are disabled via systemd, and SELinux policies enforce the principle of least privilege for all processes."
+          },
+          {
+            "control-id": "cr-7.8",
+            "description": "A complete software inventory is available via the `rpm` database. Hardware and subscription inventory is available via `subscription-manager` and the Red Hat Insights service."
+          }
+        ]
+      }
+    ],
+    "back-matter": {
+      "resources": [
+        {
+          "uuid": "a8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a",
+          "title": "ISA/IEC 62443-4-2 OSCAL Catalog",
+          "citation": {
+            "text": "ISA/IEC 62443-4-2 OSCAL Catalog, Version 1.1"
+          }
+        }
+      ]
+    }
+  }
+}
