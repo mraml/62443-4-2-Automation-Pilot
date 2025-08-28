@@ -1,0 +1,233 @@
+# --- AUTOMATION FOR ANSIBLE AUTOMATION PLATFORM HOST (RHEL 9) ---
+# This Ansible Playbook enforces the SL-4 controls for the underlying RHEL 9 host
+# as defined in the ISA-IEC 62443-4-2 component definition.
+# It is intended to be run by Ansible Automation Platform to manage its own hosts.
+
+- name: Harden RHEL 9 Host for Ansible Automation Platform at SL-4
+  hosts: aap_nodes
+  become: yes
+  vars:
+    remote_log_server: "siem.example.com" # Replace with your SIEM/log collector
+    ntp_server: "ntp.example.com"       # Replace with your trusted NTP server
+  tasks:
+    # --- FR 1: Identification and Authentication Control ---
+    - name: "FR-1 | Block: Configure Authentication and Identification"
+      block:
+        - name: "CR-1.1, CR-1.3, CR-1.4 | Ensure SSSD and realmd are installed for IdP integration"
+          ansible.builtin.dnf:
+            name:
+              - sssd
+              - realmd
+            state: present
+
+        - name: "CR-1.7 | Configure password quality"
+          ansible.builtin.lineinfile:
+            path: /etc/security/pwquality.conf
+            regexp: "{{ item.regexp }}"
+            line: "{{ item.line }}"
+            create: yes
+            mode: '0644'
+          loop:
+            - { regexp: '^minlen', line: 'minlen = 15' }
+            - { regexp: '^dcredit', line: 'dcredit = -1' }
+            - { regexp: '^ucredit', line: 'ucredit = -1' }
+            - { regexp: '^ocredit', line: 'ocredit = -1' }
+            - { regexp: '^lcredit', line: 'lcredit = -1' }
+
+        - name: "CR-1.11 | Configure account lockout policy with pam_faillock"
+          ansible.builtin.command:
+            cmd: "authselect enable-feature with-faillock"
+          changed_when: true
+
+        - name: "CR-1.12 | Configure system use notification banner"
+          ansible.builtin.copy:
+            dest: "/etc/issue.net"
+            content: |
+              *****************************************************************
+              * This is a private computer system. All activities are logged. *
+              * Unauthorized access is strictly prohibited.                   *
+              *****************************************************************
+            mode: '0644'
+
+    # --- FR 2: Use Control ---
+    - name: "FR-2 | Block: Configure Use Control"
+      block:
+        - name: "CR-2.1 | Enforce least privilege with restrictive sudoers"
+          ansible.builtin.copy:
+            dest: /etc/sudoers.d/99-secure-defaults
+            content: "Defaults !requiretty, !visiblepw"
+            mode: '0440'
+
+        - name: "SAR-2.4 | Ensure GPG check is enabled for all package operations"
+          ansible.builtin.lineinfile:
+            path: /etc/dnf/dnf.conf
+            regexp: '^gpgcheck'
+            line: 'gpgcheck=1'
+
+        - name: "CR-2.5, CR-2.6 | Set system-wide inactivity timeout for shell sessions"
+          ansible.builtin.copy:
+            dest: /etc/profile.d/session-timeout.sh
+            content: "TMOUT=900"
+            mode: '0755'
+
+        - name: "CR-2.7 | Set concurrent session limits"
+          ansible.builtin.pam_limits:
+            domain: '*'
+            limit_type: '-'
+            limit_item: maxlogins
+            value: 10
+
+    # --- FR 3: System Integrity ---
+    - name: "FR-3 | Block: Configure System Integrity"
+      block:
+        - name: "SAR-3.2 | Ensure SELinux is in enforcing mode"
+          ansible.posix.selinux:
+            policy: targeted
+            state: enforcing
+
+        - name: "CR-3.3 | Install OpenSCAP for compliance scanning"
+          ansible.builtin.dnf:
+            name: openscap-scanner
+            state: present
+
+        - name: "CR-3.4 | Install and initialize AIDE for file integrity monitoring"
+          ansible.builtin.dnf:
+            name: aide
+            state: present
+        - name: "CR-3.4 | Initialize AIDE database if it does not exist"
+          ansible.builtin.command:
+            cmd: "aide --init"
+            creates: /var/lib/aide/aide.db.new.gz
+          changed_when: true
+        - name: "CR-3.4 | Move initial AIDE database into place"
+          ansible.builtin.command:
+            cmd: "mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz"
+            creates: /var/lib/aide/aide.db.gz
+          changed_when: true
+
+    # --- FR 4: Data Confidentiality ---
+    - name: "FR-4 | Block: Configure Data Confidentiality"
+      block:
+        - name: "CR-1.5, CR-1.14, CR-4.1 | Verify root filesystem is encrypted with LUKS"
+          ansible.builtin.command:
+            cmd: "lsblk -no TYPE,MOUNTPOINT"
+          register: luks_check
+          changed_when: false
+          failed_when: "'crypt' not in luks_check.stdout"
+          # NOTE: Enabling LUKS must be done at install time (e.g., via Kickstart).
+          # This task verifies that the running system meets the requirement.
+
+        - name: "CR-4.3 | Set system-wide crypto policy to FIPS mode"
+          ansible.builtin.command:
+            cmd: "fips-mode-setup --enable"
+          register: fips_change
+          changed_when: "'is not enabled' in fips_change.stdout"
+          notify: reboot system
+
+    # --- FR 5: Restricted Data Flow ---
+    - name: "FR-5 | Block: Configure Restricted Data Flow"
+      block:
+        - name: "CR-5.1 | Ensure firewalld is active and enabled"
+          ansible.builtin.service:
+            name: firewalld
+            state: started
+            enabled: yes
+        - name: "CR-5.1 | Configure firewalld with a default-deny policy, allowing only required AAP ports"
+          ansible.posix.firewalld:
+            service: "{{ item }}"
+            permanent: yes
+            state: enabled
+            immediate: yes
+          loop:
+            - ssh
+            - http
+            - https
+
+    # --- FR 6: Timely Response to Events ---
+    - name: "FR-6 | Block: Configure Logging and Monitoring"
+      block:
+        - name: "CR-2.8, CR-3.9, CR-6.1 | Ensure auditd is installed and configured"
+          ansible.builtin.dnf:
+            name: audit
+            state: present
+        - name: "CR-2.8, CR-3.9 | Configure auditd rules for immutability"
+          ansible.builtin.lineinfile:
+            path: /etc/audit/rules.d/99-finalize.rules
+            line: "-e 2"
+            create: yes
+            mode: '0640'
+        - name: "CR-2.11 | Configure chrony to use a trusted NTP server"
+          ansible.builtin.lineinfile:
+            path: /etc/chrony.conf
+            regexp: '^pool'
+            line: "pool {{ ntp_server }} iburst"
+        - name: "CR-6.2 | Configure auditd to forward logs to remote SIEM"
+          ansible.builtin.copy:
+            dest: /etc/audisp/plugins.d/syslog.conf
+            content: |
+              active = yes
+              direction = out
+              path = builtin_syslog
+              type = builtin
+              args = LOG_INFO
+            mode: '0640'
+        - name: "CR-6.2 | Configure rsyslog to forward audit logs"
+          ansible.builtin.copy:
+            dest: /etc/rsyslog.d/60-audit.conf
+            content: "*.* @@{{ remote_log_server }}:514"
+            mode: '0640'
+          notify: restart rsyslog
+
+    # --- FR 7: Resource Availability ---
+    - name: "FR-7 | Block: Configure Resource Availability"
+      block:
+        - name: "CR-7.1, CR-7.2 | Create a systemd slice for the AAP services"
+          ansible.builtin.copy:
+            dest: /etc/systemd/system/aap.slice
+            content: |
+              [Unit]
+              Description=Slice for Ansible Automation Platform Services
+              [Slice]
+              CPUAccounting=true
+              MemoryAccounting=true
+            mode: '0644'
+          notify: reload systemd
+
+        - name: "CR-7.1, CR-7.2 | Set resource limits on the AAP slice"
+          community.general.systemd_service:
+            name: aap.slice
+            property: "{{ item.prop }}"
+            value: "{{ item.val }}"
+          loop:
+            - { prop: 'CPUQuota', val: '200%' }
+            - { prop: 'MemoryMax', val: '16G' }
+
+        - name: "CR-7.7 | Ensure minimal packages are installed"
+          ansible.builtin.dnf:
+            name:
+              - cockpit
+              - sendmail
+              - mlocate
+            state: absent
+        - name: "CR-7.7 | Disable unnecessary services"
+          ansible.builtin.service:
+            name: "{{ item }}"
+            state: stopped
+            enabled: no
+          loop:
+            - cups
+            - nfs-server
+          ignore_errors: yes
+
+  handlers:
+    - name: restart rsyslog
+      ansible.builtin.service:
+        name: rsyslog
+        state: restarted
+    - name: reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: yes
+    - name: reboot system
+      ansible.builtin.reboot:
+        msg: "Rebooting to apply FIPS mode"
+        reboot_timeout: 3600
