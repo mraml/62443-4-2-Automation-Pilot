@@ -32,6 +32,21 @@ spec:
 
 ---
 
+# CR-1.12: Configure System Use Notification Banner
+# This displays a warning on the web console login page.
+apiVersion: config.openshift.io/v1
+kind: Console
+metadata:
+  name: cluster
+spec:
+  authentication:
+    inactivityTimeoutSeconds: 900 # 15 minutes - Also implements CR-2.5
+  customization:
+    loginNotification:
+      text: "This is a private computer system. All activities are logged. Unauthorized access is strictly prohibited."
+
+---
+
 # --- FR 2: Use Control ---
 
 # CR-2.1: Restrict cluster-admin role to a specific group
@@ -49,7 +64,7 @@ groupNames:
 
 ---
 
-# SAR-2.4 & CR-7.7: Apply a restrictive SecurityContextConstraint to a namespace
+# SAR-2.4 & CR-7.7: Apply a restrictive SecurityContextConstraint
 # This enforces least privilege for application workloads.
 apiVersion: security.openshift.io/v1
 kind: SecurityContextConstraints
@@ -86,18 +101,77 @@ volumes:
 
 ---
 
-# CR-2.5: Configure session inactivity timeout for the web console
+# SAR-2.4: Enforce use of signed images from a trusted registry
+# This policy, managed by the Image Admission Controller, rejects images that are not
+# from the specified trusted registries.
 apiVersion: config.openshift.io/v1
-kind: Console
+kind: Image
 metadata:
   name: cluster
 spec:
-  authentication:
-    inactivityTimeoutSeconds: 900 # 15 minutes
+  allowedRegistriesForImport:
+  - domainName: registry.example.com
+    insecure: false
+  - domainName: registry.redhat.io
+    insecure: false
+
+---
+
+# CR-2.11: Configure trusted NTP server for all nodes
+# This ensures accurate and consistent timestamps for audit logs.
+# NOTE: Replace ntp.example.com with your trusted time source.
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: worker
+  name: 50-worker-chrony-configuration
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+      - contents:
+          source: data:text/plain;charset=utf-8;base64,c2VydmVyIG50cC5leGFtcGxlLmNvbSBpYnVyc3QKZHJpZnRmaWxlIC92YXIvbGliL2Nocm9ueS9kcmlmdAptYWtlc3RlcCAxLjAgMwpsb2dnZGlyIC92YXIvbG9nL2Nocm9ueQ==
+        filesystem: root
+        mode: 420
+        path: /etc/chrony.conf
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: master
+  name: 50-master-chrony-configuration
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+      - contents:
+          source: data:text/plain;charset=utf-8;base64,c2VydmVyIG50cC5leGFtcGxlLmNvbSBpYnVyc3QKZHJpZnRmaWxlIC92YXIvbGliL2Nocm9ueS9kcmlmdAptYWtlc3RlcCAxLjAgMwpsb2dnZGlyIC92YXIvbG9nL2Nocm9ueQ==
+        filesystem: root
+        mode: 420
+        path: /etc/chrony.conf
 
 ---
 
 # --- FR 3: System Integrity ---
+
+# CR-3.1: Enforce strong cryptography for API server communication
+apiVersion: config.openshift.io/v1
+kind: APIServer
+metadata:
+  name: cluster
+spec:
+  encryption:
+    type: aescbc # Also implements CR-4.1 & CR-1.5
+  tlsSecurityProfile:
+    type: Modern
+
+---
 
 # CR-3.3 & CR-3.4: Configure the File Integrity Operator to scan nodes
 # This provides continuous integrity monitoring of the underlying hosts.
@@ -122,18 +196,6 @@ spec:
 ---
 
 # --- FR 4: Data Confidentiality ---
-
-# CR-4.1 & CR-1.5: Enable etcd encryption
-# This protects all API object data at rest.
-apiVersion: config.openshift.io/v1
-kind: APIServer
-metadata:
-  name: cluster
-spec:
-  encryption:
-    type: aescbc
-
----
 
 # CR-4.3: Enable FIPS mode for all cluster nodes
 # This ensures all cryptography meets federal standards.
@@ -263,3 +325,13 @@ spec:
       cpu: 100m
       memory: 256Mi
     type: Container
+
+---
+
+# CR-7.2: Resource Management for Critical Components (Documentation)
+# OpenShift's critical control plane components in the openshift-* namespaces
+# are configured with resource requests by default, giving them a higher Quality of Service (QoS)
+# class. This ensures they have guaranteed resources and are less likely to be
+# impacted by resource contention. This is an inherent feature and requires no
+# additional manifest for default components. Custom critical components (e.g., operators)
+# should have resource requests and limits defined in their deployments.
