@@ -1,0 +1,175 @@
+# --- AUTOMATION FOR RED HAT DEVICE EDGE (RHEL for Edge + MicroShift) ---
+# This profile contains two parts:
+# 1. An Ansible Playbook to build the immutable RHEL for Edge OS image with baked-in security.
+# 2. Kubernetes manifests to configure the MicroShift runtime via GitOps.
+
+# --- PART 1: ANSIBLE PLAYBOOK FOR RHEL for Edge IMAGE BUILD ---
+# This playbook is used with Image Builder to create a hardened, immutable OS image.
+
+- name: Build Hardened RHEL for Edge Image for ISA-IEC 62443-4-2 SL-4
+  hosts: localhost
+  connection: local
+  become: no
+  tasks:
+    # This is a conceptual representation. In a real scenario, you would use
+    # an Image Builder blueprint or API call that incorporates these configurations.
+    - name: "Define image blueprint with SL-4 hardening"
+      # This task simulates defining an image-builder blueprint.
+      # The actual implementation would be a blueprint file or API call.
+      ansible.builtin.debug:
+        msg: |
+          --- BLUEPRINT DEFINITION ---
+          name: "rhde-sl4-hardened"
+          description: "RHEL for Edge with MicroShift, hardened for SL-4"
+          version: "1.0.0"
+          packages:
+            - microshift
+            - audit
+            - firewalld
+            - chrony
+          customizations:
+            # CR-4.3: Enable FIPS mode
+            fips:
+              enabled: true
+            # CR-1.5, CR-1.14, CR-4.1: Configure LUKS disk encryption with TPM
+            filesystem:
+              - mountpoint: "/"
+                type: "xfs"
+                luks: true
+                tpm2: true
+            # CR-2.11: Configure NTP
+            services:
+              enabled:
+                - chronyd
+            files:
+              # Configure chronyd to use a trusted NTP server
+              "/etc/chrony.conf":
+                contents: |
+                  pool ntp.example.com iburst
+                  driftfile /var/lib/chrony/drift
+                  makestep 1.0 3
+                  logdir /var/log/chrony
+              # CR-6.2: Configure auditd to forward logs
+              "/etc/audisp/plugins.d/syslog.conf":
+                contents: |
+                  active = yes
+                  direction = out
+                  path = builtin_syslog
+                  type = builtin
+                  args = LOG_INFO
+              # CR-6.2: Configure rsyslog to forward audit logs
+              "/etc/rsyslog.d/60-audit.conf":
+                contents: "*.* @@siem.example.com:514"
+              # CR-5.1: Configure firewalld with default-deny
+              "/etc/firewalld/firewalld.conf":
+                contents: |
+                  DefaultZone=drop
+            firewall:
+              services:
+                enabled:
+                  - ssh
+                  - https # For MicroShift API
+---
+
+# --- PART 2: KUBERNETES MANIFESTS FOR MicroShift RUNTIME ---
+# These manifests should be stored in a Git repository and applied to the
+# edge device via a GitOps agent.
+
+# CR-2.1: Restrict cluster-admin role to a specific group
+# This group should be managed in your external OIDC IdP.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: microshift-cluster-admins
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+groupNames:
+- edge-cluster-admins
+
+---
+
+# SAR-2.4 & CR-7.7: Apply a restrictive SecurityContextConstraint
+# This enforces least privilege for application workloads running on MicroShift.
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: restricted-ics
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: false
+allowPrivilegedContainer: false
+allowedCapabilities: []
+defaultAddCapabilities: []
+fsGroup:
+  type: MustRunAs
+priority: 10
+readOnlyRootFilesystem: true
+requiredDropCapabilities:
+- ALL
+runAsUser:
+  type: MustRunAsRange
+seLinuxContext:
+  type: MustRunAs
+supplementalGroups:
+  type: MustRunAs
+volumes:
+- configMap
+- downwardAPI
+- emptyDir
+- persistentVolumeClaim
+- projected
+- secret
+
+---
+
+# CR-5.1: Network Segmentation using a default-deny NetworkPolicy
+# This policy, when applied to a namespace, blocks all ingress traffic by default.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: critical-ics-app # Apply to your critical application namespaces
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+
+---
+
+# CR-7.1: Denial of Service Protection using a ResourceQuota
+# This ResourceQuota limits the total resources a project can consume.
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-resources
+  namespace: critical-ics-app
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "2"
+    limits.memory: 2Gi
+
+---
+
+# CR-7.1: Denial of Service Protection using a LimitRange
+# This LimitRange sets default resource requests and limits for containers in the project.
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: resource-limits
+  namespace: critical-ics-app
+spec:
+  limits:
+  - default:
+      cpu: 200m
+      memory: 256Mi
+    defaultRequest:
+      cpu: 100m
+      memory: 128Mi
+    type: Container
