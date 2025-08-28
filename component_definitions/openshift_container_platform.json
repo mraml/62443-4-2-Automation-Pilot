@@ -1,0 +1,259 @@
+{
+  "component-definition": {
+    "uuid": "b9c8d7e6-f5a4-4b3c-8a2f-3b3b3b3b3b3b",
+    "metadata": {
+      "title": "Red Hat OpenShift 4 Component Definition for ISA/IEC 62443-4-2 (SL-4 Target)",
+      "last-modified": "2025-08-28T20:10:00.000Z",
+      "version": "1.1-sl4",
+      "oscal-version": "1.0.0",
+      "role": [
+        {
+          "id": "creator",
+          "title": "System Administrator"
+        },
+        {
+          "id": "provider",
+          "title": "Component Provider"
+        }
+      ],
+      "party": [
+        {
+          "uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c",
+          "type": "organization",
+          "name": "Example Corporation"
+        },
+        {
+          "uuid": "f9a8b7c6-d5e4-4f3a-b92f-6e6e6e6e6e6e",
+          "type": "organization",
+          "name": "Red Hat, Inc."
+        }
+      ],
+      "responsible-party": [
+        {
+          "role-id": "creator",
+          "party-uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c"
+        }
+      ]
+    },
+    "import-profile": {
+      "href": "#a8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a"
+    },
+    "components": [
+      {
+        "uuid": "e9f8a7b6-c5d4-4e3f-a92f-5d5d5d5d5d5d",
+        "type": "software",
+        "title": "Red Hat OpenShift Container Platform 4",
+        "description": "Red Hat OpenShift is an enterprise-ready Kubernetes container platform with full-stack automated operations to manage hybrid cloud and multicloud deployments. This definition describes its configuration to meet SL-4 for software applications.",
+        "purpose": "Container orchestration and management for industrial control system applications.",
+        "responsible-roles": [
+          {
+            "role-id": "provider",
+            "party-uuids": [
+              "f9a8b7c6-d5e4-4f3a-b92f-6e6e6e6e6e6e"
+            ]
+          }
+        ]
+      }
+    ],
+    "control-implementations": [
+      {
+        "uuid": "a9b8c7d6-e5f4-4a3b-992f-7a7a7a7a7a7a",
+        "source": "#a8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a",
+        "description": "This implementation describes how Red Hat OpenShift 4 is configured to meet the SL-4 security requirements from the ISA/IEC 62443-4-2 catalog for software applications and general components.",
+        "implemented-requirements": [
+          {
+            "control-id": "cr-1.1",
+            "description": "OpenShift integrates with external identity providers (e.g., LDAP, Active Directory, OpenID Connect) that are configured to enforce unique user identification and multifactor authentication (MFA). All access to the OpenShift API and web console is subject to this authentication."
+          },
+          {
+            "control-id": "cr-1.2",
+            "description": "Each software process (pod) is assigned a unique, namespaced ServiceAccount, which provides a distinct identity within the cluster. These identities are used for authentication to the Kubernetes API server and for mutual TLS (mTLS) between services via a service mesh."
+          },
+          {
+            "control-id": "cr-1.3",
+            "description": "User account management (creation, modification, deletion) is delegated to the integrated enterprise identity provider, providing centralized control."
+          },
+          {
+            "control-id": "cr-1.4",
+            "description": "User identifiers are managed by the integrated enterprise identity provider, ensuring uniqueness and consistency with enterprise policies."
+          },
+          {
+            "control-id": "cr-1.5",
+            "description": "User authenticators are managed by the identity provider. For internal components, etcd encryption is enabled with keys stored in a FIPS 140-2 validated Hardware Security Module (HSM), providing hardware-level protection for secrets at rest."
+          },
+          {
+            "control-id": "cr-1.7",
+            "description": "Password strength, generation, and lifetime restrictions for all users are defined and enforced by the policies of the integrated enterprise identity provider."
+          },
+          {
+            "control-id": "cr-1.8",
+            "description": "OpenShift includes a built-in Public Key Infrastructure (PKI) to issue and manage certificates for all cluster components, ensuring secure, encrypted communication."
+          },
+          {
+            "control-id": "cr-1.9",
+            "description": "The OpenShift internal Certificate Authority (CA) is configured to be signed by an external, HSM-backed enterprise CA, providing hardware-level security for the root of trust."
+          },
+          {
+            "control-id": "cr-1.10",
+            "description": "The OpenShift login interface obscures authenticator feedback, providing generic error messages to prevent username or password enumeration."
+          },
+          {
+            "control-id": "cr-1.11",
+            "description": "Unsuccessful login attempt handling (lockouts, delays) is managed by the integrated identity provider's security policies."
+          },
+          {
+            "control-id": "cr-1.12",
+            "description": "A configurable system use notification banner is displayed on the OpenShift web console login page."
+          },
+          {
+            "control-id": "cr-1.14",
+            "description": "Symmetric keys used for etcd and storage encryption are managed via an external Key Management Service (KMS) integrated with an HSM, providing hardware-level protection."
+          },
+          {
+            "control-id": "cr-2.1",
+            "description": "Authorization is enforced via a cluster-wide Role-Based Access Control (RBAC) system. Permissions are mapped to roles, which are assigned to users or groups. Supervisor override and dual approval are implemented as procedural controls built upon RBAC, requiring multiple privileged users to approve actions via a version-controlled GitOps workflow."
+          },
+          {
+            "control-id": "cr-2.2",
+            "description": "OpenShift is deployed on a network infrastructure that enforces security policies for wireless access. OpenShift's NetworkPolicies are configured to further restrict traffic from wireless segments."
+          },
+          {
+            "control-id": "sar-2.4",
+            "description": "OpenShift enforces that only signed container images from a trusted registry can be deployed. Red Hat Advanced Cluster Security (ACS) is used as an admission controller to verify image signatures and integrity before execution."
+          },
+          {
+            "control-id": "cr-2.5",
+            "description": "The OpenShift web console is configured with a short, non-configurable session inactivity timeout to automatically lock sessions."
+          },
+          {
+            "control-id": "cr-2.6",
+            "description": "Remote sessions (web console, SSH, `oc` CLI) can be terminated by administrators. OAuth access tokens have short, configurable lifetimes."
+          },
+          {
+            "control-id": "cr-2.7",
+            "description": "Concurrent session control is managed by the integrated identity provider."
+          },
+          {
+            "control-id": "cr-2.8",
+            "description": "OpenShift generates detailed audit logs for all API server requests, including the user, source IP, requested action, and result."
+          },
+          {
+            "control-id": "cr-2.9",
+            "description": "Audit logs are forwarded to a centralized SIEM, which is configured to generate alerts when storage capacity reaches a predefined threshold."
+          },
+          {
+            "control-id": "cr-2.10",
+            "description": "The audit logging pipeline is configured for high availability. In case of failure to forward logs, local node buffering is used, and alerts are triggered."
+          },
+          {
+            "control-id": "cr-2.11",
+            "description": "All cluster nodes synchronize their time with a trusted NTP server. Audit logs are immediately forwarded to a secure, write-only SIEM to protect timestamp integrity."
+          },
+          {
+            "control-id": "cr-2.12",
+            "description": "Non-repudiation for all user and process actions is achieved through the immutable audit log, which links every API action to a unique, authenticated user or ServiceAccount identity."
+          },
+          {
+            "control-id": "cr-3.1",
+            "description": "All communication between control plane components and between components and the API server is authenticated and encrypted using mutual TLS (mTLS)."
+          },
+          {
+            "control-id": "sar-3.2",
+            "description": "OpenShift protects against malicious code through multiple layers: SELinux is enforced on all nodes, Security Context Constraints (SCCs) restrict pod permissions by default, and ACS provides vulnerability scanning and runtime threat detection."
+          },
+          {
+            "control-id": "cr-3.3",
+            "description": "The OpenShift Compliance Operator is used to continuously run security and functional verification checks against the cluster during normal operation and report any deviations from the defined security posture."
+          },
+          {
+            "control-id": "cr-3.4",
+            "description": "The integrity and authenticity of the core OpenShift platform is ensured by the immutable Red Hat Enterprise Linux CoreOS (RHCOS) and `rpm-ostree`. The File Integrity Operator is deployed to monitor for unauthorized changes on nodes, and ACS verifies application container image signatures. Automated notifications for integrity violations are sent to the SIEM."
+          },
+          {
+            "control-id": "cr-3.5",
+            "description": "The Kubernetes API server performs strict validation of the syntax, type, and content for all incoming API requests and resource definitions."
+          },
+          {
+            "control-id": "cr-3.6",
+            "description": "The declarative nature of Kubernetes and the constant reconciliation loop of OpenShift's operators ensure that the cluster output and state deterministically move toward the user-defined configuration."
+          },
+          {
+            "control-id": "cr-3.7",
+            "description": "OpenShift and Kubernetes API error messages are designed to be informative for debugging without revealing internal structural details that could be exploited."
+          },
+          {
+            "control-id": "cr-3.8",
+            "description": "Session integrity is protected by using TLS for all communication and by generating strong, random session identifiers for OAuth tokens and the web console."
+          },
+          {
+            "control-id": "cr-3.9",
+            "description": "Audit logs are immediately streamed to a centralized SIEM configured with write-once, read-many (WORM) storage to prevent modification or deletion."
+          },
+          {
+            "control-id": "cr-4.1",
+            "description": "Data confidentiality is ensured by enabling etcd encryption at rest, using TLS for all data in transit, and integrating with a KMS/HSM to encrypt Kubernetes Secrets."
+          },
+          {
+            "control-id": "cr-4.2",
+            "description": "OpenShift namespaces ensure logical isolation of resources. When a namespace is deleted, all associated memory and storage resources are purged by the Kubernetes garbage collector. Erasure verification is a procedural control."
+          },
+          {
+            "control-id": "cr-4.3",
+            "description": "OpenShift is run in FIPS 140-2 compliant mode, ensuring all cryptographic modules used by the platform meet federal standards."
+          },
+          {
+            "control-id": "cr-5.1",
+            "description": "Network segmentation is implemented using Kubernetes NetworkPolicies to create micro-zones around applications and namespaces, enforcing a default-deny posture for traffic flow."
+          },
+          {
+            "control-id": "cr-6.1",
+            "description": "Audit logs are programmatically accessible via the OpenShift API and are streamed in real-time to an external SIEM for analysis."
+          },
+          {
+            "control-id": "cr-6.2",
+            "description": "Continuous monitoring is provided by the built-in Prometheus stack for performance and availability, and by ACS for security events, vulnerabilities, and runtime threat detection."
+          },
+          {
+            "control-id": "cr-7.1",
+            "description": "Denial of service is mitigated by applying ResourceQuotas and LimitRanges to all namespaces, preventing resource exhaustion. The OpenShift Router (ingress controller) is configured with rate limiting to manage communication load."
+          },
+          {
+            "control-id": "cr-7.2",
+            "description": "Resource management ensures that critical cluster components and security functions have guaranteed resource allocations, preventing them from being starved by user workloads."
+          },
+          {
+            "control-id": "cr-7.3",
+            "description": "Cluster state is backed up using the built-in etcd backup scripts. The OpenShift API for Data Protection (OADP) is used for application data backup. Backup integrity is verified during restore operations."
+          },
+          {
+            "control-id": "cr-7.4",
+            "description": "The cluster can be recovered and reconstituted from etcd and application backups to a known secure state."
+          },
+          {
+            "control-id": "cr-7.6",
+            "description": "All cluster and application configurations are stored as version-controlled YAML objects (Infrastructure-as-Code), providing a machine-readable report of all security settings."
+          },
+          {
+            "control-id": "cr-7.7",
+            "description": "OpenShift enforces least functionality by using a minimal, immutable OS (RHCOS), disabling unnecessary services, and using restrictive Security Context Constraints (SCCs) to limit container capabilities."
+          },
+          {
+            "control-id": "cr-7.8",
+            "description": "The Kubernetes API provides a complete, real-time, and queryable inventory of all hardware (nodes) and software (pods, images, configurations) components in the cluster."
+          }
+        ]
+      }
+    ],
+    "back-matter": {
+      "resources": [
+        {
+          "uuid": "a8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a",
+          "title": "ISA/IEC 62443-4-2 OSCAL Catalog",
+          "citation": {
+            "text": "ISA/IEC 62443-4-2 OSCAL Catalog, Version 1.1"
+          }
+        }
+      ]
+    }
+  }
+}
