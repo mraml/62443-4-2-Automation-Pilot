@@ -1,0 +1,311 @@
+{
+  "assessment-plan": {
+    "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-f0a1b2c3d4e5",
+    "metadata": {
+      "title": "Assessment Plan for RHEL 9 based on ISA/IEC 62443-4-2 (SL-4 Target)",
+      "last-modified": "2025-08-28T20:45:00.000Z",
+      "version": "1.0",
+      "oscal-version": "1.0.0",
+      "role": [
+        {
+          "id": "assessor",
+          "title": "Security Assessor"
+        },
+        {
+          "id": "system-owner",
+          "title": "System Owner"
+        }
+      ],
+      "party": [
+        {
+          "uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c",
+          "type": "organization",
+          "name": "Example Corporation"
+        }
+      ],
+      "responsible-party": [
+        {
+          "role-id": "assessor",
+          "party-uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c"
+        }
+      ]
+    },
+    "import-ssp": {
+      "href": "#placeholder-rhel9-ssp-uuid"
+    },
+    "local-definitions": {
+      "components": [
+        {
+          "uuid": "b2c3d4e5-f6a7-4b8c-9d0e-f1a2b3c4d5e6",
+          "type": "software",
+          "title": "Red Hat Enterprise Linux 9",
+          "description": "The target of this assessment is the production RHEL 9 hosts used for industrial control system applications."
+        }
+      ],
+      "assessment-platforms": [
+        {
+          "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5",
+          "title": "Assessor's Workstation",
+          "uses-components": []
+        }
+      ]
+    },
+    "terms-and-conditions": {
+      "parts": [
+        {
+          "name": "rules-of-engagement",
+          "prose": "This assessment will be conducted during normal business hours. No disruptive testing will be performed without prior written consent from the system owner."
+        }
+      ]
+    },
+    "reviewed-controls": {
+      "control-selections": [
+        {
+          "description": "All controls implemented by the RHEL 9 component as defined in the component definition.",
+          "include-all": false,
+          "include-controls": [
+            { "control-id": "cr-1.1" },
+            { "control-id": "cr-1.2" },
+            { "control-id": "cr-1.3" },
+            { "control-id": "cr-1.4" },
+            { "control-id": "cr-1.5" },
+            { "control-id": "cr-1.7" },
+            { "control-id": "cr-1.8" },
+            { "control-id": "cr-1.9" },
+            { "control-id": "cr-1.10" },
+            { "control-id": "cr-1.11" },
+            { "control-id": "cr-1.12" },
+            { "control-id": "cr-1.14" },
+            { "control-id": "cr-2.1" },
+            { "control-id": "cr-2.2" },
+            { "control-id": "sar-2.4" },
+            { "control-id": "cr-2.5" },
+            { "control-id": "cr-2.6" },
+            { "control-id": "cr-2.7" },
+            { "control-id": "cr-2.8" },
+            { "control-id": "cr-2.9" },
+            { "control-id": "cr-2.10" },
+            { "control-id": "cr-2.11" },
+            { "control-id": "cr-2.12" },
+            { "control-id": "cr-3.1" },
+            { "control-id": "sar-3.2" },
+            { "control-id": "cr-3.3" },
+            { "control-id": "cr-3.4" },
+            { "control-id": "cr-3.5" },
+            { "control-id": "cr-3.6" },
+            { "control-id": "cr-3.7" },
+            { "control-id": "cr-3.8" },
+            { "control-id": "cr-3.9" },
+            { "control-id": "cr-4.1" },
+            { "control-id": "cr-4.2" },
+            { "control-id": "cr-4.3" },
+            { "control-id": "cr-5.1" },
+            { "control-id": "cr-6.1" },
+            { "control-id": "cr-6.2" },
+            { "control-id": "cr-7.1" },
+            { "control-id": "cr-7.2" },
+            { "control-id": "cr-7.3" },
+            { "control-id": "cr-7.4" },
+            { "control-id": "cr-7.6" },
+            { "control-id": "cr-7.7" },
+            { "control-id": "cr-7.8" }
+          ]
+        }
+      ]
+    },
+    "assessment-subjects": [
+      {
+        "subject-uuid": "b2c3d4e5-f6a7-4b8c-9d0e-f1a2b3c4d5e6",
+        "type": "component",
+        "description": "The RHEL 9 hosts."
+      }
+    ],
+    "assessment-assets": {
+      "description": "The assets used to perform this assessment.",
+      "assessment-platforms": [
+        {
+          "assessment-platform-uuid": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5"
+        }
+      ]
+    },
+    "tasks": [
+      {
+        "uuid": "task-rhel-fr1", "type": "assessment-action", "title": "Assess FR 1: Identification and Authentication Control",
+        "associated-activities": [ {"activity-uuid": "activity-rhel-1.1"}, {"activity-uuid": "activity-rhel-1.7"}, {"activity-uuid": "activity-rhel-1.11"}, {"activity-uuid": "activity-rhel-1.12"} ]
+      },
+      {
+        "uuid": "task-rhel-fr2", "type": "assessment-action", "title": "Assess FR 2: Use Control",
+        "associated-activities": [ {"activity-uuid": "activity-rhel-2.1"}, {"activity-uuid": "activity-rhel-sar-2.4"}, {"activity-uuid": "activity-rhel-2.8"} ]
+      },
+      {
+        "uuid": "task-rhel-fr3", "type": "assessment-action", "title": "Assess FR 3: System Integrity",
+        "associated-activities": [ {"activity-uuid": "activity-rhel-sar-3.2"}, {"activity-uuid": "activity-rhel-3.3"}, {"activity-uuid": "activity-rhel-3.4"} ]
+      },
+      {
+        "uuid": "task-rhel-fr4", "type": "assessment-action", "title": "Assess FR 4: Data Confidentiality",
+        "associated-activities": [ {"activity-uuid": "activity-rhel-4.1"}, {"activity-uuid": "activity-rhel-4.3"} ]
+      },
+      {
+        "uuid": "task-rhel-fr5", "type": "assessment-action", "title": "Assess FR 5: Restricted Data Flow",
+        "associated-activities": [ {"activity-uuid": "activity-rhel-5.1"} ]
+      },
+      {
+        "uuid": "task-rhel-fr6", "type": "assessment-action", "title": "Assess FR 6: Timely Response to Events",
+        "associated-activities": [ {"activity-uuid": "activity-rhel-6.1"}, {"activity-uuid": "activity-rhel-6.2"} ]
+      },
+      {
+        "uuid": "task-rhel-fr7", "type": "assessment-action", "title": "Assess FR 7: Resource Availability",
+        "associated-activities": [ {"activity-uuid": "activity-rhel-7.1"}, {"activity-uuid": "activity-rhel-7.7"}, {"activity-uuid": "activity-rhel-7.8"} ]
+      }
+    ],
+    "activities": [
+      {
+        "uuid": "activity-rhel-1.1", "title": "Verify Human User Identification and Authentication", "description": "Verify that RHEL 9 is configured to uniquely identify and authenticate all human users with multifactor authentication.",
+        "steps": [
+          {"uuid": "step-rhel-1.1.1", "description": "Examine the `/etc/sssd/sssd.conf` and relevant PAM configuration files in `/etc/pam.d/` to confirm integration with an enterprise identity provider that enforces MFA."},
+          {"uuid": "step-rhel-1.1.2", "description": "Interview the Linux administration team to confirm that all user access is managed through the central identity provider."},
+          {"uuid": "step-rhel-1.1.3", "description": "Test the login process by attempting to SSH into a target host with a test user account, and verify that an MFA challenge is presented and required for successful login."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.1" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-1.7", "title": "Verify Strength of Password-based Authentication", "description": "Verify that strong password quality rules are enforced.",
+        "steps": [
+          {"uuid": "step-rhel-1.7.1", "description": "Examine the `/etc/security/pwquality.conf` file to confirm that minimum length, complexity, and history requirements are set to strong values."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.7" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-1.11", "title": "Verify Unsuccessful Login Attempts", "description": "Verify that accounts are locked after consecutive failed login attempts.",
+        "steps": [
+          {"uuid": "step-rhel-1.11.1", "description": "Examine the PAM configuration to ensure the `pam_faillock.so` module is active and configured with a low threshold for failures."},
+          {"uuid": "step-rhel-1.11.2", "description": "Test the lockout policy by attempting to SSH with an incorrect password multiple times and verifying that the account is locked."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.11" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-1.12", "title": "Verify System Use Notification", "description": "Verify a warning banner is displayed upon login.",
+        "steps": [
+          {"uuid": "step-rhel-1.12.1", "description": "Examine the contents of the `/etc/issue.net` file to confirm it contains the approved system use notification text."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.12" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-2.1", "title": "Verify Authorization Enforcement", "description": "Verify that RHEL 9 enforces authorization for all users based on the principle of least privilege.",
+        "steps": [
+          {"uuid": "step-rhel-2.1.1", "description": "Examine the `/etc/sudoers` file and files in `/etc/sudoers.d/` to verify that administrative privileges are granted to groups, not individual users, and that passwordless sudo is disabled."},
+          {"uuid": "step-rhel-2.1.2", "description": "Test the sudo configuration by logging in as a non-privileged user and attempting to run a command that requires root privileges. Verify the action is denied."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.1" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-sar-2.4", "title": "Verify Mobile Code Control", "description": "Verify that only signed packages from trusted sources can be installed.",
+        "steps": [
+          {"uuid": "step-rhel-sar-2.4.1", "description": "Examine the `/etc/dnf/dnf.conf` file to ensure that `gpgcheck=1` is set, enforcing signature validation for all package operations."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "sar-2.4" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-2.8", "title": "Verify Auditable Events", "description": "Verify that the audit daemon is configured to log all security-relevant events.",
+        "steps": [
+          {"uuid": "step-rhel-2.8.1", "description": "Examine the audit rules in `/etc/audit/rules.d/` to confirm that they cover critical events such as file access, system calls, and administrative actions."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.8" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-sar-3.2", "title": "Verify Protection from Malicious Code", "description": "Verify that SELinux is active and in enforcing mode.",
+        "steps": [
+          {"uuid": "step-rhel-sar-3.2.1", "description": "Test the system by running the `sestatus` command and verifying that SELinux is in 'enforcing' mode."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "sar-3.2" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-3.3", "title": "Verify Security Functionality Verification", "description": "Verify that OpenSCAP is used for automated compliance scanning.",
+        "steps": [
+          {"uuid": "step-rhel-3.3.1", "description": "Examine the system's cron jobs or systemd timers to confirm that OpenSCAP scans are scheduled to run on a regular basis."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-3.3" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-3.4", "title": "Verify Software and Information Integrity", "description": "Verify that AIDE is configured for file integrity monitoring.",
+        "steps": [
+          {"uuid": "step-rhel-3.4.1", "description": "Examine the `/etc/aide.conf` file to confirm that it is monitoring critical system files and directories."},
+          {"uuid": "step-rhel-3.4.2", "description": "Test the AIDE configuration by running `aide --check` and verifying that it reports on any intentional or unintentional file changes."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-3.4" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-4.1", "title": "Verify Information Confidentiality", "description": "Verify that the system's disks are encrypted.",
+        "steps": [
+          {"uuid": "step-rhel-4.1.1", "description": "Test the system by running `lsblk -f` and verifying that the root filesystem is of type 'crypto_LUKS'."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-4.1" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-4.3", "title": "Verify Use of Cryptography", "description": "Verify that the system is running in FIPS mode.",
+        "steps": [
+          {"uuid": "step-rhel-4.3.1", "description": "Test the system by running `fips-mode-setup --check` and verifying that FIPS mode is enabled."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-4.3" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-5.1", "title": "Verify Network Segmentation", "description": "Verify that the host-based firewall is configured with a default-deny policy.",
+        "steps": [
+          {"uuid": "step-rhel-5.1.1", "description": "Examine the output of `firewall-cmd --list-all` to confirm that the default zone is set to 'drop' or 'reject' and that only necessary services are explicitly allowed."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-5.1" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-6.1", "title": "Verify Audit Log Accessibility", "description": "Verify that audit logs are being forwarded to a central SIEM.",
+        "steps": [
+          {"uuid": "step-rhel-6.1.1", "description": "Examine the `/etc/rsyslog.conf` file and files in `/etc/rsyslog.d/` to confirm that audit logs are being forwarded to the correct SIEM address."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-6.1" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-6.2", "title": "Verify Continuous Monitoring", "description": "Verify that the audit service is active.",
+        "steps": [
+          {"uuid": "step-rhel-6.2.1", "description": "Test the system by running `systemctl is-active auditd` and verifying that the service is running."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-6.2" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-7.1", "title": "Verify Denial of Service Protection", "description": "Verify that resource limits are configured for services.",
+        "steps": [
+          {"uuid": "step-rhel-7.1.1", "description": "Examine the systemd unit files for critical services to confirm that they are assigned to a resource-limited slice and have appropriate CPU and memory quotas set."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-7.1" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-7.7", "title": "Verify Least Functionality", "description": "Verify that unnecessary packages are removed and services are disabled.",
+        "steps": [
+          {"uuid": "step-rhel-7.7.1", "description": "Test the system by running `rpm -q <package_name>` for a list of unnecessary packages and verifying they are not installed."},
+          {"uuid": "step-rhel-7.7.2", "description": "Test the system by running `systemctl is-enabled <service_name>` for a list of unnecessary services and verifying they are disabled."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-7.7" } ] } ] }
+      },
+      {
+        "uuid": "activity-rhel-7.8", "title": "Verify Control System Component Inventory", "description": "Verify that a software inventory is available.",
+        "steps": [
+          {"uuid": "step-rhel-7.8.1", "description": "Test the system by running `rpm -qa` to generate a complete list of all installed software packages."}
+        ],
+        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-7.8" } ] } ] }
+      }
+    ],
+    "back-matter": {
+      "resources": [
+        {
+          "uuid": "a8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a",
+          "title": "ISA/IEC 62443-4-2 OSCAL Catalog",
+          "citation": {
+            "text": "ISA/IEC 62443-4-2 OSCAL Catalog, Version 1.1"
+          }
+        },
+        {
+          "uuid": "placeholder-rhel9-ssp-uuid",
+          "title": "System Security Plan for the Production ICS RHEL 9 Hosts"
+        }
+      ]
+    }
+  }
+}
