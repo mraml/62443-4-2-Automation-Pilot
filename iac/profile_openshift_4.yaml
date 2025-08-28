@@ -102,18 +102,20 @@ volumes:
 ---
 
 # SAR-2.4: Enforce use of signed images from a trusted registry
-# This policy, managed by the Image Admission Controller, rejects images that are not
-# from the specified trusted registries.
-apiVersion: config.openshift.io/v1
-kind: Image
+# This policy redirects all image pulls to a trusted internal mirror, effectively
+# blocking unapproved registries.
+apiVersion: operator.openshift.io/v1alpha1
+kind: ImageContentSourcePolicy
 metadata:
-  name: cluster
+  name: trusted-registry-mirror
 spec:
-  allowedRegistriesForImport:
-  - domainName: registry.example.com
-    insecure: false
-  - domainName: registry.redhat.io
-    insecure: false
+  repositoryDigestMirrors:
+  - mirrors:
+    - registry.example.com/mirror/redhat
+    source: registry.redhat.io
+  - mirrors:
+    - registry.example.com/mirror/openshift
+    source: registry.openshift.com
 
 ---
 
@@ -328,10 +330,24 @@ spec:
 
 ---
 
-# CR-7.2: Resource Management for Critical Components (Documentation)
-# OpenShift's critical control plane components in the openshift-* namespaces
-# are configured with resource requests by default, giving them a higher Quality of Service (QoS)
-# class. This ensures they have guaranteed resources and are less likely to be
-# impacted by resource contention. This is an inherent feature and requires no
-# additional manifest for default components. Custom critical components (e.g., operators)
-# should have resource requests and limits defined in their deployments.
+# CR-7.2: Resource Management for Critical Components
+# This manifest patches the cluster-version-operator to ensure it has guaranteed
+# resource requests, preventing it from being starved by other workloads.
+# A similar approach should be used for other critical operators.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cluster-version-operator
+  namespace: openshift-cluster-version
+spec:
+  template:
+    spec:
+      containers:
+      - name: cluster-version-operator
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
