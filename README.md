@@ -5,6 +5,7 @@ Repository Structure
 
 This repository is organized to follow the OSCAL GRC lifecycle, from defining requirements to automating implementation and assessment.
 
+```
 .
 ├── catalog/
 │   └── 62443-4-2_catalog.json        # OSCAL Control Catalog for the standard
@@ -34,6 +35,7 @@ This repository is organized to follow the OSCAL GRC lifecycle, from defining re
 │   └── rhde_manual_guide.md              # Guide for manual controls in Red Hat Device Edge
 │
 └── README.md                             # This file
+```
 
 The OSCAL GRC Lifecycle
 
