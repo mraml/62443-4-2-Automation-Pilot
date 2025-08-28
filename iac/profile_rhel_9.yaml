@@ -107,6 +107,15 @@
     # --- FR 4: Data Confidentiality ---
     - name: "FR-4 | Block: Configure Data Confidentiality"
       block:
+        - name: "CR-1.5, CR-1.14, CR-4.1 | Verify root filesystem is encrypted with LUKS"
+          ansible.builtin.command:
+            cmd: "lsblk -no TYPE,MOUNTPOINT"
+          register: luks_check
+          changed_when: false
+          failed_when: "'crypt' not in luks_check.stdout"
+          # NOTE: Enabling LUKS must be done at install time (e.g., via Kickstart).
+          # This task verifies that the running system meets the requirement.
+
         - name: "CR-4.3 | Set system-wide crypto policy to FIPS mode"
           ansible.builtin.command:
             cmd: "fips-mode-setup --enable"
@@ -167,6 +176,27 @@
     # --- FR 7: Resource Availability ---
     - name: "FR-7 | Block: Configure Resource Availability"
       block:
+        - name: "CR-7.1, CR-7.2 | Create a systemd slice for critical applications"
+          ansible.builtin.copy:
+            dest: /etc/systemd/system/critical-apps.slice
+            content: |
+              [Unit]
+              Description=Slice for Critical ICS Applications
+              [Slice]
+              CPUAccounting=true
+              MemoryAccounting=true
+            mode: '0644'
+          notify: reload systemd
+
+        - name: "CR-7.1, CR-7.2 | Set resource limits on the critical application slice"
+          community.general.systemd_service:
+            name: critical-apps.slice
+            property: "{{ item.prop }}"
+            value: "{{ item.val }}"
+          loop:
+            - { prop: 'CPUQuota', val: '50%' }
+            - { prop: 'MemoryMax', val: '10G' }
+
         - name: "CR-7.7 | Ensure minimal packages are installed"
           ansible.builtin.dnf:
             name:
@@ -189,95 +219,10 @@
       ansible.builtin.service:
         name: rsyslog
         state: restarted
+    - name: reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: yes
     - name: reboot system
       ansible.builtin.reboot:
         msg: "Rebooting to apply FIPS mode"
         reboot_timeout: 3600
-
-# --- AUTOMATION FOR OPENSHIFT 4 CONTROLS (KUBERNETES MANIFESTS) ---
-# These Kubernetes manifests enforce several SL-4 controls within an OpenShift cluster.
-# They should be applied via a GitOps tool like Argo CD for a complete audit trail.
-
-# CR-5.1: Network Segmentation using a default-deny NetworkPolicy
-# This policy, when applied to a namespace, blocks all ingress traffic by default.
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: default-deny-ingress
-  namespace: critical-ics-app
-spec:
-  podSelector: {}
-  policyTypes:
-  - Ingress
-
----
-
-# CR-7.7 & SAR-3.2: Least Functionality using a restrictive SecurityContextConstraint
-# This SCC prevents containers from running as root or gaining privileges.
-apiVersion: security.openshift.io/v1
-kind: SecurityContextConstraints
-metadata:
-  name: restricted-ics
-allowHostDirVolumePlugin: false
-allowHostIPC: false
-allowHostNetwork: false
-allowHostPID: false
-allowHostPorts: false
-allowPrivilegeEscalation: false
-allowPrivilegedContainer: false
-allowedCapabilities: []
-defaultAddCapabilities: []
-fsGroup:
-  type: MustRunAs
-priority: 10
-readOnlyRootFilesystem: true
-requiredDropCapabilities:
-- ALL
-runAsUser:
-  type: MustRunAsRange
-seLinuxContext:
-  type: MustRunAs
-supplementalGroups:
-  type: MustRunAs
-volumes:
-- configMap
-- downwardAPI
-- emptyDir
-- persistentVolumeClaim
-- projected
-- secret
-
----
-
-# CR-7.1: Denial of Service Protection using a ResourceQuota
-# This ResourceQuota limits the total resources a project can consume.
-apiVersion: v1
-kind: ResourceQuota
-metadata:
-  name: compute-resources
-  namespace: critical-ics-app
-spec:
-  hard:
-    requests.cpu: "10"
-    requests.memory: 20Gi
-    limits.cpu: "20"
-    limits.memory: 40Gi
-
----
-
-# CR-7.1: Denial of Service Protection using a LimitRange
-# This LimitRange sets default resource requests and limits for containers in the project.
-apiVersion: v1
-kind: LimitRange
-metadata:
-  name: resource-limits
-  namespace: critical-ics-app
-spec:
-  limits:
-  - default:
-      cpu: 500m
-      memory: 1Gi
-    defaultRequest:
-      cpu: 100m
-      memory: 256Mi
-    type: Container
