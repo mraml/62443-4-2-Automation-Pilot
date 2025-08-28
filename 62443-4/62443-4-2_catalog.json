@@ -1,0 +1,899 @@
+{
+  "catalog": {
+    "uuid": "a8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a",
+    "metadata": {
+      "title": "ISA/IEC 62443-4-2 OSCAL Catalog",
+      "last-modified": "2025-08-28T20:00:00.000Z",
+      "version": "1.1",
+      "oscal-version": "1.0.0",
+      "prop": [
+        {
+          "name": "publication-date",
+          "value": "2018-08-13"
+        }
+      ],
+      "link": [
+        {
+          "href": "https://www.isa.org/products/ansi-isa-62443-4-2-2018-security-for-industrial-au",
+          "rel": "about"
+        }
+      ],
+      "role": [
+        {
+          "id": "creator",
+          "title": "International Society of Automation (ISA)"
+        }
+      ],
+      "party": [
+        {
+          "uuid": "c8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a",
+          "type": "organization",
+          "name": "International Society of Automation (ISA)"
+        }
+      ],
+      "responsible-party": [
+        {
+          "role-id": "creator",
+          "party-uuid": "c8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a"
+        }
+      ]
+    },
+    "groups": [
+      {
+        "id": "fr-1",
+        "class": "foundational-requirement",
+        "title": "Identification and Authentication Control (IAC)",
+        "controls": [
+          {
+            "id": "cr-1.1",
+            "class": "component-requirement",
+            "title": "Human user identification and authentication",
+            "parts": [
+              {
+                "id": "cr-1.1_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to identify and authenticate all human users according to ISA-62443-3-3 [11] SR 1.1 on all interfaces capable of human user access. This capability shall enforce such identification and authentication on all interfaces that provide human user access to the component to support segregation of duties and least privilege in accordance with applicable security policies and procedures. This capability may be provided locally by the component or by integration into a system level identification and authentication system."
+              }
+            ],
+            "controls": [
+              {
+                "id": "cr-1.1-re-1",
+                "class": "requirement-enhancement",
+                "title": "Unique identification and authentication",
+                "parts": [
+                  {
+                    "name": "statement",
+                    "prose": "Components shall provide the capability to uniquely identify and authenticate all human users."
+                  }
+                ]
+              },
+              {
+                "id": "cr-1.1-re-2",
+                "class": "requirement-enhancement",
+                "title": "Multifactor authentication for all interfaces",
+                "parts": [
+                  {
+                    "name": "statement",
+                    "prose": "Components shall provide the capability to employ multifactor authentication for all human user access to the component."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "cr-1.2",
+            "class": "component-requirement",
+            "title": "Software process and device identification and authentication",
+            "parts": [
+              {
+                "id": "cr-1.2_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to identify itself and authenticate to any other component (software application, embedded devices, host devices and network devices), according to ISA-62443-3-3 [11] SR1.2."
+              }
+            ],
+            "controls": [
+              {
+                "id": "cr-1.2-re-1",
+                "class": "requirement-enhancement",
+                "title": "Unique identification and authentication",
+                "parts": [
+                  {
+                    "name": "statement",
+                    "prose": "Components shall provide the capability to uniquely identify and authenticate itself to any other component."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "cr-1.3",
+            "class": "component-requirement",
+            "title": "Account management",
+            "parts": [
+              {
+                "id": "cr-1.3_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to support the management of all accounts directly or integrated into a system that manages accounts according to ISA-62443-3-3 [11] SR 1.3."
+              }
+            ]
+          },
+          {
+            "id": "cr-1.4",
+            "class": "component-requirement",
+            "title": "Identifier management",
+            "parts": [
+              {
+                "id": "cr-1.4_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to integrate into a system that supports the management of identifiers and/or provide the capability to support the management of identifiers directly according to ISA-62443-3-3 [11] SR 1.4."
+              }
+            ]
+          },
+          {
+            "id": "cr-1.5",
+            "class": "component-requirement",
+            "title": "Authenticator management",
+            "parts": [
+              {
+                "id": "cr-1.5_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to: a) support the use of initial authenticator content; b) support the recognition of changes to default authenticators made at installation time; c) function properly with periodic authenticator change/refresh operation; and d) protect authenticators from unauthorized disclosure and modification when stored, used and transmitted."
+              }
+            ],
+            "controls": [
+              {
+                "id": "cr-1.5-re-1",
+                "class": "requirement-enhancement",
+                "title": "Hardware security for authenticators",
+                "parts": [
+                  {
+                    "name": "statement",
+                    "prose": "The authenticators on which the component rely shall be protected via hardware mechanisms."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "cr-1.6",
+            "class": "component-requirement",
+            "title": "Wireless access management",
+            "parts": [
+              {
+                "id": "cr-1.6_stmt",
+                "name": "statement",
+                "prose": "A network device supporting wireless access management shall provide the capability to identify and authenticate all users (humans, software processes or devices) engaged in wireless communication."
+              }
+            ]
+          },
+          {
+            "id": "cr-1.7",
+            "class": "component-requirement",
+            "title": "Strength of password-based authentication",
+            "parts": [
+              {
+                "id": "cr-1.7_stmt",
+                "name": "statement",
+                "prose": "For components that utilize password-based authentication, those components shall provide or integrate into a system that provides the capability to enforce configurable password strength according to internationally recognized and proven password guidelines."
+              }
+            ]
+          },
+          {
+            "id": "cr-1.8",
+            "class": "component-requirement",
+            "title": "Public key infrastructure certificates",
+            "parts": [
+              {
+                "id": "cr-1.8_stmt",
+                "name": "statement",
+                "prose": "When public key infrastructure (PKI) is utilized, the component shall provide or integrate into a system that provides the capability to interact and operate in accordance with ISA-62443-3-3 [11] SR1.8."
+              }
+            ]
+          },
+          {
+            "id": "cr-1.9",
+            "class": "component-requirement",
+            "title": "Strength of public key-based authentication",
+            "parts": [
+              {
+                "id": "cr-1.9_stmt",
+                "name": "statement",
+                "prose": "For components that utilize public-key-based authentication, those components shall provide directly or integrate into a system that provides the capability within the same IACS environment to: a) validate certificates by checking the validity of the signature of a given certificate; b) validate the certificate chain or, in the case of self-signed certificates, by deploying leaf certificates to all hosts that communicate with the subject to which the certificate is issued; c) validate certificates by checking a given certificate's revocation status; d) establish user (human, software process or device) control of the corresponding private key; e) map the authenticated identity to a user (human, software process or device); and f) ensure that the algorithms and keys used for the public key authentication comply with 8.5 CR 4.3 Use of cryptography."
+              }
+            ]
+          },
+          {
+            "id": "cr-1.10",
+            "class": "component-requirement",
+            "title": "Authenticator feedback",
+            "parts": [
+              {
+                "id": "cr-1.10_stmt",
+                "name": "statement",
+                "prose": "When a component provides an authentication capability the component shall provide the capability to obscure feedback of authenticator information during the authentication process."
+              }
+            ]
+          },
+          {
+            "id": "cr-1.11",
+            "class": "component-requirement",
+            "title": "Unsuccessful login attempts",
+            "parts": [
+              {
+                "id": "cr-1.11_stmt",
+                "name": "statement",
+                "prose": "When a component provides an authentication capability the component shall provide the capability to: a) enforce a limit of a configurable number of consecutive invalid access attempts by any user (human, software process or device) during a configurable time period; and b) deny access for a specified period of time or until unlocked by an administrator when this limit has been reached."
+              }
+            ]
+          },
+          {
+            "id": "cr-1.12",
+            "class": "component-requirement",
+            "title": "System use notification",
+            "parts": [
+              {
+                "id": "cr-1.12_stmt",
+                "name": "statement",
+                "prose": "When a component provides local human user access/HMI, it shall provide the capability to display a system use notification message before authenticating. The system use notification message shall be configurable by authorized personnel."
+              }
+            ]
+          },
+          {
+            "id": "cr-1.13",
+            "class": "component-requirement",
+            "title": "Access via untrusted networks",
+            "parts": [
+              {
+                "id": "cr-1.13_stmt",
+                "name": "statement",
+                "prose": "The network device supporting device access into a network shall provide the capability to monitor and control all methods of access to the network device via untrusted networks."
+              }
+            ]
+          },
+          {
+            "id": "cr-1.14",
+            "class": "component-requirement",
+            "title": "Strength of symmetric key-based authentication",
+            "parts": [
+              {
+                "id": "cr-1.14_stmt",
+                "name": "statement",
+                "prose": "For components that utilize symmetric keys, the component shall provide the capability to: a) establish the mutual trust using the symmetric key; b) store securely the shared secret (the authentication is valid as long as the shared secret remains secret); c) restrict access to the shared secret; and d) ensure that the algorithms and keys used for the symmetric key authentication comply with CR 4.3 Use of cryptography Subclause 8.5."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fr-2",
+        "class": "foundational-requirement",
+        "title": "Use Control (UC)",
+        "controls": [
+          {
+            "id": "cr-2.1",
+            "class": "component-requirement",
+            "title": "Authorization enforcement",
+            "parts": [
+              {
+                "id": "cr-2.1_stmt",
+                "name": "statement",
+                "prose": "Components shall provide an authorization enforcement mechanism for all identified and authenticated users based on their assigned responsibilities."
+              }
+            ],
+            "controls": [
+              {
+                "id": "cr-2.1-re-1",
+                "class": "requirement-enhancement",
+                "title": "Authorization enforcement for all users",
+                "parts": [
+                  {
+                    "name": "statement",
+                    "prose": "Components shall provide an authorization enforcement mechanism for all users based on their assigned responsibilities and least privilege."
+                  }
+                ]
+              },
+              {
+                "id": "cr-2.1-re-2",
+                "class": "requirement-enhancement",
+                "title": "Permission mapping to roles",
+                "parts": [
+                  {
+                    "name": "statement",
+                    "prose": "Components shall, directly or through a compensating security mechanism, provide for an authorized role to define and modify the mapping of permissions to roles for all human users."
+                  }
+                ]
+              },
+              {
+                "id": "cr-2.1-re-3",
+                "class": "requirement-enhancement",
+                "title": "Supervisor override",
+                "parts": [
+                  {
+                    "name": "statement",
+                    "prose": "Components shall support a supervisor manual override for a configurable time or sequence of events."
+                  }
+                ]
+              },
+              {
+                "id": "cr-2.1-re-4",
+                "class": "requirement-enhancement",
+                "title": "Dual approval",
+                "parts": [
+                  {
+                    "name": "statement",
+                    "prose": "Components shall support dual approval when action can result in serious impact on the industrial process."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "cr-2.2",
+            "class": "component-requirement",
+            "title": "Wireless use control",
+            "parts": [
+              {
+                "id": "cr-2.2_stmt",
+                "name": "statement",
+                "prose": "If a component supports usage through wireless interfaces it shall provide the capability to integrate into the system that supports usage authorization, monitoring and restrictions according to commonly accepted industry practices."
+              }
+            ]
+          },
+          {
+            "id": "cr-2.4",
+            "class": "component-requirement",
+            "title": "Mobile code",
+            "parts": [
+              {
+                "id": "cr-2.4_stmt",
+                "name": "statement",
+                "prose": "In the event that a software application utilizes mobile code technologies, that application shall provide the capability to enforce a security policy for the usage of mobile code technologies. The security policy shall allow, at a minimum, the following actions for each mobile code technology used on the software application: a) Control execution of mobile code; b) Control which users (human, software process, or device) are allowed to transfer mobile code to/from the application; c) Control the execution of mobile code based on the results of an integrity check prior to the code being executed."
+              }
+            ]
+          },
+          {
+            "id": "cr-2.5",
+            "class": "component-requirement",
+            "title": "Session lock",
+            "parts": [
+              {
+                "id": "cr-2.5_stmt",
+                "name": "statement",
+                "prose": "If a component provides a human user interface, whether accessed locally or via a network, the component shall provide the capability a) to protect against further access by initiating a session lock after a configurable time period of inactivity or by manual initiation by the user (human, software process or device); and b) for the session lock to remain in effect until the human user who owns the session, or another authorized human user, re-establishes access using appropriate identification and authentication procedures."
+              }
+            ]
+          },
+          {
+            "id": "cr-2.6",
+            "class": "component-requirement",
+            "title": "Remote session termination",
+            "parts": [
+              {
+                "id": "cr-2.6_stmt",
+                "name": "statement",
+                "prose": "If a component supports remote sessions, the component shall provide the capability to terminate a remote session either automatically after a configurable time period of inactivity, manually by a local authority, or manually by the user (human, software process or device) who initiated the session."
+              }
+            ]
+          },
+          {
+            "id": "cr-2.7",
+            "class": "component-requirement",
+            "title": "Concurrent session control",
+            "parts": [
+              {
+                "id": "cr-2.7_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to limit the number of concurrent sessions per interface for any given user (human, software process or device)."
+              }
+            ]
+          },
+          {
+            "id": "cr-2.8",
+            "class": "component-requirement",
+            "title": "Auditable events",
+            "parts": [
+              {
+                "id": "cr-2.8_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to generate audit records relevant to security for the following categories: a) access control; b) request errors; c) control system events; d) backup and restore event; e) configuration changes; and f) audit log events. Individual audit records shall include: a) timestamp; b) source (originating device, software process or human user account); c) category; d) type; e) event ID; and f) event result."
+              }
+            ]
+          },
+          {
+            "id": "cr-2.9",
+            "class": "component-requirement",
+            "title": "Audit storage capacity",
+            "parts": [
+              {
+                "id": "cr-2.9_stmt",
+                "name": "statement",
+                "prose": "Components shall a) provide the capability to allocate audit record storage capacity according to commonly recognized recommendations for log management; and b) provide mechanisms to protect against a failure of the component when it reaches or exceeds the audit storage capacity."
+              }
+            ]
+          },
+          {
+            "id": "cr-2.10",
+            "class": "component-requirement",
+            "title": "Response to audit processing failures",
+            "parts": [
+              {
+                "id": "cr-2.10_stmt",
+                "name": "statement",
+                "prose": "Components shall a) provide the capability to protect against the loss of essential services and functions in the event of an audit processing failure; and b) provide the capability to support appropriate actions in response to an audit processing failure according to commonly accepted industry practices and recommendations."
+              }
+            ]
+          },
+          {
+            "id": "cr-2.11",
+            "class": "component-requirement",
+            "title": "Timestamps",
+            "parts": [
+              {
+                "id": "cr-2.11_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to create timestamps (including date and time) for use in audit records."
+              }
+            ]
+          },
+          {
+            "id": "cr-2.12",
+            "class": "component-requirement",
+            "title": "Non-repudiation",
+            "parts": [
+              {
+                "id": "cr-2.12_stmt",
+                "name": "statement",
+                "prose": "If a component provides a human user interface, the component shall provide the capability to determine whether a given human user took a particular action. Control elements that are not able to support such capability shall be listed in component documents."
+              }
+            ]
+          },
+          {
+            "id": "cr-2.13",
+            "class": "component-requirement",
+            "title": "Use of physical diagnostic and test interfaces",
+            "parts": [
+              {
+                "id": "cr-2.13_stmt",
+                "name": "statement",
+                "prose": "Embedded devices shall protect against unauthorized use of the physical factory diagnostic and test interface(s) (e.g. JTAG Debugging)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fr-3",
+        "class": "foundational-requirement",
+        "title": "System Integrity (SI)",
+        "controls": [
+          {
+            "id": "cr-3.1",
+            "class": "component-requirement",
+            "title": "Communication integrity",
+            "parts": [
+              {
+                "id": "cr-3.1_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to protect integrity of transmitted information."
+              }
+            ],
+            "controls": [
+              {
+                "id": "cr-3.1-re-1",
+                "class": "requirement-enhancement",
+                "title": "Communication authentication",
+                "parts": [
+                  {
+                    "name": "statement",
+                    "prose": "Components shall provide the capability to verify the authenticity of received information during communication."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "cr-3.2",
+            "class": "component-requirement",
+            "title": "Protection from malicious code",
+            "parts": [
+              {
+                "id": "cr-3.2_stmt",
+                "name": "statement",
+                "prose": "The application product supplier shall qualify and document which protection from malicious code mechanisms are compatible with the application and note any special configuration requirements."
+              }
+            ]
+          },
+          {
+            "id": "cr-3.3",
+            "class": "component-requirement",
+            "title": "Security functionality verification",
+            "parts": [
+              {
+                "id": "cr-3.3_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to support verification of the intended operation of security functions according to ISA-62443-3-3 [11] SR3.3."
+              }
+            ]
+          },
+          {
+            "id": "cr-3.4",
+            "class": "component-requirement",
+            "title": "Software and information integrity",
+            "parts": [
+              {
+                "id": "cr-3.4_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to perform or support integrity checks on software, configuration and other information as well as the recording and reporting of the results of these checks or be integrated into a system that can perform or support integrity checks."
+              }
+            ]
+          },
+          {
+            "id": "cr-3.5",
+            "class": "component-requirement",
+            "title": "Input validation",
+            "parts": [
+              {
+                "id": "cr-3.5_stmt",
+                "name": "statement",
+                "prose": "Components shall validate the syntax, length and content of any input data that is used as an industrial process control input or input via external interfaces that directly impacts the action of the component."
+              }
+            ]
+          },
+          {
+            "id": "cr-3.6",
+            "class": "component-requirement",
+            "title": "Deterministic output",
+            "parts": [
+              {
+                "id": "cr-3.6_stmt",
+                "name": "statement",
+                "prose": "Components that physically or logically connect to an automation process shall provide the capability to set outputs to a predetermined state if normal operation as defined by the component supplier cannot be maintained."
+              }
+            ]
+          },
+          {
+            "id": "cr-3.7",
+            "class": "component-requirement",
+            "title": "Error handling",
+            "parts": [
+              {
+                "id": "cr-3.7_stmt",
+                "name": "statement",
+                "prose": "Components shall identify and handle error conditions in a manner that does not provide information that could be exploited by adversaries to attack the IACS."
+              }
+            ]
+          },
+          {
+            "id": "cr-3.8",
+            "class": "component-requirement",
+            "title": "Session integrity",
+            "parts": [
+              {
+                "id": "cr-3.8_stmt",
+                "name": "statement",
+                "prose": "Components shall provide mechanisms to protect the integrity of communications sessions including: a) the capability to invalidate session identifiers upon user logout or other session termination (including browser sessions); b) the capability to generate a unique session identifier for each session and recognize only session identifiers that are system-generated; and c) the capability to generate unique session identifiers with commonly accepted sources of randomness."
+              }
+            ]
+          },
+          {
+            "id": "cr-3.9",
+            "class": "component-requirement",
+            "title": "Protection of audit information",
+            "parts": [
+              {
+                "id": "cr-3.9_stmt",
+                "name": "statement",
+                "prose": "Components shall protect audit information, audit logs, and audit tools (if present) from unauthorized access, modification and deletion."
+              }
+            ]
+          },
+          {
+            "id": "cr-3.10",
+            "class": "component-requirement",
+            "title": "Support for updates",
+            "parts": [
+              {
+                "id": "cr-3.10_stmt",
+                "name": "statement",
+                "prose": "The embedded device shall support the ability to be updated and upgraded."
+              }
+            ]
+          },
+          {
+            "id": "cr-3.11",
+            "class": "component-requirement",
+            "title": "Physical tamper resistance and detection",
+            "parts": [
+              {
+                "id": "cr-3.11_stmt",
+                "name": "statement",
+                "prose": "The embedded device shall provide tamper resistance and detection mechanisms to protect against unauthorized physical access into the device"
+              }
+            ]
+          },
+          {
+            "id": "cr-3.12",
+            "class": "component-requirement",
+            "title": "Provisioning product supplier roots of trust",
+            "parts": [
+              {
+                "id": "cr-3.12_stmt",
+                "name": "statement",
+                "prose": "Embedded devices shall provide the capability to provision and protect the confidentiality, integrity, and authenticity of product supplier keys and data to be used as one or more 'roots of trust' at the time of manufacture of the device."
+              }
+            ]
+          },
+          {
+            "id": "cr-3.13",
+            "class": "component-requirement",
+            "title": "Provisioning asset owner roots of trust",
+            "parts": [
+              {
+                "id": "cr-3.13_stmt",
+                "name": "statement",
+                "prose": "Embedded devices shall a) provide the capability to provision and protect the confidentiality, integrity, and authenticity of asset owner keys and data to be used as 'roots of trust'; and b) support the capability to provision without reliance on components that may be outside of the device's security zone."
+              }
+            ]
+          },
+          {
+            "id": "cr-3.14",
+            "class": "component-requirement",
+            "title": "Integrity of the boot process",
+            "parts": [
+              {
+                "id": "cr-3.14_stmt",
+                "name": "statement",
+                "prose": "Embedded devices shall verify the integrity of the firmware, software, and configuration data needed for the component's boot and runtime processes prior to use."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fr-4",
+        "class": "foundational-requirement",
+        "title": "Data Confidentiality (DC)",
+        "controls": [
+          {
+            "id": "cr-4.1",
+            "class": "component-requirement",
+            "title": "Information confidentiality",
+            "parts": [
+              {
+                "id": "cr-4.1_stmt",
+                "name": "statement",
+                "prose": "Components shall a) provide the capability to protect the confidentiality of information at rest for which explicit read authorization is supported; and b) support the protection of the confidentiality of information in transit as defined in ISA-62443-3-3 [11] SR 4.1."
+              }
+            ]
+          },
+          {
+            "id": "cr-4.2",
+            "class": "component-requirement",
+            "title": "Information persistence",
+            "parts": [
+              {
+                "id": "cr-4.2_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to erase all information, for which explicit read authorization is supported, from components to be released from active service and/or decommissioned."
+              }
+            ]
+          },
+          {
+            "id": "cr-4.3",
+            "class": "component-requirement",
+            "title": "Use of cryptography",
+            "parts": [
+              {
+                "id": "cr-4.3_stmt",
+                "name": "statement",
+                "prose": "If cryptography is required, the component shall use cryptographic security mechanisms according to internationally recognized and proven security practices and recommendations."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fr-5",
+        "class": "foundational-requirement",
+        "title": "Restricted Data Flow (RDF)",
+        "controls": [
+          {
+            "id": "cr-5.1",
+            "class": "component-requirement",
+            "title": "Network segmentation",
+            "parts": [
+              {
+                "id": "cr-5.1_stmt",
+                "name": "statement",
+                "prose": "Components shall support a segmented network to support zones and conduits, as needed, to support the broader network architecture based on logical segmentation and criticality."
+              }
+            ]
+          },
+          {
+            "id": "cr-5.2",
+            "class": "component-requirement",
+            "title": "Zone boundary protection",
+            "parts": [
+              {
+                "id": "cr-5.2_stmt",
+                "name": "statement",
+                "prose": "A network device at a zone boundary shall provide the capability to monitor and control communications at zone boundaries to enforce the compartmentalization defined in the risk-based zones and conduits model."
+              }
+            ]
+          },
+          {
+            "id": "cr-5.3",
+            "class": "component-requirement",
+            "title": "General-purpose person-to-person communication restrictions",
+            "parts": [
+              {
+                "id": "cr-5.3_stmt",
+                "name": "statement",
+                "prose": "A network device at a zone boundary shall provide the capability to protect against general purpose, person-to-person messages from being received from users or systems external to the control system."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fr-6",
+        "class": "foundational-requirement",
+        "title": "Timely Response to Events (TRE)",
+        "controls": [
+          {
+            "id": "cr-6.1",
+            "class": "component-requirement",
+            "title": "Audit log accessibility",
+            "parts": [
+              {
+                "id": "cr-6.1_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability for authorized humans and/or tools to access audit logs on a read-only basis."
+              }
+            ],
+            "controls": [
+              {
+                "id": "cr-6.1-re-1",
+                "class": "requirement-enhancement",
+                "title": "Programmatic access to audit logs",
+                "parts": [
+                  {
+                    "name": "statement",
+                    "prose": "Components shall provide programmatic access to audit records by either using an application programming interface (API) or sending the audit records to a centralized system"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "cr-6.2",
+            "class": "component-requirement",
+            "title": "Continuous monitoring",
+            "parts": [
+              {
+                "id": "cr-6.2_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to be continuously monitored using commonly accepted security industry practices and recommendations to detect, characterize and report security breaches in a timely manner."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fr-7",
+        "class": "foundational-requirement",
+        "title": "Resource Availability (RA)",
+        "controls": [
+          {
+            "id": "cr-7.1",
+            "class": "component-requirement",
+            "title": "Denial of service protection",
+            "parts": [
+              {
+                "id": "cr-7.1_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to maintain essential functions when operating in a degraded mode as the result of a DoS event."
+              }
+            ],
+            "controls": [
+              {
+                "id": "cr-7.1-re-1",
+                "class": "requirement-enhancement",
+                "title": "Manage communication load from component",
+                "parts": [
+                  {
+                    "name": "statement",
+                    "prose": "Components shall provide the capability to mitigate the effects of information and/or message flooding types of DoS events."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "cr-7.2",
+            "class": "component-requirement",
+            "title": "Resource management",
+            "parts": [
+              {
+                "id": "cr-7.2_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to limit the use of resources by security functions to protect against resource exhaustion."
+              }
+            ]
+          },
+          {
+            "id": "cr-7.3",
+            "class": "component-requirement",
+            "title": "Control system backup",
+            "parts": [
+              {
+                "id": "cr-7.3_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to participate in system level backup operations in order to safeguard the component state (user- and system-level information). The backup process shall not affect the normal component operations."
+              }
+            ]
+          },
+          {
+            "id": "cr-7.4",
+            "class": "component-requirement",
+            "title": "Control system recovery and reconstitution",
+            "parts": [
+              {
+                "id": "cr-7.4_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to be recovered and reconstituted to a known secure state after a disruption or failure."
+              }
+            ]
+          },
+          {
+            "id": "cr-7.6",
+            "class": "component-requirement",
+            "title": "Network and security configuration settings",
+            "parts": [
+              {
+                "id": "cr-7.6_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to be configured according to recommended network and security configurations as described in guidelines provided by the control system supplier. The component shall provide an interface to the currently deployed network and security configuration settings."
+              }
+            ]
+          },
+          {
+            "id": "cr-7.7",
+            "class": "component-requirement",
+            "title": "Least functionality",
+            "parts": [
+              {
+                "id": "cr-7.7_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to specifically restrict the use of unnecessary functions, ports, protocols and/or services."
+              }
+            ]
+          },
+          {
+            "id": "cr-7.8",
+            "class": "component-requirement",
+            "title": "Control system component inventory",
+            "parts": [
+              {
+                "id": "cr-7.8_stmt",
+                "name": "statement",
+                "prose": "Components shall provide the capability to support a control system component inventory according to ISA-62443-3-3 [11] SR 7.8."
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "back-matter": {
+      "resources": [
+        {
+          "uuid": "b8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a",
+          "title": "Security for industrial automation and control systems, Part 4-2: Technical security requirements for IACS components",
+          "citation": {
+            "text": "ANSI/ISA-62443-4-2-2018"
+          }
+        }
+      ]
+    }
+  }
+}
