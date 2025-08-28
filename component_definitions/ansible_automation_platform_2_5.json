@@ -1,0 +1,259 @@
+{
+  "component-definition": {
+    "uuid": "d5e6f7a8-b9c0-4d1e-8f2a-b3c4d5e6f7a8",
+    "metadata": {
+      "title": "Ansible Automation Platform 2.5+ Component Definition for ISA/IEC 62443-4-2 (SL-4 Target)",
+      "last-modified": "2025-08-28T20:25:00.000Z",
+      "version": "1.0-sl4",
+      "oscal-version": "1.0.0",
+      "role": [
+        {
+          "id": "creator",
+          "title": "System Administrator"
+        },
+        {
+          "id": "provider",
+          "title": "Component Provider"
+        }
+      ],
+      "party": [
+        {
+          "uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c",
+          "type": "organization",
+          "name": "Example Corporation"
+        },
+        {
+          "uuid": "f9a8b7c6-d5e4-4f3a-b92f-6e6e6e6e6e6e",
+          "type": "organization",
+          "name": "Red Hat, Inc."
+        }
+      ],
+      "responsible-party": [
+        {
+          "role-id": "creator",
+          "party-uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c"
+        }
+      ]
+    },
+    "import-profile": {
+      "href": "#a8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a"
+    },
+    "components": [
+      {
+        "uuid": "c6d7e8f9-a0b1-4c2d-8e3f-a4b5c6d7e8f9",
+        "type": "software",
+        "title": "Ansible Automation Platform 2.5+",
+        "description": "Ansible Automation Platform provides an enterprise framework for building and operating IT automation at scale. This definition describes its configuration to meet SL-4.",
+        "purpose": "Secure and centralized automation for configuration management and orchestration of industrial control systems.",
+        "responsible-roles": [
+          {
+            "role-id": "provider",
+            "party-uuids": [
+              "f9a8b7c6-d5e4-4f3a-b92f-6e6e6e6e6e6e"
+            ]
+          }
+        ]
+      }
+    ],
+    "control-implementations": [
+      {
+        "uuid": "b7c8d9e0-f1a2-4b3c-8d4e-f5a6b7c8d9e0",
+        "source": "#a8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a",
+        "description": "This implementation describes how Ansible Automation Platform 2.5+ is configured to meet the SL-4 security requirements from the ISA/IEC 62443-4-2 catalog.",
+        "implemented-requirements": [
+          {
+            "control-id": "cr-1.1",
+            "description": "Ansible Automation Platform (AAP) integrates with external identity providers (e.g., LDAP, SAML, OIDC) for all user authentication to its web UI and API. The identity provider is configured to enforce unique user identification and MFA."
+          },
+          {
+            "control-id": "cr-1.2",
+            "description": "Each automation job runs in a dedicated, isolated Execution Environment (container). Communication from execution nodes back to the control plane is authenticated using encrypted machine credentials."
+          },
+          {
+            "control-id": "cr-1.3",
+            "description": "User account management is centralized and delegated to the integrated enterprise identity provider."
+          },
+          {
+            "control-id": "cr-1.4",
+            "description": "User identifiers are managed by the integrated identity provider, ensuring uniqueness and consistency across the enterprise."
+          },
+          {
+            "control-id": "cr-1.5",
+            "description": "User authenticators are managed by the external identity provider. For secrets used by automation (e.g., SSH keys, passwords), AAP provides an encrypted credential store. This is further hardened by integrating with an external secrets management vault (e.g., HashiCorp Vault, CyberArk) that is backed by an HSM for hardware-level protection."
+          },
+          {
+            "control-id": "cr-1.7",
+            "description": "Password policies for AAP users are defined and enforced by the external identity provider."
+          },
+          {
+            "control-id": "cr-1.8",
+            "description": "AAP uses TLS for all web and API communication and is configured with certificates issued by a trusted enterprise PKI."
+          },
+          {
+            "control-id": "cr-1.9",
+            "description": "The underlying RHEL host for AAP is configured with system-wide crypto policies set to FUTURE. Private keys for the AAP web server are protected by strict file permissions and can be stored in an HSM via engine support in OpenSSL."
+          },
+          {
+            "control-id": "cr-1.10",
+            "description": "The AAP web UI and API login interfaces obscure authenticator feedback and provide generic error messages."
+          },
+          {
+            "control-id": "cr-1.11",
+            "description": "Failed login attempt handling (e.g., account lockout) is managed by the integrated external identity provider."
+          },
+          {
+            "control-id": "cr-1.12",
+            "description": "A configurable system use notification message is displayed on the AAP web UI login page."
+          },
+          {
+            "control-id": "cr-1.14",
+            "description": "Symmetric keys used for encrypting secrets within the AAP database are protected by the underlying RHEL OS, which can leverage a TPM for its file system encryption (LUKS)."
+          },
+          {
+            "control-id": "cr-2.1",
+            "description": "Authorization is enforced by a comprehensive RBAC system that provides granular control over inventories, credentials, job templates, and projects. Roles can be mapped to teams and synchronized with groups in the external identity provider. Dual approval is implemented using AAP's native Workflow feature, which allows for approval gates between steps in an automation process."
+          },
+          {
+            "control-id": "cr-2.2",
+            "description": "The underlying RHEL host for AAP is configured with `firewalld` policies to secure and restrict access from wireless network segments."
+          },
+          {
+            "control-id": "sar-2.4",
+            "description": "Ansible automation content (playbooks, roles) is sourced exclusively from trusted and version-controlled Git repositories via AAP Projects. Execution Environments are built from signed base images and are stored in a trusted container registry."
+          },
+          {
+            "control-id": "cr-2.5",
+            "description": "The AAP web UI is configured with a short, system-wide session inactivity timeout."
+          },
+          {
+            "control-id": "cr-2.6",
+            "description": "Remote user sessions to the AAP UI and API can be terminated by an administrator. OAuth2 tokens used for API access have short, configurable lifetimes."
+          },
+          {
+            "control-id": "cr-2.7",
+            "description": "Concurrent session limits for users are enforced by the external identity provider."
+          },
+          {
+            "control-id": "cr-2.8",
+            "description": "AAP's activity stream provides a detailed, immutable audit log of all events, including user logins, job launches, credential usage, and configuration changes."
+          },
+          {
+            "control-id": "cr-2.9",
+            "description": "AAP is configured to forward all activity stream and system logs to a centralized, highly-available SIEM, which is monitored for storage capacity."
+          },
+          {
+            "control-id": "cr-2.10",
+            "description": "The log forwarding service (`rsyslog`) on the underlying RHEL host is configured to buffer logs locally in case of a connection failure to the SIEM, triggering an alert."
+          },
+          {
+            "control-id": "cr-2.11",
+            "description": "The underlying RHEL host synchronizes time with a trusted NTP source. Logs are immediately forwarded to a secure, write-only SIEM to protect timestamp integrity."
+          },
+          {
+            "control-id": "cr-2.12",
+            "description": "Non-repudiation is achieved through the detailed activity stream, which links every platform action to a unique, authenticated user identity."
+          },
+          {
+            "control-id": "cr-3.1",
+            "description": "Communication integrity is enforced by requiring TLS 1.2+ for all AAP web UI and API traffic."
+          },
+          {
+            "control-id": "sar-3.2",
+            "description": "AAP protects against malicious code by running on a hardened RHEL host with SELinux in enforcing mode. Automation content is sourced from trusted Git repositories, and jobs run in minimal, isolated Execution Environments."
+          },
+          {
+            "control-id": "cr-3.3",
+            "description": "The OpenSCAP utility is used on the underlying RHEL host to perform periodic, automated compliance scans against the AAP installation."
+          },
+          {
+            "control-id": "cr-3.4",
+            "description": "The integrity of the AAP software is managed by the `rpm` package manager, which verifies package signatures. The integrity of automation content is ensured by sourcing it from signed commits in a version-controlled Git repository. Automated notifications for integrity violations are sent from the central SIEM."
+          },
+          {
+            "control-id": "cr-3.5",
+            "description": "The AAP API server performs strict validation on all incoming requests and parameters."
+          },
+          {
+            "control-id": "cr-3.6",
+            "description": "Ansible playbooks are written to be idempotent and declarative, ensuring that automation jobs produce deterministic and predictable system states."
+          },
+          {
+            "control-id": "cr-3.7",
+            "description": "AAP API and job execution error messages are designed to be informative for troubleshooting without revealing sensitive configuration details in logs."
+          },
+          {
+            "control-id": "cr-3.8",
+            "description": "Session integrity is provided by TLS for all web UI and API communication."
+          },
+          {
+            "control-id": "cr-3.9",
+            "description": "All activity stream and system audit logs are streamed in real-time to a central SIEM with WORM storage."
+          },
+          {
+            "control-id": "cr-4.1",
+            "description": "Data confidentiality is ensured by the encrypted credential store (integrated with an external vault/HSM) for data at rest, and by enforcing TLS for all data in transit."
+          },
+          {
+            "control-id": "cr-4.2",
+            "description": "When AAP is decommissioned, a procedural control is in place to securely wipe the database and secrets from the underlying host. Erasure verification is part of this procedure."
+          },
+          {
+            "control-id": "cr-4.3",
+            "description": "AAP relies on the FIPS 140-3 validated cryptographic modules of the underlying RHEL 9 operating system."
+          },
+          {
+            "control-id": "cr-5.1",
+            "description": "AAP is deployed in a secure, segmented network zone. It uses distributed execution nodes to interact with systems in other zones, avoiding the need for direct connectivity from the control plane."
+          },
+          {
+            "control-id": "cr-6.1",
+            "description": "The activity stream is programmatically accessible via the AAP API and is streamed to a central SIEM for analysis."
+          },
+          {
+            "control-id": "cr-6.2",
+            "description": "Continuous monitoring is achieved by streaming the detailed activity stream and system logs to a SIEM for real-time correlation, analysis, and alerting."
+          },
+          {
+            "control-id": "cr-7.1",
+            "description": "Denial of service is mitigated by deploying AAP in a multi-node cluster for high availability and by using a load balancer with rate-limiting capabilities in front of the web/API nodes."
+          },
+          {
+            "control-id": "cr-7.2",
+            "description": "AAP's job scheduling and instance group features are used to manage resource consumption and prevent any single automation task from exhausting system resources."
+          },
+          {
+            "control-id": "cr-7.3",
+            "description": "AAP provides backup and restore utilities for its database and secrets. Backups are stored in an encrypted format, and integrity is verified during restore."
+          },
+          {
+            "control-id": "cr-7.4",
+            "description": "The platform can be recovered and reconstituted from backups or redeployed to a known secure state using a disaster recovery Ansible playbook."
+          },
+          {
+            "control-id": "cr-7.6",
+            "description": "The entire AAP configuration, as well as all automation content, is managed as code in version-controlled repositories, providing a complete, machine-readable report of all settings."
+          },
+          {
+            "control-id": "cr-7.7",
+            "description": "AAP is installed on a minimal RHEL host with unnecessary services disabled. Its RBAC model ensures users and automation have the minimum necessary privileges to perform their tasks."
+          },
+          {
+            "control-id": "cr-7.8",
+            "description": "AAP's dynamic inventory feature provides a real-time inventory of all managed nodes. The platform's own components are inventoried via the `rpm` database on the underlying hosts."
+          }
+        ]
+      }
+    ],
+    "back-matter": {
+      "resources": [
+        {
+          "uuid": "a8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a",
+          "title": "ISA/IEC 62443-4-2 OSCAL Catalog",
+          "citation": {
+            "text": "ISA/IEC 62443-4-2 OSCAL Catalog, Version 1.1"
+          }
+        }
+      ]
+    }
+  }
+}
