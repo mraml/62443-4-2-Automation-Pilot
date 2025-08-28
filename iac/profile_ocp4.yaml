@@ -1,0 +1,265 @@
+# --- AUTOMATION FOR OPENSHIFT 4 CONTROLS (KUBERNETES MANIFESTS) ---
+# This multi-document YAML file contains manifests to enforce SL-4 controls from
+# ISA-IEC 62443-4-2 on an OpenShift 4 cluster.
+# These manifests should be managed in a Git repository and applied via a GitOps operator.
+
+# --- FR 1: Identification and Authentication Control ---
+
+# CR-1.1, CR-1.3, CR-1.4, CR-1.11: Configure OAuth to use an external OIDC Identity Provider
+# This ensures centralized, MFA-enforced user authentication.
+# NOTE: Replace the clientID, clientSecret, and issuer with your IdP's details.
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+  - name: my_oidc_provider
+    mappingMethod: claim
+    type: OpenID
+    openID:
+      clientID: "<your-client-id>"
+      clientSecret:
+        name: oidc-client-secret
+      issuer: "https://idp.example.com/auth/realms/my-realm"
+      claims:
+        preferredUsername:
+        - preferred_username
+        name:
+        - name
+        email:
+        - email
+
+---
+
+# --- FR 2: Use Control ---
+
+# CR-2.1: Restrict cluster-admin role to a specific group
+# This enforces least privilege for the most powerful role.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cluster-admins
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+groupNames:
+- ocp-cluster-admins # This group should be managed in your external IdP
+
+---
+
+# SAR-2.4 & CR-7.7: Apply a restrictive SecurityContextConstraint to a namespace
+# This enforces least privilege for application workloads.
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: restricted-ics
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: false
+allowPrivilegedContainer: false
+allowedCapabilities: []
+defaultAddCapabilities: []
+fsGroup:
+  type: MustRunAs
+priority: 10
+readOnlyRootFilesystem: true
+requiredDropCapabilities:
+- ALL
+runAsUser:
+  type: MustRunAsRange
+seLinuxContext:
+  type: MustRunAs
+supplementalGroups:
+  type: MustRunAs
+volumes:
+- configMap
+- downwardAPI
+- emptyDir
+- persistentVolumeClaim
+- projected
+- secret
+
+---
+
+# CR-2.5: Configure session inactivity timeout for the web console
+apiVersion: config.openshift.io/v1
+kind: Console
+metadata:
+  name: cluster
+spec:
+  authentication:
+    inactivityTimeoutSeconds: 900 # 15 minutes
+
+---
+
+# --- FR 3: System Integrity ---
+
+# CR-3.3 & CR-3.4: Configure the File Integrity Operator to scan nodes
+# This provides continuous integrity monitoring of the underlying hosts.
+apiVersion: fileintegrity.openshift.io/v1alpha1
+kind: FileIntegrity
+metadata:
+  name: worker-file-integrity
+spec:
+  config:
+    gracePeriod: 15
+    name: worker-fileintegrity
+  nodeSelector:
+    node-role.kubernetes.io/worker: ""
+
+---
+
+# CR-3.5: API Server Input Validation (Implicit)
+# This is an inherent feature of the Kubernetes API server. No manifest is needed,
+# but it's documented here for completeness. The API server always validates
+# the syntax and schema of all submitted objects.
+
+---
+
+# --- FR 4: Data Confidentiality ---
+
+# CR-4.1 & CR-1.5: Enable etcd encryption
+# This protects all API object data at rest.
+apiVersion: config.openshift.io/v1
+kind: APIServer
+metadata:
+  name: cluster
+spec:
+  encryption:
+    type: aescbc
+
+---
+
+# CR-4.3: Enable FIPS mode for all cluster nodes
+# This ensures all cryptography meets federal standards.
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: master
+  name: 99-master-fips
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+  fips: true
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: worker
+  name: 99-worker-fips
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+  fips: true
+
+---
+
+# --- FR 5: Restricted Data Flow ---
+
+# CR-5.1: Network Segmentation using a default-deny NetworkPolicy
+# This policy, when applied to a namespace, blocks all ingress traffic by default.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: critical-ics-app # Apply to your critical application namespaces
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+
+---
+
+# CR-5.1: Allow specific traffic to an application
+# This policy explicitly allows traffic from the OpenShift Ingress Controller
+# to an application's web server port.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-openshift-ingress
+  namespace: critical-ics-app
+spec:
+  podSelector:
+    matchLabels:
+      app: my-critical-app
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          network.openshift.io/policy-group: ingress
+    ports:
+    - protocol: TCP
+      port: 8080
+
+---
+
+# --- FR 6: Timely Response to Events ---
+
+# CR-2.8, CR-6.1, CR-6.2: Forward cluster logs and audit logs to a remote SIEM
+# This ensures logs are centrally collected and monitored.
+# NOTE: Replace the URL with your SIEM's endpoint.
+apiVersion: "logging.openshift.io/v1"
+kind: "ClusterLogForwarder"
+metadata:
+  name: "instance"
+  namespace: "openshift-logging"
+spec:
+  outputs:
+  - name: "siem-syslog"
+    type: "syslog"
+    syslog:
+      url: "tcp://siem.example.com:514"
+  pipelines:
+  - name: "forward-to-siem"
+    inputRefs:
+    - "application"
+    - "infrastructure"
+    - "audit"
+    outputRefs:
+    - "siem-syslog"
+
+---
+
+# --- FR 7: Resource Availability ---
+
+# CR-7.1: Denial of Service Protection using a ResourceQuota
+# This ResourceQuota limits the total resources a project can consume.
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-resources
+  namespace: critical-ics-app
+spec:
+  hard:
+    requests.cpu: "10"
+    requests.memory: 20Gi
+    limits.cpu: "20"
+    limits.memory: 40Gi
+
+---
+
+# CR-7.1: Denial of Service Protection using a LimitRange
+# This LimitRange sets default resource requests and limits for containers in the project.
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: resource-limits
+  namespace: critical-ics-app
+spec:
+  limits:
+  - default:
+      cpu: 500m
+      memory: 1Gi
+    defaultRequest:
+      cpu: 100m
+      memory: 256Mi
+    type: Container
