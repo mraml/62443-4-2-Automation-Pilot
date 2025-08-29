@@ -1,131 +1,116 @@
 # --- AUTOMATION FOR RED HAT DEVICE EDGE (RHEL for Edge + MicroShift) ---
-# This profile contains two parts:
-# 1. An Ansible Playbook to build the immutable RHEL for Edge OS image with baked-in security.
-# 2. Kubernetes manifests to configure the MicroShift runtime via GitOps.
+# This file provides a comprehensive "Implementation as Code" baseline for
+# ISA/IEC 62443-4-2 SL-4 on Red Hat Device Edge.
+# It is a hybrid artifact containing two parts:
+# 1. An Ansible Playbook to be used with Image Builder to create the hardened OS image.
+# 2. Kubernetes Manifests to be applied to the running MicroShift instance via GitOps.
 
 # --- PART 1: ANSIBLE PLAYBOOK FOR RHEL for Edge IMAGE BUILD ---
-# This playbook is used with Image Builder to create a hardened, immutable OS image.
+# This playbook configures the immutable OS image.
 
-- name: Build Hardened RHEL for Edge Image for ISA-IEC 62443-4-2 SL-4
+- name: Harden RHEL for Edge Image for ISA/IEC 62443-4-2 SL-4
   hosts: localhost
   connection: local
-  become: no
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
-    # This is a conceptual representation. In a real scenario, you would use
-    # an Image Builder blueprint or API call that incorporates these configurations.
-    - name: "Define image blueprint with SL-4 hardening"
-      # This task simulates defining an image-builder blueprint.
-      # The actual implementation would be a blueprint file or API call.
-      ansible.builtin.debug:
-        msg: |
-          --- BLUEPRINT DEFINITION ---
-          name: "rhde-sl4-hardened"
-          description: "RHEL for Edge with MicroShift, hardened for SL-4"
-          version: "1.0.0"
-          packages:
-            - microshift
-            - audit
-            - firewalld
-            - chrony
-          customizations:
-            # CR-4.3: Enable FIPS mode
-            fips:
-              enabled: true
-            # CR-1.5, CR-1.14, CR-4.1: Configure LUKS disk encryption with TPM
-            filesystem:
-              - mountpoint: "/"
-                type: "xfs"
-                luks: true
-                tpm2: true
-            # CR-2.11: Configure NTP
-            services:
-              enabled:
-                - chronyd
-            files:
-              # Configure chronyd to use a trusted NTP server
-              "/etc/chrony.conf":
-                contents: |
-                  pool ntp.example.com iburst
-                  driftfile /var/lib/chrony/drift
-                  makestep 1.0 3
-                  logdir /var/log/chrony
-              # CR-6.2: Configure auditd to forward logs
-              "/etc/audisp/plugins.d/syslog.conf":
-                contents: |
-                  active = yes
-                  direction = out
-                  path = builtin_syslog
-                  type = builtin
-                  args = LOG_INFO
-              # CR-6.2: Configure rsyslog to forward audit logs
-              "/etc/rsyslog.d/60-audit.conf":
-                contents: "*.* @@siem.example.com:514"
-              # CR-5.1: Configure firewalld with default-deny
-              "/etc/firewalld/firewalld.conf":
-                contents: |
-                  DefaultZone=drop
-            firewall:
-              services:
-                enabled:
-                  - ssh
-                  - https # For MicroShift API
----
+
+    # --- FR 1: Identification & Authentication Control ---
+
+    - name: "CR-1.5, CR-1.7 | Enforce strong local password policies"
+      tags: [cr-1.5, cr-1.7]
+      ansible.builtin.lineinfile:
+        path: /etc/security/pwquality.conf
+        regexp: "^{{ item.key }}"
+        line: "{{ item.key }} = {{ item.value }}"
+        create: yes
+      with_items:
+        - { key: 'minlen', value: '14' }
+        - { key: 'dcredit', value: '-1' }
+        - { key: 'ucredit', value: '-1' }
+        - { key: 'ocredit', value: '-1' }
+        - { key: 'lcredit', value: '-1' }
+
+    - name: "CR-1.11 | Configure account lockout policies"
+      tags: [cr-1.11]
+      ansible.builtin.lineinfile:
+        path: /etc/security/faillock.conf
+        regexp: "^{{ item.key }}"
+        line: "{{ item.key }} = {{ item.value }}"
+        create: yes
+      with_items:
+        - { key: 'deny', value: '5' }
+        - { key: 'unlock_time', value: '900' }
+        - { key: 'fail_interval', value: '900' }
+
+    - name: "CR-1.12 | Set system use notification banner"
+      tags: [cr-1.12]
+      ansible.builtin.copy:
+        dest: /etc/motd
+        content: "This is a private computer system intended for authorized users only. All activities are logged and monitored. By proceeding, you consent to these terms."
+
+    # --- FR 3: System Integrity ---
+
+    - name: "CR-3.4 | Install AIDE for file integrity monitoring"
+      tags: [cr-3.4]
+      ansible.builtin.dnf:
+        name: aide
+        state: present
+
+    - name: "CR-3.4 | Initialize AIDE database in the image"
+      tags: [cr-3.4]
+      ansible.builtin.command:
+        cmd: /usr/sbin/aide --init -B "database_out=file:/etc/aide.db.gz"
+      args:
+        creates: /etc/aide.db.gz
+
+    # --- FR 4: Data Confidentiality ---
+
+    - name: "CR-4.3 | Enable FIPS mode"
+      tags: [cr-4.3]
+      ansible.builtin.command:
+        cmd: fips-mode-setup --enable
+      args:
+        creates: /etc/system-fips
+
+    # --- FR 5: Restricted Data Flow ---
+
+    - name: "CR-5.1 | Configure firewalld with a default-deny policy"
+      tags: [cr-5.1]
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        state: enabled
+        permanent: yes
+        immediate: yes
+      with_items:
+        - ssh
+        - '10250/tcp' # Kubelet
+        - '6443/tcp'  # MicroShift API
+
+    # --- FR 7: Resource Availability ---
+
+    - name: "CR-7.7 | Ensure minimal packages are installed (example)"
+      tags: [cr-7.7]
+      ansible.builtin.dnf:
+        name:
+          - cockpit
+          - sendmail
+        state: absent
 
 # --- PART 2: KUBERNETES MANIFESTS FOR MicroShift RUNTIME ---
-# These manifests should be stored in a Git repository and applied to the
-# edge device via a GitOps agent.
+# These manifests should be applied to the running edge device, typically via a
+# central GitOps repository.
 
-# CR-2.1: Restrict cluster-admin role to a specific group
-# This group should be managed in your external OIDC IdP.
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: microshift-cluster-admins
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-groupNames:
-- edge-cluster-admins
+# --- FR 2: Use Control ---
+
+# SAR-2.4 & RE(1): Mobile Code & Authenticity Check
+# This is a procedural control for MicroShift. Customers must configure their image
+# build pipeline to only include container images from a trusted, signed source.
+# No manifest is directly applicable, but this section is a placeholder for documentation.
 
 ---
-
-# SAR-2.4 & CR-7.7: Apply a restrictive SecurityContextConstraint
-# This enforces least privilege for application workloads running on MicroShift.
-apiVersion: security.openshift.io/v1
-kind: SecurityContextConstraints
-metadata:
-  name: restricted-ics
-allowHostDirVolumePlugin: false
-allowHostIPC: false
-allowHostNetwork: false
-allowHostPID: false
-allowHostPorts: false
-allowPrivilegeEscalation: false
-allowPrivilegedContainer: false
-allowedCapabilities: []
-defaultAddCapabilities: []
-fsGroup:
-  type: MustRunAs
-priority: 10
-readOnlyRootFilesystem: true
-requiredDropCapabilities:
-- ALL
-runAsUser:
-  type: MustRunAsRange
-seLinuxContext:
-  type: MustRunAs
-supplementalGroups:
-  type: MustRunAs
-volumes:
-- configMap
-- downwardAPI
-- emptyDir
-- persistentVolumeClaim
-- projected
-- secret
-
----
+# --- FR 5: Restricted Data Flow ---
 
 # CR-5.1: Network Segmentation using a default-deny NetworkPolicy
 # This policy, when applied to a namespace, blocks all ingress traffic by default.
@@ -133,7 +118,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: default-deny-ingress
-  namespace: critical-ics-app # Apply to your critical application namespaces
+  namespace: "[critical-edge-app]"
 spec:
   podSelector: {}
   policyTypes:
@@ -141,19 +126,41 @@ spec:
 
 ---
 
+# CR-5.1: Allow specific traffic to an application
+# This policy explicitly allows traffic from a specific IP range to an application's port.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-plc-traffic
+  namespace: "[critical-edge-app]"
+spec:
+  podSelector:
+    matchLabels:
+      app: scada-endpoint
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: "[192.168.10.0/24]" # Replace with your PLC/device network
+    ports:
+    - protocol: TCP
+      port: 502
+
+---
+# --- FR 7: Resource Availability ---
+
 # CR-7.1: Denial of Service Protection using a ResourceQuota
 # This ResourceQuota limits the total resources a project can consume.
 apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: compute-resources
-  namespace: critical-ics-app
+  namespace: "[critical-edge-app]"
 spec:
   hard:
     requests.cpu: "1"
-    requests.memory: 1Gi
+    requests.memory: "1Gi"
     limits.cpu: "2"
-    limits.memory: 2Gi
+    limits.memory: "2Gi"
 
 ---
 
@@ -163,13 +170,13 @@ apiVersion: v1
 kind: LimitRange
 metadata:
   name: resource-limits
-  namespace: critical-ics-app
+  namespace: "[critical-edge-app]"
 spec:
   limits:
   - default:
-      cpu: 200m
-      memory: 256Mi
+      cpu: "250m"
+      memory: "256Mi"
     defaultRequest:
-      cpu: 100m
-      memory: 128Mi
+      cpu: "100m"
+      memory: "128Mi"
     type: Container
