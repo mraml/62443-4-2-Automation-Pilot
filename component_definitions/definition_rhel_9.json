@@ -1,0 +1,264 @@
+{
+  "component-definition": {
+    "uuid": "bba9a52c-3a86-4f93-8625-38c2c8f828a2",
+    "metadata": {
+      "title": "Red Hat Enterprise Linux 9 Component Definition for ISA/IEC 62443-4-2 SL-4",
+      "last-modified": "2025-08-29T14:35:00Z",
+      "version": "1.2.0",
+      "oscal-version": "1.0.0",
+      "parties": [
+        {
+          "uuid": "p1",
+          "type": "organization",
+          "name": "Red Hat, Inc."
+        }
+      ]
+    },
+    "components": [
+      {
+        "uuid": "c1-rhel9",
+        "type": "os",
+        "title": "Red Hat Enterprise Linux 9",
+        "description": "A secure, stable, and high-performance open source operating system, configured to meet ISA/IEC 62443-4-2 SL-4 for industrial control system environments.",
+        "responsible-parties": [
+          {
+            "role-id": "provider",
+            "party-uuids": ["p1"]
+          }
+        ],
+        "control-implementations": [
+          {
+            "uuid": "ci-1-rhel9",
+            "source": "#catalog-62443-4-2",
+            "description": "Implementation of ISA/IEC 62443-4-2 controls for an SL-4 baseline on a RHEL 9 host.",
+            "implemented-requirements": [
+              {
+                "uuid": "ir-rhel-1.1",
+                "control-id": "cr-1.1",
+                "description": "**Method:** Automated (Ansible/Puppet) & Procedural\n\nRHEL 9 integrates with external directory services (e.g., Active Directory, IdM) via the System Security Services Daemon (SSSD). The customer is responsible for configuring SSSD to connect to their central IdP. Local user authentication is managed by PAM.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ],
+                "links": [ { "href": "https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_authentication_and_authorization_in_rhel/index", "rel": "documentation" } ]
+              },
+              {
+                "uuid": "ir-rhel-1.1-re2",
+                "control-id": "cr-1.1_re.2",
+                "description": "**Method:** Procedural\n\nMulti-factor authentication (MFA) is enforced by configuring PAM modules to require a secondary factor, such as a smart card (via `pam_sss`) or a one-time password (OTP). This is often managed by the central IdP.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhel-1.2",
+                "control-id": "cr-1.2",
+                "description": "**Method:** Built-in\n\nSoftware processes are uniquely identified by the operating system using Process IDs (PIDs), User IDs (UIDs), Group IDs (GIDs), and mandatory access control contexts provided by SELinux. Systemd provides a clear identity for system services.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-rhel-1.3",
+                "control-id": "cr-1.3",
+                "description": "**Method:** Procedural\n\nThe full lifecycle of user account management is handled by the external IdP when using SSSD. For local accounts, standard tools like `useradd`, `usermod`, and `userdel` are used, typically managed via automation.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhel-1.5-re1",
+                "control-id": "cr-1.5_re.1",
+                "description": "**Method:** Procedural & Infrastructure\n\nHardware security for authenticators is achieved by using LUKS (Linux Unified Key Setup) full-disk encryption, which protects the `/etc/shadow` file at rest. Keys can be further protected by integrating with a TPM 2.0 chip for secure key release during boot.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-rhel-1.7",
+                "control-id": "cr-1.7",
+                "description": "**Method:** Automated (Ansible)\n\nPassword policies (complexity, length, history, lifetime) for local users are enforced by PAM modules (e.g., `pam_pwquality`). For domain users, these policies are inherited from the central IdP.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhel-1.8",
+                "control-id": "cr-1.8",
+                "description": "**Method:** Built-in\n\nRHEL 9 maintains a system-wide trust store for PKI certificates in `/etc/pki/ca-trust`. All system components and applications use this central store for validating certificate chains.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-rhel-1.10",
+                "control-id": "cr-1.10",
+                "description": "**Method:** Built-in\n\nStandard login services (e.g., `login`, `sshd`) are configured by default to provide generic failure messages that do not reveal whether a username is valid, protecting against user enumeration.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-rhel-1.11",
+                "control-id": "cr-1.11",
+                "description": "**Method:** Automated (Ansible)\n\nThe `pam_faillock` module is configured to lock user accounts after a configurable number of failed login attempts, mitigating brute-force attacks.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhel-1.12",
+                "control-id": "cr-1.12",
+                "description": "**Method:** Automated (Ansible)\n\nA system use notification banner is configured in the `/etc/issue.net` file, which is displayed by `sshd` to all users before authentication.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhel-2.1",
+                "control-id": "cr-2.1",
+                "description": "**Method:** Built-in & Automated\n\nAuthorization is enforced through a combination of traditional file permissions, Access Control Lists (ACLs), `sudo` for privileged command execution, and Polkit for fine-grained control over system services. SELinux provides mandatory access control to enforce the principle of least privilege.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhel-2.1-re4",
+                "control-id": "cr-2.1_re.4",
+                "description": "**Method:** Procedural\n\nA dual-approval mechanism is typically implemented procedurally by requiring all system changes to be executed through a centralized automation tool (like Ansible Automation Platform) that has a workflow approval feature.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhel-2.5",
+                "control-id": "cr-2.5",
+                "description": "**Method:** Automated (Ansible)\n\nAutomatic session locking for inactive graphical or console sessions can be configured. For remote SSH sessions, inactivity timeouts are configured in the `sshd_config` file.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhel-2.7",
+                "control-id": "cr-2.7",
+                "description": "**Method:** Automated (Ansible)\n\nThe number of concurrent sessions for a user is controlled by configuring limits in `/etc/security/limits.conf` and via the `sshd_config` `MaxSessions` parameter.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhel-2.8",
+                "control-id": "cr-2.8",
+                "description": "**Method:** Automated (Ansible) & Procedural\n\nThe `auditd` service provides detailed, kernel-level auditing of all security-relevant events. The customer is responsible for configuring `auditd` rules and forwarding logs to a central SIEM for long-term storage and analysis.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhel-2.9",
+                "control-id": "cr-2.9",
+                "description": "**Method:** Procedural (SIEM Integration)\n\nAudit log storage capacity and failure alerting are managed by the external SIEM solution.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhel-2.11-re2",
+                "control-id": "cr-2.11_re.2",
+                "description": "**Method:** Automated (Ansible)\n\nTime source integrity is ensured by configuring `chronyd` to use multiple trusted NTP sources and to require authenticated NTP where available.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhel-2.12",
+                "control-id": "cr-2.12",
+                "description": "**Method:** Built-in\n\nNon-repudiation is achieved via the `auditd` subsystem, which securely logs all system calls and actions, linking them to the specific UID that initiated them.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-rhel-3.1",
+                "control-id": "cr-3.1",
+                "description": "**Method:** Automated (Ansible)\n\nCommunication integrity is enforced by the host-based firewall (`firewalld`), which controls all incoming and outgoing traffic. System-wide crypto policies ensure strong cryptographic protocols are used for services like SSH.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhel-hdr-3.2",
+                "control-id": "hdr-3.2",
+                "description": "**Method:** Built-in & Procedural\n\nRHEL provides protection from malicious code through SELinux, which prevents processes from performing unauthorized actions. The customer is responsible for installing and managing a third-party anti-malware solution if required by their policies.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhel-hdr-2.4",
+                "control-id": "hdr-2.4",
+                "description": "**Method:** Built-in\n\nSELinux provides strong controls over the execution of any code, including mobile code scripts, by enforcing that processes can only execute from specific, approved file contexts.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-rhel-3.3",
+                "control-id": "cr-3.3",
+                "description": "**Method:** Automated (OpenSCAP)\n\nSecurity functionality can be verified using the OpenSCAP scanner to assess the system against a defined security baseline (e.g., CIS Benchmark, DISA STIG).",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhel-3.7",
+                "control-id": "cr-3.7",
+                "description": "**Method:** Built-in\n\nRHEL components and services follow standard Linux/POSIX practices for structured error handling, ensuring that applications fail securely without revealing sensitive information.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-rhel-4.1",
+                "control-id": "cr-4.1",
+                "description": "**Method:** Procedural\n\nConfidentiality of data at rest is provided by LUKS full-disk encryption, which must be configured during the operating system installation.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhel-4.2",
+                "control-id": "cr-4.2",
+                "description": "**Method:** Procedural\n\nThe customer is responsible for the procedural, secure erasure of data from physical media during hardware decommissioning using tools like `shred` or `blkdiscard`.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhel-4.3",
+                "control-id": "cr-4.3",
+                "description": "**Method:** Automated (Ansible)\n\nRHEL 9 can be switched into FIPS 140-2/3 validated mode, ensuring that all core cryptographic modules meet federal standards. This is configured via a command-line tool and can be automated.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhel-5.1",
+                "control-id": "cr-5.1",
+                "description": "**Method:** Automated (Ansible)\n\nNetwork segmentation is provided by `firewalld`, which uses zones to apply different security policies to different network interfaces, restricting data flow between them.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhel-6.1",
+                "control-id": "cr-6.1",
+                "description": "**Method:** Procedural (SIEM Integration)\n\nRead-only access to audit logs is granted to authorized personnel via the central SIEM. Direct access to local audit logs on the host is highly restricted.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhel-7.1",
+                "control-id": "cr-7.1",
+                "description": "**Method:** Automated (Ansible)\n\nDoS protection is enhanced by configuring systemd cgroups and slices to limit the CPU, memory, and I/O resources that can be consumed by specific services or users.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhel-7.3",
+                "control-id": "cr-7.3",
+                "description": "**Method:** Procedural\n\nThe customer is responsible for implementing and managing a backup solution to regularly back up system state and application data.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhel-7.4",
+                "control-id": "cr-7.4",
+                "description": "**Method:** Procedural\n\nThe customer is responsible for creating, documenting, and testing a disaster recovery plan to restore the system from backups.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhel-7.6",
+                "control-id": "cr-7.6",
+                "description": "**Method:** Procedural (Automation)\n\nThe system's security configuration is defined and managed as code using an automation tool like Ansible. The Ansible playbook serves as the machine-readable record of the intended configuration.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhel-7.7",
+                "control-id": "cr-7.7",
+                "description": "**Method:** Automated (Ansible)\n\nThe principle of least functionality is enforced by ensuring a minimal package set is installed and that unnecessary services are disabled.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhel-7.8",
+                "control-id": "cr-7.8",
+                "description": "**Method:** Built-in\n\nAn inventory of all installed software components and their versions is maintained by the `rpm` package manager database.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-rhel-gap-3.11",
+                "control-id": "cr-3.11",
+                "description": "**Method:** Infrastructure\n\nThis control is not satisfied by the RHEL 9 software. The customer is responsible for ensuring the physical security of the server hardware and data center.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-rhel-gap-3.14",
+                "control-id": "cr-3.14",
+                "description": "**Method:** Infrastructure\n\nThis control is satisfied by the underlying server hardware. The customer must enable UEFI Secure Boot in the server BIOS.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-rhel-gap-7.5",
+                "control-id": "cr-7.5",
+                "description": "**Method:** Infrastructure\n\nThis control is not satisfied by the RHEL 9 software. The customer is responsible for ensuring the data center facility has adequate emergency power.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
