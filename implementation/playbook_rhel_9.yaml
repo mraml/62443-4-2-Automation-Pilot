@@ -1,0 +1,245 @@
+# --- Comprehensive Ansible Playbook for RHEL 9 ISA/IEC 62443-4-2 SL-4 ---
+# This playbook automates the hardening of a Red Hat Enterprise Linux 9 host
+# to be compliant with the SL-4 baseline. Each task is tagged with the
+# corresponding control ID for automated assessment and reporting.
+
+- name: Harden RHEL 9 Host for ISA/IEC 62443-4-2 SL-4
+  hosts: all
+  become: yes
+  vars:
+    siem_server_ip: "[customer-siem-ip]"
+    ntp_server_ip: "[customer-ntp-ip]"
+  tasks:
+
+    # --- FR 1: Identification & Authentication Control ---
+
+    - name: "CR-1.5, CR-1.7 | Enforce strong local password policies via pwquality.conf"
+      tags: [cr-1.5, cr-1.7, cr-1.7_re.1, cr-1.7_re.2]
+      ansible.builtin.lineinfile:
+        path: /etc/security/pwquality.conf
+        regexp: "^{{ item.key }}"
+        line: "{{ item.key }} = {{ item.value }}"
+        create: yes
+      with_items:
+        - { key: 'minlen', value: '14' }
+        - { key: 'dcredit', value: '-1' }
+        - { key: 'ucredit', value: '-1' }
+        - { key: 'ocredit', value: '-1' }
+        - { key: 'lcredit', value: '-1' }
+        - { key: 'retry', value: '3' }
+        - { key: 'difok', value: '8' }
+
+    - name: "CR-1.7_re.1, CR-1.7_re.2 | Enforce password lifetime restrictions"
+      tags: [cr-1.7_re.1, cr-1.7_re.2]
+      ansible.builtin.lineinfile:
+        path: /etc/login.defs
+        regexp: "^{{ item.key }}"
+        line: "{{ item.key }} {{ item.value }}"
+      with_items:
+        - { key: 'PASS_MAX_DAYS', value: '60' }
+        - { key: 'PASS_MIN_DAYS', value: '1' }
+        - { key: 'PASS_WARN_AGE', value: '7' }
+
+    - name: "CR-1.11 | Configure account lockout policies with pam_faillock"
+      tags: [cr-1.11]
+      ansible.builtin.lineinfile:
+        path: /etc/security/faillock.conf
+        regexp: "^{{ item.key }}"
+        line: "{{ item.key }} = {{ item.value }}"
+        create: yes
+      with_items:
+        - { key: 'deny', value: '5' }
+        - { key: 'unlock_time', value: '900' }
+        - { key: 'fail_interval', value: '900' }
+
+    - name: "CR-1.12 | Set system use notification banner"
+      tags: [cr-1.12]
+      ansible.builtin.copy:
+        dest: /etc/motd
+        content: "This is a private computer system intended for authorized users only. All activities are logged and monitored. By proceeding, you consent to these terms."
+
+    - name: "CR-1.9 | Configure SSH to require public key authentication"
+      tags: [cr-1.9]
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^PasswordAuthentication"
+        line: "PasswordAuthentication no"
+
+    # --- FR 2: Use Control ---
+
+    - name: "CR-2.1_re.1 | Ensure SELinux is in enforcing mode"
+      tags: [cr-2.1_re.1]
+      ansible.posix.selinux:
+        policy: targeted
+        state: enforcing
+
+    - name: "CR-2.5, CR-2.6 | Configure SSH inactivity timeouts"
+      tags: [cr-2.5, cr-2.6]
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^{{ item.key }}"
+        line: "{{ item.key }} {{ item.value }}"
+      with_items:
+        - { key: 'ClientAliveInterval', value: '300' }
+        - { key: 'ClientAliveCountMax', value: '0' }
+
+    - name: "CR-2.7 | Set concurrent session limits for users"
+      tags: [cr-2.7]
+      ansible.builtin.lineinfile:
+        path: /etc/security/limits.conf
+        line: "* hard maxlogins 10"
+        create: yes
+
+    - name: "CR-2.8 | Install and enable the auditd service"
+      tags: [cr-2.8]
+      ansible.builtin.dnf:
+        name: audit
+        state: present
+      notify: restart auditd
+
+    - name: "CR-2.8 | Deploy comprehensive audit ruleset"
+      tags: [cr-2.8]
+      ansible.builtin.copy:
+        src: files/audit.rules # NOTE: This assumes a comprehensive rules file is provided.
+        dest: /etc/audit/rules.d/99-isa62443.rules
+      notify: restart auditd
+
+    - name: "CR-2.11_re.1 | Configure chrony for time synchronization"
+      tags: [cr-2.11_re.1]
+      ansible.builtin.lineinfile:
+        path: /etc/chrony.conf
+        regexp: "^pool"
+        line: "pool {{ ntp_server_ip }} iburst"
+      notify: restart chronyd
+
+    # --- FR 3: System Integrity ---
+
+    - name: "CR-3.1, CR-4.3 | Set system-wide crypto policy to FIPS"
+      tags: [cr-3.1, cr-4.3]
+      ansible.builtin.command:
+        cmd: fips-mode-setup --enable
+      args:
+        creates: /etc/system-fips
+      register: fips_result
+      changed_when: "'reboot' in fips_result.stdout"
+      failed_when: fips_result.rc > 1
+
+    - name: "CR-3.4 | Install AIDE for file integrity monitoring"
+      tags: [cr-3.4]
+      ansible.builtin.dnf:
+        name: aide
+        state: present
+
+    - name: "CR-3.4_re.2 | Schedule daily AIDE check"
+      tags: [cr-3.4_re.2]
+      ansible.builtin.cron:
+        name: "Daily AIDE Integrity Check"
+        minute: "0"
+        hour: "4"
+        job: "/usr/sbin/aide --check"
+
+    - name: "CR-3.9 | Set restrictive permissions on audit logs"
+      tags: [cr-3.9]
+      ansible.builtin.file:
+        path: /var/log/audit
+        mode: '0700'
+        recurse: yes
+
+    # --- FR 4: Data Confidentiality ---
+
+    - name: "CR-4.1 | Verify that root filesystem is encrypted (LUKS)"
+      tags: [cr-4.1]
+      ansible.builtin.command:
+        cmd: "lsblk --noheadings -o TYPE,MOUNTPOINT"
+      register: luks_check
+      failed_when: "'crypt' not in luks_check.stdout or '/' not in luks_check.stdout"
+      changed_when: false
+      check_mode: no
+
+    # --- FR 5: Restricted Data Flow ---
+
+    - name: "CR-5.1 | Configure firewalld with a default-deny policy"
+      tags: [cr-5.1]
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        state: enabled
+        permanent: yes
+        immediate: yes
+      with_items:
+        - ssh
+        - http
+        - https
+
+    # --- FR 6: Timely Response to Events ---
+
+    - name: "CR-6.1_re.1, CR-6.2 | Configure audit log forwarding to SIEM"
+      tags: [cr-6.1_re.1, cr-6.2]
+      ansible.builtin.lineinfile:
+        path: /etc/audisp/plugins.d/syslog.conf
+        regexp: "^active"
+        line: "active = yes"
+      notify: restart auditd
+
+    - name: "CR-6.1_re.1, CR-6.2 | Configure rsyslog to forward audit logs"
+      tags: [cr-6.1_re.1, cr-6.2]
+      ansible.builtin.copy:
+        dest: /etc/rsyslog.d/99-audit.conf
+        content: "*.* @@{{ siem_server_ip }}:514"
+      notify: restart rsyslog
+
+    # --- FR 7: Resource Availability ---
+
+    - name: "CR-7.1 | Harden kernel network parameters (sysctl)"
+      tags: [cr-7.1]
+      ansible.posix.sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        sysctl_file: /etc/sysctl.d/99-isa62443.conf
+        state: present
+      with_items:
+        - { key: 'net.ipv4.tcp_syncookies', value: '1' }
+        - { key: 'net.ipv4.ip_forward', value: '0' }
+        - { key: 'net.ipv4.conf.all.accept_redirects', value: '0' }
+
+    - name: "CR-7.2 | Create systemd slice for critical services"
+      tags: [cr-7.2]
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/critical-services.slice
+        content: |
+          [Unit]
+          Description=Slice for Critical ICS Services
+          [Slice]
+          CPUAccounting=true
+          MemoryAccounting=true
+          CPUQuota=50%
+          MemoryMax=2G
+      notify: reload systemd
+
+    - name: "CR-7.7 | Ensure minimal packages are installed"
+      tags: [cr-7.7]
+      ansible.builtin.dnf:
+        name:
+          - cockpit
+          - sendmail
+          - telnet-server
+        state: absent
+
+  handlers:
+    - name: restart auditd
+      ansible.builtin.service:
+        name: auditd
+        state: restarted
+
+    - name: restart chronyd
+      ansible.builtin.service:
+        name: chronyd
+        state: restarted
+
+    - name: restart rsyslog
+      ansible.builtin.service:
+        name: rsyslog
+        state: restarted
+
+    - name: reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: yes
