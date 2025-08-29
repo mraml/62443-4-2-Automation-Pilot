@@ -1,0 +1,127 @@
+{
+  "system-security-plan": {
+    "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5-ssp",
+    "metadata": {
+      "title": "System Security Plan for [System Name]",
+      "last-modified": "2025-08-28T21:20:00.000Z",
+      "version": "1.0",
+      "oscal-version": "1.0.0",
+      "role": [
+        {
+          "id": "system-owner",
+          "title": "System Owner"
+        }
+      ],
+      "party": [
+        {
+          "uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c",
+          "type": "organization",
+          "name": "[Customer Organization Name]"
+        }
+      ],
+      "responsible-party": [
+        {
+          "role-id": "system-owner",
+          "party-uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c"
+        }
+      ]
+    },
+    "import-profile": {
+      "href": "profiles/ocp4_oscal_profile.json",
+      "remarks": "This SSP uses the OpenShift 4 SL-4 Profile as its security baseline."
+    },
+    "system-characteristics": {
+      "system-ids": [
+        {
+          "id": "[UNIQUE-SYSTEM-IDENTIFIER]",
+          "identifier-type": "https://ietf.org/rfc/rfc4122"
+        }
+      ],
+      "system-name": "[System Name]",
+      "description": "[Provide a detailed description of the system, its purpose, and the industrial process it supports.]",
+      "security-sensitivity-level": "High",
+      "system-information": {
+        "information-types": [
+          {
+            "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-info-type-1",
+            "title": "Process Control Data",
+            "description": "Real-time and historical data related to the industrial control process.",
+            "confidentiality-impact": {
+              "base": "fips-199-high"
+            },
+            "integrity-impact": {
+              "base": "fips-199-high"
+            },
+            "availability-impact": {
+              "base": "fips-199-high"
+            }
+          }
+        ]
+      },
+      "status": {
+        "state": "operational"
+      }
+    },
+    "system-implementation": {
+      "remarks": "This section describes the components and inventory of the system.",
+      "components": [
+        {
+          "uuid": "e9f8a7b6-c5d4-4e3f-a92f-5d5d5d5d5d5d",
+          "type": "software",
+          "title": "Red Hat OpenShift Container Platform 4",
+          "description": "The primary container orchestration platform for the system.",
+          "status": { "state": "operational" },
+          "source": { "component-definition-uuid": "b9c8d7e6-f5a4-4b3c-8a2f-3b3b3b3b3b3b" }
+        }
+      ],
+      "inventory-items": [
+        {
+          "uuid": "inv-item-1",
+          "description": "The production OpenShift 4 cluster.",
+          "props": [
+            { "name": "hostname", "value": "ocp-cluster-prod.example.com" },
+            { "name": "asset-id", "value": "ICS-OCP-01" }
+          ],
+          "implemented-components": [
+            { "component-uuid": "e9f8a7b6-c5d4-4e3f-a92f-5d5d5d5d5d5d" }
+          ]
+        }
+      ]
+    },
+    "control-implementation": {
+      "description": "This section describes how the controls from the imported profile are implemented by the components in this system.",
+      "implemented-requirements": [
+        {
+          "control-id": "cr-1.1",
+          "description": "[System-Specific Implementation Details: Describe how this system's configuration of OpenShift meets this control. For example: 'The ocp-cluster-prod.example.com cluster is integrated with the corporate Azure AD tenant (tenant-id: ...). All users are required to authenticate using the 'ICS-MFA-Policy' which enforces FIDO2 security keys.']",
+          "by-components": [
+            { "component-uuid": "e9f8a7b6-c5d4-4e3f-a92f-5d5d5d5d5d5d" }
+          ]
+        },
+        {
+          "control-id": "cr-2.1",
+          "description": "[System-Specific Implementation Details: Describe how this system's RBAC is configured. For example: 'The cluster-admin role is restricted to the 'ICS-Platform-Admins' group in Azure AD. All application changes are managed via a GitOps workflow in the 'ics-gitops' repository, which requires peer review before merging to the main branch.']",
+          "by-components": [
+            { "component-uuid": "e9f8a7b6-c5d4-4e3f-a92f-5d5d5d5d5d5d" }
+          ]
+        },
+        {
+          "control-id": "cr-5.1",
+          "description": "[System-Specific Implementation Details: Describe how network segmentation is implemented. For example: 'The 'critical-ics-app' namespace has a default-deny ingress policy applied. It only allows ingress traffic from the openshift-ingress namespace on TCP port 8080.']",
+          "by-components": [
+            { "component-uuid": "e9f8a7b6-c5d4-4e3f-a92f-5d5d5d5d5d5d" }
+          ]
+        }
+      ]
+    },
+    "back-matter": {
+      "resources": [
+        {
+          "uuid": "b9c8d7e6-f5a4-4b3c-8a2f-3b3b3b3b3b3b",
+          "title": "Red Hat OpenShift 4 Component Definition",
+          "citation": { "text": "ocp4_component-definition.json" }
+        }
+      ]
+    }
+  }
+}
