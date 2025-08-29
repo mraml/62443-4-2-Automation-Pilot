@@ -10,7 +10,7 @@ This repository is organized to follow the OSCAL GRC lifecycle, from defining re
 ├── catalog/
 │   └── 62443-4-2_catalog.json        # OSCAL Control Catalog for the standard
 │
-├── components/
+├── component_definitions/
 │   ├── ocp4_component-definition.json    # OSCAL Component Definition for OpenShift 4
 │   ├── rhel9_component-definition.json   # OSCAL Component Definition for RHEL 9
 │   ├── aap_component-definition.json     # OSCAL Component Definition for AAP 2.5+
