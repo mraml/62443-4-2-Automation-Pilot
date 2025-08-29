@@ -1,0 +1,197 @@
+{
+  "component-definition": {
+    "uuid": "4e5a3b21-9c8c-4f5a-a8f6-3d4e5f6a7b8c",
+    "metadata": {
+      "title": "Red Hat Device Edge (RHDE) Component Definition for ISA/IEC 62443-4-2 SL-4",
+      "last-modified": "2025-08-29T14:40:00Z",
+      "version": "1.2.0",
+      "oscal-version": "1.0.0",
+      "parties": [
+        {
+          "uuid": "p1",
+          "type": "organization",
+          "name": "Red Hat, Inc."
+        }
+      ]
+    },
+    "components": [
+      {
+        "uuid": "c1-rhde",
+        "type": "software",
+        "title": "Red Hat Device Edge (RHEL for Edge + MicroShift)",
+        "description": "A comprehensive platform for edge computing, combining an immutable RHEL for Edge operating system with the lightweight MicroShift Kubernetes runtime, configured to meet ISA/IEC 62443-4-2 SL-4.",
+        "responsible-parties": [
+          {
+            "role-id": "provider",
+            "party-uuids": ["p1"]
+          }
+        ],
+        "control-implementations": [
+          {
+            "uuid": "ci-1-rhde",
+            "source": "#catalog-62443-4-2",
+            "description": "Implementation of ISA/IEC 62443-4-2 controls for an SL-4 baseline on a Red Hat Device Edge system.",
+            "implemented-requirements": [
+              {
+                "uuid": "ir-rhde-1.1",
+                "control-id": "cr-1.1",
+                "description": "**Method:** Automated (Image Build) & Procedural\n\nUser authentication on the RHEL for Edge host is typically managed via SSH public keys that are embedded into the immutable OS image during the build process. The customer is responsible for managing these keys. MicroShift itself does not expose a user-facing authentication endpoint; access is via `oc` using a kubeconfig file.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhde-1.1-re2",
+                "control-id": "cr-1.1_re.2",
+                "description": "**Method:** Procedural\n\nMFA is enforced procedurally by requiring all SSH keys used to access the host to be protected with a strong passphrase.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhde-1.2",
+                "control-id": "cr-1.2",
+                "description": "**Method:** Built-in\n\nOn the host, software processes are identified by PIDs, UIDs, and SELinux contexts. In MicroShift, containerized processes are identified by Kubernetes ServiceAccounts.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-rhde-1.3",
+                "control-id": "cr-1.3",
+                "description": "**Method:** Automated (Image Build)\n\nUser accounts are not managed on the device itself. Authorized users are defined in the OS image blueprint, and any changes require building and deploying a new image, providing a strong audit trail.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhde-1.5-re1",
+                "control-id": "cr-1.5_re.1",
+                "description": "**Method:** Procedural (Image Build) & Infrastructure\n\nHardware security for authenticators is achieved by enabling LUKS full-disk encryption with TPM 2.0 integration during the RHEL for Edge image build process.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-rhde-1.7",
+                "control-id": "cr-1.7",
+                "description": "**Method:** Not Applicable\n\nPassword-based authentication is typically disabled on edge devices in favor of SSH key-based authentication. This control is not applicable.",
+                "props": [ { "name": "implementation-method", "value": "Not Applicable" } ]
+              },
+              {
+                "uuid": "ir-rhde-1.8",
+                "control-id": "cr-1.8",
+                "description": "**Method:** Built-in\n\nThe RHEL for Edge host maintains a system-wide PKI trust store. MicroShift manages its own internal PKI for service-to-service communication.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-rhde-1.12",
+                "control-id": "cr-1.12",
+                "description": "**Method:** Automated (Image Build)\n\nA system use notification banner for SSH access is configured in the `/etc/issue.net` file within the RHEL for Edge image blueprint.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhde-2.1",
+                "control-id": "cr-2.1",
+                "description": "**Method:** Built-in & Automated (GitOps)\n\nOn the host, authorization is enforced by SELinux and `sudo`, configured in the image. In MicroShift, authorization is enforced by Kubernetes RBAC, with all roles and bindings defined in manifests and applied via a GitOps workflow.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhde-2.1-re4",
+                "control-id": "cr-2.1_re.4",
+                "description": "**Method:** Procedural (GitOps)\n\nA dual-approval mechanism is implemented by enforcing a mandatory peer review process for any change to the RHEL for Edge image blueprint or the MicroShift configuration manifests in their respective Git repositories.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhde-2.8",
+                "control-id": "cr-2.8",
+                "description": "**Method:** Automated (Image Build) & Procedural\n\nThe `auditd` service is configured in the base image to log all security-relevant events. The customer is responsible for configuring log forwarding (e.g., via Fluentd) to a central SIEM.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhde-2.11-re2",
+                "control-id": "cr-2.11_re.2",
+                "description": "**Method:** Automated (Image Build)\n\nTime source integrity is ensured by configuring `chronyd` in the base image to use multiple, trusted internal NTP servers.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhde-3.1",
+                "control-id": "cr-3.1",
+                "description": "**Method:** Automated (Image Build & GitOps)\n\nCommunication integrity is enforced by the host-based firewall (`firewalld`), configured in the image, and by Kubernetes `NetworkPolicy` objects applied to MicroShift via GitOps.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhde-hdr-3.2",
+                "control-id": "hdr-3.2",
+                "description": "**Method:** Built-in\n\nProtection from malicious code is a core feature of the architecture. The RHEL for Edge host has an immutable, read-only file system (`rpm-ostree`), which prevents unauthorized changes and malware persistence. SELinux provides an additional layer of mandatory access control.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-rhde-hdr-2.4",
+                "control-id": "hdr-2.4",
+                "description": "**Method:** Automated (GitOps)\n\nThe execution of unauthorized container images ('mobile code') is prevented by applying a policy to MicroShift (e.g., via Kyverno) that restricts image pulls to a trusted, internal registry.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhde-3.3",
+                "control-id": "cr-3.3",
+                "description": "**Method:** Procedural\n\nSecurity functionality is verified by remotely monitoring logs and events forwarded to the central SIEM and by periodically running remote vulnerability scans against the device.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhde-4.1",
+                "control-id": "cr-4.1",
+                "description": "**Method:** Procedural (Image Build)\n\nConfidentiality of data at rest on the host is provided by LUKS full-disk encryption, which is enabled when the RHEL for Edge image is built.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhde-4.3",
+                "control-id": "cr-4.3",
+                "description": "**Method:** Automated (Image Build)\n\nRHEL for Edge can be built with FIPS 140-2/3 mode enabled, ensuring all core cryptographic modules on the host meet federal standards.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhde-5.1",
+                "control-id": "cr-5.1",
+                "description": "**Method:** Automated (Image Build & GitOps)\n\nNetwork segmentation is provided by `firewalld` on the host and `NetworkPolicy` objects in MicroShift.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhde-7.1",
+                "control-id": "cr-7.1",
+                "description": "**Method:** Automated (GitOps)\n\nDoS protection for containerized applications is achieved by defining `ResourceQuota` and `LimitRange` objects in MicroShift to prevent resource exhaustion.",
+                "props": [ { "name": "implementation-method", "value": "Automated" } ]
+              },
+              {
+                "uuid": "ir-rhde-7.3",
+                "control-id": "cr-7.3",
+                "description": "**Method:** Procedural\n\nThe primary backup and recovery strategy for the host OS is to redeploy a new, known-good image. The customer is responsible for backing up persistent application data stored in MicroShift.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhde-7.7",
+                "control-id": "cr-7.7",
+                "description": "**Method:** Built-in\n\nThe principle of least functionality is inherent to the RHDE model. RHEL for Edge images are built with a minimal package set required to run MicroShift and the specific edge workload, reducing the attack surface.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-rhde-7.8",
+                "control-id": "cr-7.8",
+                "description": "**Method:** Built-in & Procedural\n\nThe host OS component inventory is managed by `rpm-ostree`. The MicroShift inventory is managed by the manifests in the GitOps repository.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-rhde-gap-3.11",
+                "control-id": "cr-3.11",
+                "description": "**Method:** Infrastructure\n\nThis control is not satisfied by the software. The customer is responsible for the physical security of the edge device, which may include hardened enclosures, locks, or secure mounting.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-rhde-gap-3.14",
+                "control-id": "cr-3.14",
+                "description": "**Method:** Infrastructure\n\nThis control is satisfied by the underlying hardware. The customer must enable UEFI Secure Boot in the device's BIOS/firmware.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-rhde-gap-7.5",
+                "control-id": "cr-7.5",
+                "description": "**Method:** Infrastructure\n\nThis control is not satisfied by the software. The customer is responsible for ensuring the edge device has a reliable power source, which may include a UPS or battery backup.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
