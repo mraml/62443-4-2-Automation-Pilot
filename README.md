@@ -28,12 +28,6 @@ This repository is organized to follow the OSCAL GRC lifecycle, from defining re
 │   ├── aap_assessment-plan.json          # OSCAL Assessment Plan for AAP 2.5+
 │   └── rhde_assessment-plan.json         # OSCAL Assessment Plan for Red Hat Device Edge
 │
-├── procedures/
-│   ├── ocp4_manual_guide.md              # Guide for manual controls in OpenShift 4
-│   ├── rhel9_manual_guide.md             # Guide for manual controls in RHEL 9
-│   ├── aap_manual_guide.md               # Guide for manual controls in AAP 2.5+
-│   └── rhde_manual_guide.md              # Guide for manual controls in Red Hat Device Edge
-│
 └── README.md                             # This file
 ```
 
