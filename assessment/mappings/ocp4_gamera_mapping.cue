@@ -20,11 +20,25 @@ mapping: {
 				constraints: { check_id: "serviceaccount_uids_unique", pass: true }
 			}]
 		},
+		"cr-1.3": { // Account Management
+			evidence: [{
+				type:        "external_evidence"
+				description: "Requires evidence from the external IdP (e.g., an audit log or report) showing that the full lifecycle of user accounts is managed according to policy."
+				constraints: { check_id: "idp_account_lifecycle_managed", pass: true }
+			}]
+		},
 		"cr-1.5_re.1": { // Hardware Security for Authenticators
 			evidence: [{
 				type:        "openshift_runtime_evidence"
 				description: "Verifies that etcd encryption is enabled, leveraging the underlying host's TPM for key protection if configured."
 				constraints: { check_id: "etcd_encryption_enabled", pass: true }
+			}]
+		},
+		"cr-1.7_re.2": { // Strength of Password-based Authentication
+			evidence: [{
+				type:        "external_evidence"
+				description: "Requires evidence from the external IdP (e.g., a configuration export) showing that password complexity, history, and lifetime policies are enforced."
+				constraints: { check_id: "idp_password_policy_enforced", pass: true }
 			}]
 		},
 		"cr-1.8": { // PKI Certificates
@@ -64,6 +78,13 @@ mapping: {
 				constraints: { check_id: "console_inactivity_timeout_set", pass: true }
 			}]
 		},
+		"cr-2.7": { // Concurrent Session Control
+			evidence: [{
+				type:        "external_evidence"
+				description: "Requires evidence from the external IdP showing that concurrent session limits are enforced."
+				constraints: { check_id: "idp_concurrent_session_limit", pass: true }
+			}]
+		},
 		"cr-2.8": { // Auditable Events
 			evidence: [{
 				type:        "openshift_runtime_evidence"
@@ -76,6 +97,13 @@ mapping: {
 				type:        "openshift_runtime_evidence"
 				description: "Verifies that MachineConfig objects are in place to configure chronyd on all nodes to point to a trusted NTP source."
 				constraints: { check_id: "node_ntp_configured", pass: true }
+			}]
+		},
+		"cr-2.12_re.1": { // Non-repudiation
+			evidence: [{
+				type:        "openshift_runtime_evidence"
+				description: "Verifies that the audit policy profile is configured to log metadata and request bodies to enable non-repudiation."
+				constraints: { check_id: "audit_policy_non_repudiation", pass: true }
 			}]
 		},
 		"sar-2.4_re.1": { // Mobile Code & Authenticity Check
@@ -108,6 +136,13 @@ mapping: {
 				type:        "openshift_runtime_evidence"
 				description: "Verifies that a FileIntegrity object is configured to monitor cluster nodes and alert on changes."
 				constraints: { check_id: "file_integrity_operator_configured", pass: true }
+			}]
+		},
+		"cr-3.8": { // Session Integrity
+			evidence: [{
+				type:        "openshift_runtime_evidence"
+				description: "Verifies that OIDC is used, which provides session integrity through standard protocols."
+				constraints: { check_id: "oauth_oidc_mfa_configured", pass: true } // Same check as 1.1, as OIDC provides this.
 			}]
 		},
 		"cr-3.9_re.1": { // Protection of Audit Info (Write-Once Media)
@@ -144,7 +179,14 @@ mapping: {
 		},
 
 		// --- FR 6: Timely Response to Events ---
-		"cr-6.2": {
+		"cr-6.1_re.1": { // Programmatic Audit Log Access
+			evidence: [{
+				type:        "openshift_runtime_evidence"
+				description: "Verifies the ClusterLogForwarder is configured, providing programmatic access to logs for the SIEM."
+				constraints: { check_id: "log_forwarding_configured", pass: true }
+			}]
+		},
+		"cr-6.2": { // Continuous Monitoring
 			evidence: [{
 				type:        "openshift_runtime_evidence"
 				description: "Verifies that the ClusterLogForwarder custom resource is configured to send all log types to an external SIEM."
@@ -165,6 +207,13 @@ mapping: {
 				type:        "openshift_runtime_evidence"
 				description: "Verifies that critical cluster operators have guaranteed resource requests and limits set."
 				constraints: { check_id: "critical_operator_resources_set", pass: true }
+			}]
+		},
+		"cr-7.3_re.1": { // Backup and Integrity Verification
+			evidence: [{
+				type:        "openshift_runtime_evidence"
+				description: "Verifies that the OpenShift API for Data Protection (OADP) operator is installed and configured."
+				constraints: { check_id: "oadp_operator_configured", pass: true }
 			}]
 		},
 		"cr-7.7": {
