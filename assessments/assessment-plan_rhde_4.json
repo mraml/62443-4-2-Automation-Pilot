@@ -1,0 +1,158 @@
+{
+  "assessment-plan": {
+    "uuid": "f2b3c4d5-e6f7-4a89-b0c1-d2e3f4a5b6c7",
+    "metadata": {
+      "title": "Comprehensive Assessment Plan for Red Hat Device Edge - ISA/IEC 62443-4-2 SL-4",
+      "last-modified": "2025-08-29T15:30:00Z",
+      "version": "1.0.0",
+      "oscal-version": "1.0.0",
+      "parties": [
+        {
+          "uuid": "p1",
+          "type": "organization",
+          "name": "Red Hat, Inc."
+        }
+      ]
+    },
+    "import-ssp": {
+      "href": "rhde-ssp.json"
+    },
+    "reviewed-controls": {
+      "control-selections": [
+        {
+          "description": "All applicable controls for an SL-4 baseline for Red Hat Device Edge, covering SL-1 through SL-4.",
+          "include-all": false,
+          "include-controls": [
+            { "control-id": "cr-1.1" }, { "control-id": "cr-1.1_re.1" }, { "control-id": "cr-1.1_re.2" },
+            { "control-id": "cr-1.2" }, { "control-id": "cr-1.2_re.1" }, { "control-id": "cr-1.3" },
+            { "control-id": "cr-1.4" }, { "control-id": "cr-1.5" }, { "control-id": "cr-1.5_re.1" },
+            { "control-id": "cr-1.7" }, { "control-id": "cr-1.7_re.1" }, { "control-id": "cr-1.7_re.2" },
+            { "control-id": "cr-1.8" }, { "control-id": "cr-1.9" }, { "control-id": "cr-1.9_re.1" },
+            { "control-id": "cr-1.10" }, { "control-id": "cr-1.11" }, { "control-id": "cr-1.12" },
+            { "control-id": "cr-1.14" }, { "control-id": "cr-1.14_re.1" },
+            { "control-id": "cr-2.1" }, { "control-id": "cr-2.1_re.1" }, { "control-id": "cr-2.1_re.2" },
+            { "control-id": "cr-2.1_re.3" }, { "control-id": "cr-2.1_re.4" }, { "control-id": "cr-2.2" },
+            { "control-id": "sar-2.4" }, { "control-id": "sar-2.4_re.1" }, { "control-id": "cr-2.5" },
+            { "control-id": "cr-2.6" }, { "control-id": "cr-2.7" }, { "control-id": "cr-2.8" },
+            { "control-id": "cr-2.9" }, { "control-id": "cr-2.9_re.1" }, { "control-id": "cr-2.10" },
+            { "control-id": "cr-2.11" }, { "control-id": "cr-2.11_re.1" }, { "control-id": "cr-2.11_re.2" },
+            { "control-id": "cr-2.12" }, { "control-id": "cr-2.12_re.1" },
+            { "control-id": "cr-3.1" }, { "control-id": "cr-3.1_re.1" }, { "control-id": "sar-3.2" },
+            { "control-id": "cr-3.3" }, { "control-id": "cr-3.3_re.1" }, { "control-id": "cr-3.4" },
+            { "control-id": "cr-3.4_re.1" }, { "control-id": "cr-3.4_re.2" }, { "control-id": "cr-3.7" },
+            { "control-id": "cr-3.8" }, { "control-id": "cr-3.9" }, { "control-id": "cr-3.9_re.1" },
+            { "control-id": "cr-4.1" }, { "control-id": "cr-4.2" }, { "control-id": "cr-4.2_re.1" },
+            { "control-id": "cr-4.2_re.2" }, { "control-id": "cr-4.3" },
+            { "control-id": "cr-5.1" },
+            { "control-id": "cr-6.1" }, { "control-id": "cr-6.1_re.1" }, { "control-id": "cr-6.2" },
+            { "control-id": "cr-7.1" }, { "control-id": "cr-7.1_re.1" }, { "control-id": "cr-7.2" },
+            { "control-id": "cr-7.3" }, { "control-id": "cr-7.3_re.1" }, { "control-id": "cr-7.4" },
+            { "control-id": "cr-7.6" }, { "control-id": "cr-7.6_re.1" }, { "control-id": "cr-7.7" },
+            { "control-id": "cr-7.8" },
+            { "control-id": "cr-3.11" }, { "control-id": "cr-3.14" }, { "control-id": "cr-7.5" }
+          ]
+        }
+      ]
+    },
+    "assessment-activities": [
+      {
+        "uuid": "activity-cr-1.1",
+        "title": "Assessment for CR-1.1 & RE(1,2): Human User Identification, Uniqueness, and MFA",
+        "description": "Assesses the procedural requirement for remote user access to the edge device fleet to be managed through a central, MFA-enabled Identity Provider.",
+        "steps": [
+          { "uuid": "step-cr-1.1-i", "description": "**Interview:** Interview the central IT/Security team to confirm that all SSH access to the edge device fleet is managed through a centralized Identity Provider (IdP) that enforces unique user identifiers and MFA.", "props": [ { "name": "method", "value": "Interview" } ] },
+          { "uuid": "step-cr-1.1-t", "description": "**Test:** Attempt to SSH into a provisioned edge device using an account not managed by the central IdP. Verify the connection is refused. Attempt to SSH with a valid account and verify an MFA challenge is presented.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-1.2",
+        "title": "Assessment for CR-1.2 & RE(1): Software Process and Device Identification",
+        "description": "Assesses how software processes (pods) are uniquely identified by MicroShift.",
+        "steps": [
+          { "uuid": "step-cr-1.2-e", "description": "**Examine:** Inspect the manifests in the GitOps repository that define the application workloads. For a sample application, verify it is configured to use a unique, non-default ServiceAccount.", "props": [ { "name": "method", "value": "Examine" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-1.5",
+        "title": "Assessment for CR-1.5 & RE(1): Authenticator Management and Hardware Security",
+        "description": "Assesses how the RHEL for Edge host protects authenticators using disk encryption, optionally backed by a TPM.",
+        "steps": [
+          { "uuid": "step-cr-1.5-e", "description": "**Examine:** Review the Image Builder blueprint used to create the RHEL for Edge OS image. Verify that it is configured to use LUKS full-disk encryption, optionally bound to a TPMv2 device.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-1.5-t", "description": "**Test:** On a provisioned edge device, run `lsblk` and verify that the root filesystem is mounted on a `luks` device.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+       {
+        "uuid": "activity-cr-2.1",
+        "title": "Assessment for CR-2.1 & RE(1,2,3,4): Authorization and Dual Approval",
+        "description": "Assesses MicroShift RBAC and the procedural dual-approval workflow for edge deployments.",
+        "steps": [
+          { "uuid": "step-cr-2.1-e", "description": "**Examine:** Review the `RoleBinding` and `ClusterRoleBinding` manifests in the GitOps repository to verify permissions are granted based on ServiceAccounts.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-2.1-re4-e", "description": "**Examine:** Review the branch protection rules in the Git repository to ensure merges to the main branch require peer review from a designated approvals team.", "props": [ { "name": "method", "value": "Examine" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-2.8",
+        "title": "Assessment for CR-2.8: Auditable Events",
+        "description": "Assesses the host's audit logging configuration and forwarding to a central SIEM.",
+        "steps": [
+          { "uuid": "step-cr-2.8-e", "description": "**Examine:** Review the Image Builder blueprint to verify that the `auditd` service is enabled and configured with the appropriate rules. Examine the configuration of the log forwarding agent (e.g., Fluentd) to verify it sends logs to the central SIEM.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-2.8-t", "description": "**Test:** Trigger a failed SSH login attempt to an edge device. Search the central SIEM for the corresponding `sshd` audit log event and verify the source IP, timestamp, and user are correctly recorded.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-3.4",
+        "title": "Assessment for CR-3.4 & RE(1,2): Software and Information Integrity",
+        "description": "Assesses the integrity of the immutable OS and runtime configuration.",
+        "steps": [
+          { "uuid": "step-cr-3.4-e", "description": "**Examine:** Review the Image Builder blueprint to verify the inclusion of AIDE for boot-time integrity checking.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-3.4-t", "description": "**Test:** On a running edge device, run `rpm-ostree status` to verify there are no unauthorized local changes. Attempt to install a package using `dnf` and verify the operation is blocked by the immutable file system.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-4.3",
+        "title": "Assessment for CR-4.3: Use of Cryptography (FIPS)",
+        "description": "Assesses if the RHEL for Edge OS image is built with FIPS mode enabled.",
+        "steps": [
+          { "uuid": "step-cr-4.3-e", "description": "**Examine:** Review the Image Builder blueprint to verify that the `fips-mode-setup --enable` command is part of the image build process.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-4.3-t", "description": "**Test:** On a provisioned edge device, run `fips-mode-setup --check` and verify the output indicates FIPS mode is enabled.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-sar-2.4",
+        "title": "Assessment for SAR-2.4 & RE(1): Mobile Code (Image Policy)",
+        "description": "Assesses enforcement of trusted container image policies within MicroShift.",
+        "steps": [
+          { "uuid": "step-sar-2.4-e", "description": "**Examine:** Review the MicroShift configuration files in the GitOps repository to verify that image signature verification is enabled and points to the organization's trusted container registry.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-sar-2.4-t", "description": "**Test:** Attempt to deploy a pod on an edge device using an unsigned container image or an image from an untrusted registry. Verify that MicroShift's CRI-O runtime rejects the image and the pod fails to start.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-5.1",
+        "title": "Assessment for CR-5.1: Network Segmentation",
+        "description": "Assesses the implementation of host-level firewalls and network policies.",
+        "steps": [
+           { "uuid": "step-cr-5.1-e", "description": "**Examine:** Review the Image Builder blueprint to verify that `firewalld` is enabled and configured with a default-deny policy. Examine the `NetworkPolicy` manifests in the GitOps repository for MicroShift workloads.", "props": [ { "name": "method", "value": "Examine" } ] },
+           { "uuid": "step-cr-5.1-t", "description": "**Test:** From an external machine, attempt to connect to a non-essential port on the edge device and verify the connection is blocked by `firewalld`. From a test pod, attempt to connect to a service in another namespace and verify the `NetworkPolicy` blocks the traffic.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-7.7",
+        "title": "Assessment for CR-7.7: Least Functionality",
+        "description": "Assesses the minimal package set of the RHEL for Edge OS image.",
+        "steps": [
+          { "uuid": "step-cr-7.7-e", "description": "**Examine:** Review the package list in the Image Builder blueprint. Verify that it only includes essential packages required for the OS and MicroShift to function, and that no unnecessary services (e.g., `cockpit`, `sendmail`) are included.", "props": [ { "name": "method", "value": "Examine" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-gaps",
+        "title": "Assessment of Compensating Controls",
+        "description": "Assesses compensating controls for requirements not met by the software/OS.",
+        "steps": [
+          { "uuid": "step-cr-3.11-i", "description": "**Interview:** Interview the physical security team to discuss the measures in place for protecting devices in potentially insecure edge locations (e.g., locked, tamper-evident enclosures).", "props": [ { "name": "method", "value": "Interview" } ] },
+          { "uuid": "step-cr-3.14-i", "description": "**Interview:** Interview an infrastructure engineer to confirm that UEFI Secure Boot is enabled in the BIOS for all edge device hardware.", "props": [ { "name": "method", "value": "Interview" } ] },
+          { "uuid": "step-cr-7.5-i", "description": "**Interview:** Interview the facilities team to discuss the power resiliency measures for critical edge locations (e.g., battery backups, UPS).", "props": [ { "name": "method", "value": "Interview" } ] }
+        ]
+      }
+    ]
+  }
+}
