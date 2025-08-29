@@ -1,258 +1,144 @@
 {
   "assessment-plan": {
-    "uuid": "b3c4d5e6-f7a8-4b9c-8d0e-a1b2c3d4e5f6",
+    "uuid": "a3b4c5d6-e7f8-4a9b-b0c1-d2e3f4a5b6c7",
     "metadata": {
-      "title": "Assessment Plan for Ansible Automation Platform 2.5+ based on ISA/IEC 62443-4-2 (SL-4 Target)",
-      "last-modified": "2025-08-28T20:50:00.000Z",
-      "version": "1.0",
+      "title": "Comprehensive Assessment Plan for Ansible Automation Platform 2.5+ - ISA/IEC 62443-4-2 SL-4",
+      "last-modified": "2025-08-29T15:35:00Z",
+      "version": "1.0.0",
       "oscal-version": "1.0.0",
-      "role": [
+      "parties": [
         {
-          "id": "assessor",
-          "title": "Security Assessor"
-        },
-        {
-          "id": "system-owner",
-          "title": "System Owner"
-        }
-      ],
-      "party": [
-        {
-          "uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c",
+          "uuid": "p1",
           "type": "organization",
-          "name": "Example Corporation"
-        }
-      ],
-      "responsible-party": [
-        {
-          "role-id": "assessor",
-          "party-uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c"
+          "name": "Red Hat, Inc."
         }
       ]
     },
     "import-ssp": {
-      "href": "#placeholder-aap-ssp-uuid"
-    },
-    "local-definitions": {
-      "components": [
-        {
-          "uuid": "c6d7e8f9-a0b1-4c2d-8e3f-a4b5c6d7e8f9",
-          "type": "software",
-          "title": "Ansible Automation Platform 2.5+",
-          "description": "The target of this assessment is the production Ansible Automation Platform instance used for industrial control system automation."
-        }
-      ],
-      "assessment-platforms": [
-        {
-          "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5",
-          "title": "Assessor's Workstation",
-          "uses-components": []
-        }
-      ]
-    },
-    "terms-and-conditions": {
-      "parts": [
-        {
-          "name": "rules-of-engagement",
-          "prose": "This assessment will be conducted during normal business hours. No disruptive testing will be performed without prior written consent from the system owner."
-        }
-      ]
+      "href": "aap-ssp.json"
     },
     "reviewed-controls": {
       "control-selections": [
         {
-          "description": "All controls implemented by the Ansible Automation Platform component as defined in the component definition.",
+          "description": "All applicable controls for an SL-4 baseline for Ansible Automation Platform, covering SL-1 through SL-4.",
           "include-all": false,
           "include-controls": [
-            { "control-id": "cr-1.1" },
-            { "control-id": "cr-1.2" },
-            { "control-id": "cr-1.3" },
-            { "control-id": "cr-1.4" },
-            { "control-id": "cr-1.5" },
-            { "control-id": "cr-1.7" },
-            { "control-id": "cr-1.8" },
-            { "control-id": "cr-1.9" },
-            { "control-id": "cr-1.10" },
-            { "control-id": "cr-1.11" },
-            { "control-id": "cr-1.12" },
-            { "control-id": "cr-1.14" },
-            { "control-id": "cr-2.1" },
-            { "control-id": "cr-2.2" },
-            { "control-id": "sar-2.4" },
-            { "control-id": "cr-2.5" },
-            { "control-id": "cr-2.6" },
-            { "control-id": "cr-2.7" },
-            { "control-id": "cr-2.8" },
-            { "control-id": "cr-2.9" },
-            { "control-id": "cr-2.10" },
-            { "control-id": "cr-2.11" },
-            { "control-id": "cr-2.12" },
-            { "control-id": "cr-3.1" },
-            { "control-id": "sar-3.2" },
-            { "control-id": "cr-3.3" },
-            { "control-id": "cr-3.4" },
-            { "control-id": "cr-3.5" },
-            { "control-id": "cr-3.6" },
-            { "control-id": "cr-3.7" },
-            { "control-id": "cr-3.8" },
-            { "control-id": "cr-3.9" },
-            { "control-id": "cr-4.1" },
-            { "control-id": "cr-4.2" },
-            { "control-id": "cr-4.3" },
+            { "control-id": "cr-1.1" }, { "control-id": "cr-1.1_re.1" }, { "control-id": "cr-1.1_re.2" },
+            { "control-id": "cr-1.2" }, { "control-id": "cr-1.2_re.1" }, { "control-id": "cr-1.3" },
+            { "control-id": "cr-1.4" }, { "control-id": "cr-1.5" }, { "control-id": "cr-1.5_re.1" },
+            { "control-id": "cr-1.7" }, { "control-id": "cr-1.7_re.1" }, { "control-id": "cr-1.7_re.2" },
+            { "control-id": "cr-1.8" }, { "control-id": "cr-1.9" }, { "control-id": "cr-1.9_re.1" },
+            { "control-id": "cr-1.10" }, { "control-id": "cr-1.11" }, { "control-id": "cr-1.12" },
+            { "control-id": "cr-1.14" }, { "control-id": "cr-1.14_re.1" },
+            { "control-id": "cr-2.1" }, { "control-id": "cr-2.1_re.1" }, { "control-id": "cr-2.1_re.2" },
+            { "control-id": "cr-2.1_re.3" }, { "control-id": "cr-2.1_re.4" }, { "control-id": "cr-2.2" },
+            { "control-id": "sar-2.4" }, { "control-id": "sar-2.4_re.1" }, { "control-id": "cr-2.5" },
+            { "control-id": "cr-2.6" }, { "control-id": "cr-2.7" }, { "control-id": "cr-2.8" },
+            { "control-id": "cr-2.9" }, { "control-id": "cr-2.9_re.1" }, { "control-id": "cr-2.10" },
+            { "control-id": "cr-2.11" }, { "control-id": "cr-2.11_re.1" }, { "control-id": "cr-2.11_re.2" },
+            { "control-id": "cr-2.12" }, { "control-id": "cr-2.12_re.1" },
+            { "control-id": "cr-3.1" }, { "control-id": "cr-3.1_re.1" }, { "control-id": "sar-3.2" },
+            { "control-id": "cr-3.3" }, { "control-id": "cr-3.3_re.1" }, { "control-id": "cr-3.4" },
+            { "control-id": "cr-3.4_re.1" }, { "control-id": "cr-3.4_re.2" }, { "control-id": "cr-3.7" },
+            { "control-id": "cr-3.8" }, { "control-id": "cr-3.9" }, { "control-id": "cr-3.9_re.1" },
+            { "control-id": "cr-4.1" }, { "control-id": "cr-4.2" }, { "control-id": "cr-4.2_re.1" },
+            { "control-id": "cr-4.2_re.2" }, { "control-id": "cr-4.3" },
             { "control-id": "cr-5.1" },
-            { "control-id": "cr-6.1" },
-            { "control-id": "cr-6.2" },
-            { "control-id": "cr-7.1" },
-            { "control-id": "cr-7.2" },
-            { "control-id": "cr-7.3" },
-            { "control-id": "cr-7.4" },
-            { "control-id": "cr-7.6" },
-            { "control-id": "cr-7.7" },
-            { "control-id": "cr-7.8" }
+            { "control-id": "cr-6.1" }, { "control-id": "cr-6.1_re.1" }, { "control-id": "cr-6.2" },
+            { "control-id": "cr-7.1" }, { "control-id": "cr-7.1_re.1" }, { "control-id": "cr-7.2" },
+            { "control-id": "cr-7.3" }, { "control-id": "cr-7.3_re.1" }, { "control-id": "cr-7.4" },
+            { "control-id": "cr-7.6" }, { "control-id": "cr-7.6_re.1" }, { "control-id": "cr-7.7" },
+            { "control-id": "cr-7.8" },
+            { "control-id": "cr-3.11" }, { "control-id": "cr-3.14" }, { "control-id": "cr-7.5" }
           ]
         }
       ]
     },
-    "assessment-subjects": [
+    "assessment-activities": [
       {
-        "subject-uuid": "c6d7e8f9-a0b1-4c2d-8e3f-a4b5c6d7e8f9",
-        "type": "component",
-        "description": "The Ansible Automation Platform instance."
+        "uuid": "activity-cr-1.1",
+        "title": "Assessment for CR-1.1 & RE(1,2): Human User Identification, Uniqueness, and MFA",
+        "description": "Assesses AAP's integration with an external Identity Provider (IdP) to enforce unique, multi-factor authentication for all human users.",
+        "steps": [
+          { "uuid": "step-cr-1.1-e", "description": "**Examine:** In the AAP UI, navigate to Settings > Authentication and verify the SAML or OIDC provider configuration points to the documented external IdP.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-1.1-i", "description": "**Interview:** Interview the IdP administrator to confirm that MFA policies are enforced for the user groups mapped to AAP roles.", "props": [ { "name": "method", "value": "Interview" } ] },
+          { "uuid": "step-cr-1.1-t", "description": "**Test:** Attempt to log in to the AAP web UI with a test user. Verify redirection to the external IdP and the presentation of an MFA challenge.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-1.5",
+        "title": "Assessment for CR-1.5 & RE(1): Authenticator Management and Hardware Security",
+        "description": "Assesses how AAP manages credentials by integrating with an external credential vault.",
+        "steps": [
+          { "uuid": "step-cr-1.5-e", "description": "**Examine:** In the AAP UI, navigate to Resources > Credentials and review the configuration of a credential that uses an external vault (e.g., HashiCorp Vault). Verify the lookup is correctly configured.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-1.5-i", "description": "**Interview:** Interview the administrator of the external vault to discuss the security measures in place, such as HSM-backing for the master key and strict access policies.", "props": [ { "name": "method", "value": "Interview" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-2.1",
+        "title": "Assessment for CR-2.1 & RE(1,2,3,4): Authorization and Dual Approval",
+        "description": "Assesses AAP's RBAC, least privilege, and Workflow Approval features.",
+        "steps": [
+          { "uuid": "step-cr-2.1-e", "description": "**Examine:** In the AAP UI, navigate to Access > Teams and Access > Roles. Review the permissions assigned to a sample team to verify they adhere to the principle of least privilege.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-2.1-re4-e", "description": "**Examine:** Review the structure of a critical Workflow Template in the AAP UI. Verify that it contains a Workflow Approval node that is configured to notify a separate approvals team.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-2.1-t", "description": "**Test:** Log in as a user with limited permissions. Attempt to perform an administrative action (e.g., creating a new Organization). Verify the action is blocked.", "props": [ { "name": "method", "value": "Test" } ] },
+          { "uuid": "step-cr-2.1-re4-t", "description": "**Test:** Launch the critical Workflow Template. Verify that it pauses at the approval step. Log in as a member of the approvals team and approve the workflow. Verify the workflow then continues.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-2.8",
+        "title": "Assessment for CR-2.8: Auditable Events",
+        "description": "Assesses AAP's activity stream and log forwarding from the host.",
+        "steps": [
+          { "uuid": "step-cr-2.8-e", "description": "**Examine:** In the AAP UI, navigate to Settings > Logging. Verify that log aggregation is enabled and configured to forward all events to the central SIEM.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-2.8-t", "description": "**Test:** Perform a notable action in the AAP UI (e.g., create a new user). Search the central SIEM for the corresponding event from the AAP activity stream and verify the user, timestamp, and action are correctly recorded.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-3.4",
+        "title": "Assessment for CR-3.4 & RE(1,2): Software and Information Integrity",
+        "description": "Assesses the integrity of the underlying RHEL host.",
+        "steps": [
+          { "uuid": "step-cr-3.4-e", "description": "**Examine:** On the RHEL host, review the `aide.conf` file to verify it is configured to monitor critical system files related to the AAP installation.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-3.4-t", "description": "**Test:** On the RHEL host, manually modify a monitored file. Run `aide --check` and verify the change is detected. Check the SIEM for the corresponding alert.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-4.3",
+        "title": "Assessment for CR-4.3: Use of Cryptography (FIPS)",
+        "description": "Assesses if FIPS mode is enabled on the underlying RHEL host.",
+        "steps": [
+          { "uuid": "step-cr-4.3-t", "description": "**Test:** On the RHEL host, run `fips-mode-setup --check` and verify the output indicates FIPS mode is enabled.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-5.1",
+        "title": "Assessment for CR-5.1: Network Segmentation",
+        "description": "Assesses the firewall configuration on the underlying RHEL host.",
+        "steps": [
+           { "uuid": "step-cr-5.1-e", "description": "**Examine:** On the RHEL host, run `firewall-cmd --list-all` to verify that the active firewall rules only permit traffic on the ports required for AAP to function.", "props": [ { "name": "method", "value": "Examine" } ] },
+           { "uuid": "step-cr-5.1-t", "description": "**Test:** From an external machine, attempt to connect to a non-essential port on the AAP host and verify the connection is blocked by `firewalld`.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-7.3",
+        "title": "Assessment for CR-7.3 & RE(1): Control System Backup",
+        "description": "Assesses the backup procedures for the AAP application and its data.",
+        "steps": [
+          { "uuid": "step-cr-7.3-e", "description": "**Examine:** Review the documented backup procedure for AAP, including the Postgres database and application secrets.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-7.3-i", "description": "**Interview:** Interview the system administrator to confirm that backups are performed regularly and stored in a secure, off-site location. Discuss the procedure for verifying backup integrity.", "props": [ { "name": "method", "value": "Interview" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-gaps",
+        "title": "Assessment of Compensating Controls",
+        "description": "Assesses compensating controls for requirements not met by the software.",
+        "steps": [
+          { "uuid": "step-cr-3.11-i", "description": "**Interview:** Interview the data center manager to discuss physical security measures (cages, surveillance).", "props": [ { "name": "method", "value": "Interview" } ] },
+          { "uuid": "step-cr-3.14-i", "description": "**Interview:** Interview an infrastructure engineer to confirm that UEFI Secure Boot is enabled in the BIOS for the host server.", "props": [ { "name": "method", "value": "Interview" } ] },
+          { "uuid": "step-cr-7.5-t", "description": "**Test:** Conduct a controlled test of the data center's UPS and generator systems.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
       }
-    ],
-    "assessment-assets": {
-      "description": "The assets used to perform this assessment.",
-      "assessment-platforms": [
-        {
-          "assessment-platform-uuid": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5"
-        }
-      ]
-    },
-    "tasks": [
-      {
-        "uuid": "task-aap-fr1", "type": "assessment-action", "title": "Assess FR 1: Identification and Authentication Control",
-        "associated-activities": [ {"activity-uuid": "activity-aap-1.1"}, {"activity-uuid": "activity-aap-1.5"}, {"activity-uuid": "activity-aap-1.12"} ]
-      },
-      {
-        "uuid": "task-aap-fr2", "type": "assessment-action", "title": "Assess FR 2: Use Control",
-        "associated-activities": [ {"activity-uuid": "activity-aap-2.1"}, {"activity-uuid": "activity-aap-sar-2.4"}, {"activity-uuid": "activity-aap-2.5"}, {"activity-uuid": "activity-aap-2.8"} ]
-      },
-      {
-        "uuid": "task-aap-fr6", "type": "assessment-action", "title": "Assess FR 6: Timely Response to Events",
-        "associated-activities": [ {"activity-uuid": "activity-aap-6.1"}, {"activity-uuid": "activity-aap-6.2"} ]
-      },
-      {
-        "uuid": "task-aap-fr7", "type": "assessment-action", "title": "Assess FR 7: Resource Availability",
-        "associated-activities": [ {"activity-uuid": "activity-aap-7.2"}, {"activity-uuid": "activity-aap-7.3"}, {"activity-uuid": "activity-aap-7.6"} ]
-      }
-    ],
-    "activities": [
-      {
-        "uuid": "activity-aap-1.1", "title": "Verify Human User Identification and Authentication", "description": "Verify that AAP is configured to uniquely identify and authenticate all human users with multifactor authentication via an external IdP.",
-        "steps": [
-          {"uuid": "step-aap-1.1.1", "description": "Examine the Identity Provider settings in the AAP web UI to confirm integration with a SAML or OIDC identity provider that enforces MFA."},
-          {"uuid": "step-aap-1.1.2", "description": "Interview the AAP administration team to confirm that all user access is managed through the configured identity provider."},
-          {"uuid": "step-aap-1.1.3", "description": "Test the login process by attempting to authenticate to the AAP web UI with a test user account, and verify that the user is redirected to the IdP and an MFA challenge is presented."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.1" } ] } ] }
-      },
-      {
-        "uuid": "activity-aap-1.5", "title": "Verify Authenticator Management", "description": "Verify that secrets used by automation are stored in a hardware-backed external vault.",
-        "steps": [
-          {"uuid": "step-aap-1.5.1", "description": "Examine the Credential Types in the AAP web UI to confirm that a custom type for an external vault (e.g., HashiCorp Vault, CyberArk) has been created."},
-          {"uuid": "step-aap-1.5.2", "description": "Examine the Credentials used by critical Job Templates and verify they are using the external vault credential type."},
-          {"uuid": "step-aap-1.5.3", "description": "Interview the security team to confirm that the external vault is backed by a FIPS 140-2 validated HSM."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.5" } ] } ] }
-      },
-      {
-        "uuid": "activity-aap-1.12", "title": "Verify System Use Notification", "description": "Verify a warning banner is displayed upon login.",
-        "steps": [
-          {"uuid": "step-aap-1.12.1", "description": "Examine the Custom Login Info setting in the AAP UI under Settings -> User Interface Settings to confirm it contains the approved system use notification text."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.12" } ] } ] }
-      },
-      {
-        "uuid": "activity-aap-2.1", "title": "Verify Authorization Enforcement and Dual Approval", "description": "Verify that AAP enforces authorization via RBAC and supports dual approval via Workflow Approvals.",
-        "steps": [
-          {"uuid": "step-aap-2.1.1", "description": "Examine the Teams and Permissions settings in the AAP web UI to verify that administrative privileges are granted to teams, not individual users."},
-          {"uuid": "step-aap-2.1.2", "description": "Examine a critical Workflow Job Template and verify that it contains an Approval node that requires approval from a separate team."},
-          {"uuid": "step-aap-2.1.3", "description": "Test the dual approval workflow by launching the critical workflow as one user and logging in as a second, authorized user to approve it. Verify the workflow only proceeds after approval."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.1" } ] } ] }
-      },
-      {
-        "uuid": "activity-aap-sar-2.4", "title": "Verify Mobile Code Control", "description": "Verify that automation content is sourced from trusted, version-controlled repositories.",
-        "steps": [
-          {"uuid": "step-aap-sar-2.4.1", "description": "Examine the Projects in the AAP web UI and verify that they are all configured to source playbooks from a trusted, internal Git repository over a secure connection (e.g., SSH or HTTPS)."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "sar-2.4" } ] } ] }
-      },
-      {
-        "uuid": "activity-aap-2.5", "title": "Verify Session Lock", "description": "Verify that web UI sessions time out after a period of inactivity.",
-        "steps": [
-          {"uuid": "step-aap-2.5.1", "description": "Examine the 'Idle Time Force Logout' setting in the AAP UI under Settings -> User Interface Settings to confirm it is set to a short duration (e.g., 900 seconds)."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.5" } ] } ] }
-      },
-      {
-        "uuid": "activity-aap-2.8", "title": "Verify Auditable Events", "description": "Verify that the AAP activity stream captures all security-relevant events.",
-        "steps": [
-          {"uuid": "step-aap-2.8.1", "description": "Test the activity stream by performing a security-relevant action (e.g., launching a job, creating a user) and verifying that a detailed event is immediately visible in the Activity Stream view in the AAP web UI."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.8" } ] } ] }
-      },
-      {
-        "uuid": "activity-aap-6.1", "title": "Verify Audit Log Accessibility", "description": "Verify that the activity stream is being forwarded to a central SIEM.",
-        "steps": [
-          {"uuid": "step-aap-6.1.1", "description": "Examine the 'Logging Settings' in the AAP UI to confirm that log aggregation is configured to forward all events to the correct SIEM address."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-6.1" } ] } ] }
-      },
-      {
-        "uuid": "activity-aap-6.2", "title": "Verify Continuous Monitoring", "description": "Verify that the SIEM is actively monitoring AAP events.",
-        "steps": [
-          {"uuid": "step-aap-6.2.1", "description": "Interview the security operations team to review the SIEM dashboards and alerts that are configured for Ansible Automation Platform events."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-6.2" } ] } ] }
-      },
-      {
-        "uuid": "activity-aap-7.2", "title": "Verify Resource Management", "description": "Verify that job slicing and instance groups are used to manage resource consumption.",
-        "steps": [
-          {"uuid": "step-aap-7.2.1", "description": "Examine the configuration of large Job Templates to verify that they are configured with 'Job Slicing' to break them into smaller, parallel tasks."},
-          {"uuid": "step-aap-7.2.2", "description": "Examine the Instance Groups in the AAP UI to confirm that automation workloads are segregated onto dedicated execution nodes."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-7.2" } ] } ] }
-      },
-      {
-        "uuid": "activity-aap-7.3", "title": "Verify Control System Backup", "description": "Verify that AAP's backup utilities are being used.",
-        "steps": [
-          {"uuid": "step-aap-7.3.1", "description": "Interview the AAP administration team to review the backup logs and confirm that the `awx-manage` backup utility is being run on a regular schedule."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-7.3" } ] } ] }
-      },
-      {
-        "uuid": "activity-aap-7.6", "title": "Verify Network and Security Configuration Settings", "description": "Verify that the AAP configuration is managed as code.",
-        "steps": [
-          {"uuid": "step-aap-7.6.1", "description": "Examine the Git repository used to manage the AAP deployment and verify that the application configuration is defined as code using the `controller_` Ansible collections."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-7.6" } ] } ] }
-      }
-    ],
-    "back-matter": {
-      "resources": [
-        {
-          "uuid": "a8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a",
-          "title": "ISA/IEC 62443-4-2 OSCAL Catalog",
-          "citation": {
-            "text": "ISA/IEC 62443-4-2 OSCAL Catalog, Version 1.1"
-          }
-        },
-        {
-          "uuid": "placeholder-aap-ssp-uuid",
-          "title": "System Security Plan for the Production ICS Ansible Automation Platform"
-        }
-      ]
-    }
+    ]
   }
 }
