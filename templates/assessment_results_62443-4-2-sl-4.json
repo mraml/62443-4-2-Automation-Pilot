@@ -1,0 +1,151 @@
+{
+  "assessment-results": {
+    "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-results-1",
+    "metadata": {
+      "title": "Assessment Results for [System Name]",
+      "last-modified": "2025-08-28T21:25:00.000Z",
+      "version": "1.0",
+      "oscal-version": "1.0.0",
+      "role": [
+        {
+          "id": "assessor",
+          "title": "Security Assessor"
+        }
+      ],
+      "party": [
+        {
+          "uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c",
+          "type": "organization",
+          "name": "[Customer Organization Name]"
+        }
+      ],
+      "responsible-party": [
+        {
+          "role-id": "assessor",
+          "party-uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c"
+        }
+      ]
+    },
+    "import-ap": {
+      "href": "assessment-plans/ocp4_assessment-plan.json"
+    },
+    "results": [
+      {
+        "uuid": "result-1",
+        "title": "Assessment of FR 1: Identification and Authentication Control",
+        "start": "2025-09-15T09:00:00.000Z",
+        "end": "2025-09-15T17:00:00.000Z",
+        "findings": [
+          {
+            "uuid": "finding-1.1",
+            "title": "Assessment Finding for CR-1.1",
+            "description": "The system correctly implements human user identification and authentication.",
+            "related-observations": [
+              {
+                "observation-uuid": "obs-1.1"
+              }
+            ]
+          },
+          {
+            "uuid": "finding-5.1",
+            "title": "Assessment Finding for CR-5.1",
+            "description": "The 'critical-ics-app' namespace was found to be missing the required default-deny ingress NetworkPolicy.",
+            "related-observations": [
+              {
+                "observation-uuid": "obs-5.1"
+              }
+            ]
+          }
+        ],
+        "observations": [
+          {
+            "uuid": "obs-1.1",
+            "title": "CR-1.1 Assessment Observation",
+            "description": "Verification of MFA for Human Users",
+            "methods": [
+              "EXAMINE",
+              "TEST"
+            ],
+            "relevant-evidence": [
+              {
+                "href": "#evidence-1.1.1",
+                "description": "Screenshot of the OAuth CRD showing OIDC configuration."
+              },
+              {
+                "href": "#evidence-1.1.2",
+                "description": "Video recording of the test user being prompted for MFA upon login."
+              }
+            ]
+          },
+          {
+            "uuid": "obs-5.1",
+            "title": "CR-5.1 Assessment Observation",
+            "description": "Verification of Network Segmentation",
+            "methods": [
+              "EXAMINE"
+            ],
+            "relevant-evidence": [
+              {
+                "href": "#evidence-5.1.1",
+                "description": "Command output of 'oc get networkpolicy -n critical-ics-app'."
+              }
+            ]
+          }
+        ],
+        "risks": [
+          {
+            "uuid": "risk-5.1",
+            "title": "Missing Network Segmentation",
+            "description": "The lack of a default-deny NetworkPolicy allows any pod in the cluster to initiate traffic to the critical application, violating the principle of least privilege and restricted data flow.",
+            "statement": "A critical application namespace is not properly isolated, allowing for potential unauthorized access from other workloads.",
+            "status": "open",
+            "related-risk-responses": [
+              {
+                "risk-response-uuid": "poam-5.1"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "back-matter": {
+      "resources": [
+        {
+          "uuid": "evidence-1.1.1",
+          "description": "Screenshot of OAuth CRD",
+          "rlinks": [
+            {
+              "href": "evidence/oauth-crd-screenshot.png",
+              "media-type": "image/png"
+            }
+          ]
+        },
+        {
+          "uuid": "evidence-1.1.2",
+          "description": "Video of MFA Test",
+          "rlinks": [
+            {
+              "href": "evidence/mfa-test.mp4",
+              "media-type": "video/mp4"
+            }
+          ]
+        },
+        {
+          "uuid": "evidence-5.1.1",
+          "description": "CLI output for NetworkPolicy check",
+          "rlinks": [
+            {
+              "href": "evidence/netpol-check.log",
+              "media-type": "text/plain"
+            }
+          ]
+        },
+        {
+          "uuid": "poam-5.1",
+          "title": "POA&M for Missing NetworkPolicy",
+          "description": "This is a reference to a separate POA&M file that would track the remediation for the finding related to CR-5.1."
+        }
+      ]
+    }
+  }
+}
