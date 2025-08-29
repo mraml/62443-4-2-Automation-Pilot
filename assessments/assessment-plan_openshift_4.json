@@ -1,528 +1,185 @@
 {
   "assessment-plan": {
-    "uuid": "e1f2a3b4-c5d6-4e7f-8a9b-c0d1e2f3a4b5",
+    "uuid": "e1a2b3c4-d5e6-4f78-9a0b-1c2d3e4f5a6b",
     "metadata": {
-      "title": "Assessment Plan for OpenShift 4 based on ISA/IEC 62443-4-2 (SL-4 Target)",
-      "last-modified": "2025-08-28T20:40:00.000Z",
-      "version": "1.2",
+      "title": "Comprehensive Assessment Plan for OpenShift 4 - ISA/IEC 62443-4-2 SL-1 through SL-4",
+      "last-modified": "2025-08-29T15:25:00Z",
+      "version": "4.0.0",
       "oscal-version": "1.0.0",
-      "role": [
+      "parties": [
         {
-          "id": "assessor",
-          "title": "Security Assessor"
-        },
-        {
-          "id": "system-owner",
-          "title": "System Owner"
-        }
-      ],
-      "party": [
-        {
-          "uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c",
+          "uuid": "p1",
           "type": "organization",
-          "name": "Example Corporation"
-        }
-      ],
-      "responsible-party": [
-        {
-          "role-id": "assessor",
-          "party-uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c"
+          "name": "Red Hat, Inc."
         }
       ]
     },
     "import-ssp": {
-      "href": "#placeholder-ssp-uuid"
-    },
-    "local-definitions": {
-      "components": [
-        {
-          "uuid": "e9f8a7b6-c5d4-4e3f-a92f-5d5d5d5d5d5d",
-          "type": "software",
-          "title": "Red Hat OpenShift Container Platform 4",
-          "description": "The target of this assessment is the production OpenShift cluster used for hosting industrial control system applications."
-        }
-      ],
-      "assessment-platforms": [
-        {
-          "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5",
-          "title": "Assessor's Workstation",
-          "uses-components": []
-        }
-      ]
-    },
-    "terms-and-conditions": {
-      "parts": [
-        {
-          "name": "rules-of-engagement",
-          "prose": "This assessment will be conducted during normal business hours. No disruptive testing will be performed without prior written consent from the system owner."
-        }
-      ]
+      "href": "ssp.json"
     },
     "reviewed-controls": {
       "control-selections": [
         {
-          "description": "All controls implemented by the OpenShift 4 component as defined in the component definition.",
+          "description": "All applicable controls for an SL-4 baseline for OpenShift 4, covering SL-1 through SL-4.",
           "include-all": false,
           "include-controls": [
-            { "control-id": "cr-1.1" },
-            { "control-id": "cr-1.2" },
-            { "control-id": "cr-1.3" },
-            { "control-id": "cr-1.4" },
-            { "control-id": "cr-1.5" },
-            { "control-id": "cr-1.7" },
-            { "control-id": "cr-1.8" },
-            { "control-id": "cr-1.9" },
-            { "control-id": "cr-1.10" },
-            { "control-id": "cr-1.11" },
-            { "control-id": "cr-1.12" },
-            { "control-id": "cr-1.14" },
-            { "control-id": "cr-2.1" },
-            { "control-id": "cr-2.2" },
-            { "control-id": "sar-2.4" },
-            { "control-id": "cr-2.5" },
-            { "control-id": "cr-2.6" },
-            { "control-id": "cr-2.7" },
-            { "control-id": "cr-2.8" },
-            { "control-id": "cr-2.9" },
-            { "control-id": "cr-2.10" },
-            { "control-id": "cr-2.11" },
-            { "control-id": "cr-2.12" },
-            { "control-id": "cr-3.1" },
-            { "control-id": "sar-3.2" },
-            { "control-id": "cr-3.3" },
-            { "control-id": "cr-3.4" },
-            { "control-id": "cr-3.5" },
-            { "control-id": "cr-3.6" },
-            { "control-id": "cr-3.7" },
-            { "control-id": "cr-3.8" },
-            { "control-id": "cr-3.9" },
-            { "control-id": "cr-4.1" },
-            { "control-id": "cr-4.2" },
-            { "control-id": "cr-4.3" },
+            { "control-id": "cr-1.1" }, { "control-id": "cr-1.1_re.1" }, { "control-id": "cr-1.1_re.2" },
+            { "control-id": "cr-1.2" }, { "control-id": "cr-1.2_re.1" }, { "control-id": "cr-1.3" },
+            { "control-id": "cr-1.4" }, { "control-id": "cr-1.5" }, { "control-id": "cr-1.5_re.1" },
+            { "control-id": "cr-1.7" }, { "control-id": "cr-1.7_re.1" }, { "control-id": "cr-1.7_re.2" },
+            { "control-id": "cr-1.8" }, { "control-id": "cr-1.9" }, { "control-id": "cr-1.9_re.1" },
+            { "control-id": "cr-1.10" }, { "control-id": "cr-1.11" }, { "control-id": "cr-1.12" },
+            { "control-id": "cr-1.14" }, { "control-id": "cr-1.14_re.1" },
+            { "control-id": "cr-2.1" }, { "control-id": "cr-2.1_re.1" }, { "control-id": "cr-2.1_re.2" },
+            { "control-id": "cr-2.1_re.3" }, { "control-id": "cr-2.1_re.4" }, { "control-id": "cr-2.2" },
+            { "control-id": "sar-2.4" }, { "control-id": "sar-2.4_re.1" }, { "control-id": "cr-2.5" },
+            { "control-id": "cr-2.6" }, { "control-id": "cr-2.7" }, { "control-id": "cr-2.8" },
+            { "control-id": "cr-2.9" }, { "control-id": "cr-2.9_re.1" }, { "control-id": "cr-2.10" },
+            { "control-id": "cr-2.11" }, { "control-id": "cr-2.11_re.1" }, { "control-id": "cr-2.11_re.2" },
+            { "control-id": "cr-2.12" }, { "control-id": "cr-2.12_re.1" },
+            { "control-id": "cr-3.1" }, { "control-id": "cr-3.1_re.1" }, { "control-id": "sar-3.2" },
+            { "control-id": "cr-3.3" }, { "control-id": "cr-3.3_re.1" }, { "control-id": "cr-3.4" },
+            { "control-id": "cr-3.4_re.1" }, { "control-id": "cr-3.4_re.2" }, { "control-id": "cr-3.7" },
+            { "control-id": "cr-3.8" }, { "control-id": "cr-3.9" }, { "control-id": "cr-3.9_re.1" },
+            { "control-id": "cr-4.1" }, { "control-id": "cr-4.2" }, { "control-id": "cr-4.2_re.1" },
+            { "control-id": "cr-4.2_re.2" }, { "control-id": "cr-4.3" },
             { "control-id": "cr-5.1" },
-            { "control-id": "cr-6.1" },
-            { "control-id": "cr-6.2" },
-            { "control-id": "cr-7.1" },
-            { "control-id": "cr-7.2" },
-            { "control-id": "cr-7.3" },
-            { "control-id": "cr-7.4" },
-            { "control-id": "cr-7.6" },
-            { "control-id": "cr-7.7" },
-            { "control-id": "cr-7.8" }
+            { "control-id": "cr-6.1" }, { "control-id": "cr-6.1_re.1" }, { "control-id": "cr-6.2" },
+            { "control-id": "cr-7.1" }, { "control-id": "cr-7.1_re.1" }, { "control-id": "cr-7.2" },
+            { "control-id": "cr-7.3" }, { "control-id": "cr-7.3_re.1" }, { "control-id": "cr-7.4" },
+            { "control-id": "cr-7.6" }, { "control-id": "cr-7.6_re.1" }, { "control-id": "cr-7.7" },
+            { "control-id": "cr-7.8" },
+            { "control-id": "cr-3.11" }, { "control-id": "cr-3.14" }, { "control-id": "cr-7.5" }
           ]
         }
       ]
     },
-    "assessment-subjects": [
+    "assessment-activities": [
       {
-        "subject-uuid": "e9f8a7b6-c5d4-4e3f-a92f-5d5d5d5d5d5d",
-        "type": "component",
-        "description": "The OpenShift 4 cluster."
+        "uuid": "activity-cr-1.1",
+        "title": "Assessment for CR-1.1 & RE(1,2): Human User Identification, Uniqueness, and MFA",
+        "description": "Assesses the integration with an external Identity Provider (IdP) to enforce unique, multi-factor authentication for all human users.",
+        "steps": [
+          { "uuid": "step-cr-1.1-e", "description": "**Examine:** Review the `OAuth` cluster resource configuration to verify integration with the documented external IdP.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-1.1-i", "description": "**Interview:** Interview the IdP administrator to confirm that MFA policies are enforced and that user identifiers are unique across the organization.", "props": [ { "name": "method", "value": "Interview" } ] },
+          { "uuid": "step-cr-1.1-t", "description": "**Test:** Attempt to log in with a test user. Verify redirection to the IdP and the presentation of an MFA challenge.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-1.2",
+        "title": "Assessment for CR-1.2 & RE(1): Software Process and Device Identification",
+        "description": "Assesses how software processes (pods and system components) are uniquely identified.",
+        "steps": [
+          { "uuid": "step-cr-1.2-e", "description": "**Examine:** Run `oc get serviceaccount --all-namespaces` to list all ServiceAccounts. For a sample application, inspect the pod definition (`oc get pod <name> -o yaml`) to verify it uses a unique, non-default ServiceAccount.", "props": [ { "name": "method", "value": "Examine" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-1.3",
+        "title": "Assessment for CR-1.3: Account Management",
+        "description": "Assesses the procedures for managing the lifecycle of user accounts via the IdP.",
+        "steps": [
+          { "uuid": "step-cr-1.3-i", "description": "**Interview:** Interview the IdP administrator to review the documented procedures for user account creation, modification, disabling, and deletion.", "props": [ { "name": "method", "value": "Interview" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-1.5",
+        "title": "Assessment for CR-1.5 & RE(1): Authenticator Management and Hardware Security",
+        "description": "Assesses how authenticators (e.g., etcd encryption keys) are managed and protected.",
+        "steps": [
+          { "uuid": "step-cr-1.5-e", "description": "**Examine:** Review the `APIServer` cluster resource (`oc get apiserver cluster -o yaml`) to verify that `.spec.encryption.type` is set to `aescbc` or a stronger algorithm.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-1.5-re1-i", "description": "**Interview:** Interview the infrastructure security team to review the architecture and configuration of the Hardware Security Module (HSM) used for etcd key encryption.", "props": [ { "name": "method", "value": "Interview" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-1.7",
+        "title": "Assessment for CR-1.7 & RE(1,2): Strength of Password-based Authentication",
+        "description": "Assesses password policies enforced by the external IdP.",
+        "steps": [
+          { "uuid": "step-cr-1.7-e", "description": "**Examine:** Review the password policy configuration in the external IdP to confirm it enforces minimum length, complexity, history, and lifetime restrictions for all user types.", "props": [ { "name": "method", "value": "Examine" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-1.12",
+        "title": "Assessment for CR-1.12: System Use Notification",
+        "description": "Assesses the configuration of the login banner.",
+        "steps": [
+          { "uuid": "step-cr-1.12-e", "description": "**Examine:** Run `oc get oauth cluster -o yaml` and inspect the `.spec.templates.login` section to verify it contains the approved system use notification text.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-1.12-t", "description": "**Test:** Navigate to the OpenShift web console login page and visually confirm the banner is displayed.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-2.1",
+        "title": "Assessment for CR-2.1 & RE(1,2,3,4): Authorization and Dual Approval",
+        "description": "Assesses RBAC, least privilege, and the procedural dual-approval workflow.",
+        "steps": [
+          { "uuid": "step-cr-2.1-e", "description": "**Examine:** Review `RoleBinding` and `ClusterRoleBinding` manifests in the GitOps repository to verify permissions are granted based on roles, not individual users.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-2.1-re4-e", "description": "**Examine:** Review the branch protection rules in the Git repository to ensure merges to the main branch require peer review.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-2.1-t", "description": "**Test:** Log in as a user with limited permissions and attempt an administrative action. Verify the action is denied with a 'Forbidden' error.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-2.8",
+        "title": "Assessment for CR-2.8: Auditable Events",
+        "description": "Assesses the audit logging configuration and integration with a SIEM.",
+        "steps": [
+          { "uuid": "step-cr-2.8-e", "description": "**Examine:** Run `oc get apiserver cluster -o yaml` to ensure the audit profile is `Default` or stricter. Examine the configuration of the log forwarding agent.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-2.8-t", "description": "**Test:** Perform an action in the cluster and search the SIEM for the corresponding event, verifying all required fields are present.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-3.4",
+        "title": "Assessment for CR-3.4 & RE(1,2): Software and Information Integrity",
+        "description": "Assesses the use of the File Integrity Operator.",
+        "steps": [
+          { "uuid": "step-cr-3.4-e", "description": "**Examine:** Run `oc get fileintegrity` to verify the File Integrity Operator is deployed and configured to monitor critical host paths.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-cr-3.4-t", "description": "**Test:** SSH to a node and modify a monitored file (e.g., `/etc/hostname`). Wait for the next scan and verify that a `FileIntegrityNodeStatus` object reports a failure and an alert is generated in the SIEM.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-4.3",
+        "title": "Assessment for CR-4.3: Use of Cryptography (FIPS)",
+        "description": "Assesses if FIPS mode is enabled for the cluster.",
+        "steps": [
+          { "uuid": "step-cr-4.3-t", "description": "**Test:** Run `oc get clusterversion version -o jsonpath='{.status.conditions[?(@.type==\"FIPS\")].status}'` and verify the output is `True`.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-sar-2.4",
+        "title": "Assessment for SAR-2.4 & RE(1): Mobile Code (Image Policy)",
+        "description": "Assesses enforcement of trusted container image policies.",
+        "steps": [
+          { "uuid": "step-sar-2.4-e", "description": "**Examine:** Review `ImageContentSourcePolicy` and admission controller policy manifests in the GitOps repository.", "props": [ { "name": "method", "value": "Examine" } ] },
+          { "uuid": "step-sar-2.4-t", "description": "**Test:** Attempt to deploy a pod with an image from an untrusted registry and verify the admission controller blocks it.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-5.1",
+        "title": "Assessment for CR-5.1: Network Segmentation",
+        "description": "Assesses the implementation of network policies.",
+        "steps": [
+           { "uuid": "step-cr-5.1-e", "description": "**Examine:** Review `NetworkPolicy` manifests in the GitOps repository, looking for a default-deny policy in critical namespaces.", "props": [ { "name": "method", "value": "Examine" } ] },
+           { "uuid": "step-cr-5.1-t", "description": "**Test:** Deploy a test pod in a default-deny namespace. Attempt to connect to another service and verify the connection times out.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-cr-7.2",
+        "title": "Assessment for CR-7.2: Resource Management",
+        "description": "Assesses resource limits for critical system components.",
+        "steps": [
+          { "uuid": "step-cr-7.2-e", "description": "**Examine:** Run `oc get pods -n openshift-kube-apiserver -o yaml` and inspect a `kube-apiserver` pod definition. Verify that `.spec.resources.requests` and `.spec.resources.limits` are set for CPU and memory.", "props": [ { "name": "method", "value": "Examine" } ] }
+        ]
+      },
+      {
+        "uuid": "activity-gaps",
+        "title": "Assessment of Compensating Controls",
+        "description": "Assesses compensating controls for requirements not met by the software.",
+        "steps": [
+          { "uuid": "step-cr-3.11-i", "description": "**Interview:** Interview the data center manager to discuss physical security measures (cages, surveillance).", "props": [ { "name": "method", "value": "Interview" } ] },
+          { "uuid": "step-cr-3.14-i", "description": "**Interview:** Interview an infrastructure engineer to confirm UEFI Secure Boot is enabled in the BIOS for all cluster nodes.", "props": [ { "name": "method", "value": "Interview" } ] },
+          { "uuid": "step-cr-7.5-t", "description": "**Test:** Conduct a controlled test of the data center's UPS and generator systems.", "props": [ { "name": "method", "value": "Test" } ] }
+        ]
       }
-    ],
-    "assessment-assets": {
-      "description": "The assets used to perform this assessment.",
-      "assessment-platforms": [
-        {
-          "assessment-platform-uuid": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5"
-        }
-      ]
-    },
-    "tasks": [
-      {
-        "uuid": "task-fr1", "type": "assessment-action", "title": "Assess Foundational Requirement 1: Identification and Authentication Control",
-        "associated-activities": [
-          {"activity-uuid": "activity-1.1"}, {"activity-uuid": "activity-1.2"}, {"activity-uuid": "activity-1.3"}, {"activity-uuid": "activity-1.4"}, {"activity-uuid": "activity-1.5"}, {"activity-uuid": "activity-1.7"}, {"activity-uuid": "activity-1.8"}, {"activity-uuid": "activity-1.9"}, {"activity-uuid": "activity-1.10"}, {"activity-uuid": "activity-1.11"}, {"activity-uuid": "activity-1.12"}, {"activity-uuid": "activity-1.14"}
-        ]
-      },
-      {
-        "uuid": "task-fr2", "type": "assessment-action", "title": "Assess Foundational Requirement 2: Use Control",
-        "associated-activities": [
-          {"activity-uuid": "activity-2.1"}, {"activity-uuid": "activity-2.2"}, {"activity-uuid": "activity-sar-2.4"}, {"activity-uuid": "activity-2.5"}, {"activity-uuid": "activity-2.6"}, {"activity-uuid": "activity-2.7"}, {"activity-uuid": "activity-2.8"}, {"activity-uuid": "activity-2.9"}, {"activity-uuid": "activity-2.10"}, {"activity-uuid": "activity-2.11"}, {"activity-uuid": "activity-2.12"}
-        ]
-      },
-      {
-        "uuid": "task-fr3", "type": "assessment-action", "title": "Assess Foundational Requirement 3: System Integrity",
-        "associated-activities": [
-          {"activity-uuid": "activity-3.1"}, {"activity-uuid": "activity-sar-3.2"}, {"activity-uuid": "activity-3.3"}, {"activity-uuid": "activity-3.4"}, {"activity-uuid": "activity-3.5"}, {"activity-uuid": "activity-3.6"}, {"activity-uuid": "activity-3.7"}, {"activity-uuid": "activity-3.8"}, {"activity-uuid": "activity-3.9"}
-        ]
-      },
-      {
-        "uuid": "task-fr4", "type": "assessment-action", "title": "Assess Foundational Requirement 4: Data Confidentiality",
-        "associated-activities": [
-          {"activity-uuid": "activity-4.1"}, {"activity-uuid": "activity-4.2"}, {"activity-uuid": "activity-4.3"}
-        ]
-      },
-      {
-        "uuid": "task-fr5", "type": "assessment-action", "title": "Assess Foundational Requirement 5: Restricted Data Flow",
-        "associated-activities": [
-          {"activity-uuid": "activity-5.1"}
-        ]
-      },
-      {
-        "uuid": "task-fr6", "type": "assessment-action", "title": "Assess Foundational Requirement 6: Timely Response to Events",
-        "associated-activities": [
-          {"activity-uuid": "activity-6.1"}, {"activity-uuid": "activity-6.2"}
-        ]
-      },
-      {
-        "uuid": "task-fr7", "type": "assessment-action", "title": "Assess Foundational Requirement 7: Resource Availability",
-        "associated-activities": [
-          {"activity-uuid": "activity-7.1"}, {"activity-uuid": "activity-7.2"}, {"activity-uuid": "activity-7.3"}, {"activity-uuid": "activity-7.4"}, {"activity-uuid": "activity-7.6"}, {"activity-uuid": "activity-7.7"}, {"activity-uuid": "activity-7.8"}
-        ]
-      }
-    ],
-    "activities": [
-      {
-        "uuid": "activity-1.1", "title": "Verify Human User Identification and Authentication", "description": "Verify that OpenShift is configured to uniquely identify and authenticate all human users with multifactor authentication.",
-        "steps": [
-          {"uuid": "step-1.1.1", "description": "Examine the OpenShift documentation for 'Understanding Authentication' and 'Configuring Identity Providers' to confirm the platform's capabilities."},
-          {"uuid": "step-1.1.2", "description": "Interview the OpenShift administration team to confirm that all user access is managed through a configured identity provider that enforces MFA."},
-          {"uuid": "step-1.1.3", "description": "Test the login process by attempting to authenticate to the OpenShift web console with a test user account, and verify that an MFA challenge is presented and required for successful login."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.1" } ] } ] }
-      },
-      {
-        "uuid": "activity-1.2", "title": "Verify Software Process and Device Identification", "description": "Verify each pod has a unique identity and authenticates to the API server.",
-        "steps": [
-          {"uuid": "step-1.2.1", "description": "Examine the OpenShift documentation for 'Using service accounts' to confirm the mechanism for component identity."},
-          {"uuid": "step-1.2.2", "description": "Test API access from within a running pod using its default service account token to confirm it can authenticate successfully."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.2" } ] } ] }
-      },
-      {
-        "uuid": "activity-1.3", "title": "Verify Account Management", "description": "Verify user account management is centralized.",
-        "steps": [
-          {"uuid": "step-1.3.1", "description": "Examine the identity provider configuration to confirm it is the single source for user management."},
-          {"uuid": "step-1.3.2", "description": "Interview an administrator to confirm that no local OpenShift users are created or managed."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.3" } ] } ] }
-      },
-      {
-        "uuid": "activity-1.4", "title": "Verify Identifier Management", "description": "Verify user identifiers are managed by the central IdP.",
-        "steps": [
-          {"uuid": "step-1.4.1", "description": "Examine the OpenShift OAuth configuration to see how user identifiers are mapped from the IdP into the cluster."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.4" } ] } ] }
-      },
-      {
-        "uuid": "activity-1.5", "title": "Verify Authenticator Management", "description": "Verify secrets are protected by hardware-level security.",
-        "steps": [
-          {"uuid": "step-1.5.1", "description": "Examine the OpenShift documentation for 'Understanding identity provider' and 'TLS security profiles' to confirm the platform's capabilities for protecting authenticators."},
-          {"uuid": "step-1.5.2", "description": "Interview the security team to confirm the KMS is backed by a FIPS 140-2 validated HSM."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.5" } ] } ] }
-      },
-      {
-        "uuid": "activity-1.7", "title": "Verify Password Strength", "description": "Verify password policies are enforced by the IdP.",
-        "steps": [
-          {"uuid": "step-1.7.1", "description": "Examine the password policy documentation for the integrated identity provider."},
-          {"uuid": "step-1.7.2", "description": "Test the policy by attempting to set a non-compliant password for a test user in the identity provider."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.7" } ] } ] }
-      },
-      {
-        "uuid": "activity-1.8", "title": "Verify PKI Certificate Management", "description": "Verify the cluster uses a built-in PKI.",
-        "steps": [
-          {"uuid": "step-1.8.1", "description": "Examine the secrets in the `openshift-kube-apiserver` namespace to identify the cluster's internal CAs and issued certificates."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.8" } ] } ] }
-      },
-      {
-        "uuid": "activity-1.9", "title": "Verify Strength of Public Key-Based Authentication", "description": "Verify the cluster's root of trust is hardware-backed.",
-        "steps": [
-          {"uuid": "step-1.9.1", "description": "Examine the cluster's ingress certificate chain to confirm it is signed by the enterprise's HSM-backed CA."},
-          {"uuid": "step-1.9.2", "description": "Interview a member of the PKI team to confirm the operational procedures for the enterprise CA."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.9" } ] } ] }
-      },
-      {
-        "uuid": "activity-1.10", "title": "Verify Authenticator Feedback", "description": "Verify the login page obscures feedback.",
-        "steps": [
-          {"uuid": "step-1.10.1", "description": "Test the login page by entering an incorrect username and an incorrect password, and verify the error message is generic and does not reveal which part was incorrect."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.10" } ] } ] }
-      },
-      {
-        "uuid": "activity-1.11", "title": "Verify Unsuccessful Login Attempts", "description": "Verify account lockout is handled by the IdP.",
-        "steps": [
-          {"uuid": "step-1.11.1", "description": "Examine the account lockout policy in the integrated identity provider."},
-          {"uuid": "step-1.11.2", "description": "Test the policy by intentionally failing to log in multiple times with a test account and verifying the account is locked in the IdP."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.11" } ] } ] }
-      },
-      {
-        "uuid": "activity-1.12", "title": "Verify System Use Notification", "description": "Verify a warning banner is displayed.",
-        "steps": [
-          {"uuid": "step-1.12.1", "description": "Examine the OpenShift web console login page to confirm the presence and content of the system use notification banner."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.12" } ] } ] }
-      },
-      {
-        "uuid": "activity-1.14", "title": "Verify Strength of Symmetric Key-Based Authentication", "description": "Verify etcd encryption keys are hardware-protected.",
-        "steps": [
-          {"uuid": "step-1.14.1", "description": "Examine the OpenShift documentation for 'Encrypting etcd data' to confirm the use of GCM operation mode."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-1.14" } ] } ] }
-      },
-      {
-        "uuid": "activity-2.1", "title": "Verify Authorization Enforcement", "description": "Verify that OpenShift enforces authorization for all users based on assigned responsibilities and the principle of least privilege.",
-        "steps": [
-          {"uuid": "step-2.1.1", "description": "Examine the OpenShift documentation for 'Using RBAC' to confirm the platform's capabilities."},
-          {"uuid": "step-2.1.2", "description": "Interview a developer and an administrator to understand the process for requesting and granting permissions."},
-          {"uuid": "step-2.1.3", "description": "Test the RBAC configuration by authenticating as a user with limited privileges and attempting to perform an administrative action. Verify the action is denied with a 'Forbidden' error."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.1" } ] } ] }
-      },
-      {
-        "uuid": "activity-2.2", "title": "Verify Wireless Use Control", "description": "Verify network policies restrict traffic from wireless segments.",
-        "steps": [
-          {"uuid": "step-2.2.1", "description": "Examine the OpenShift documentation for 'Network security' to confirm the platform's capabilities for restricting network operations."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.2" } ] } ] }
-      },
-      {
-        "uuid": "activity-sar-2.4", "title": "Verify Mobile Code Control", "description": "Verify only signed and trusted container images can be deployed.",
-        "steps": [
-          {"uuid": "step-sar-2.4.1", "description": "Examine the OpenShift documentation for 'Image configuration' and 'Managing pod security policies' to confirm the platform's capabilities."},
-          {"uuid": "step-sar-2.4.2", "description": "Test the policy by attempting to deploy a pod with an unsigned container image and verifying the deployment is blocked."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "sar-2.4" } ] } ] }
-      },
-      {
-        "uuid": "activity-2.5", "title": "Verify Session Lock", "description": "Verify web console sessions time out.",
-        "steps": [
-          {"uuid": "step-2.5.1", "description": "Examine the OpenShift documentation for 'Configuring the internal OAuth server' to find the configured session inactivity timeout value."},
-          {"uuid": "step-2.5.2", "description": "Test the session lock by logging into the web console, remaining inactive for the configured timeout period, and verifying the session is terminated."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.5" } ] } ] }
-      },
-      {
-        "uuid": "activity-2.6", "title": "Verify Remote Session Termination", "description": "Verify sessions can be manually terminated.",
-        "steps": [
-          {"uuid": "step-2.6.1", "description": "Examine the OpenShift documentation for 'Managing OAuth access tokens'."},
-          {"uuid": "step-2.6.2", "description": "Test termination by logging in with a user, identifying their `OAuthAccessToken`, deleting it as an administrator, and verifying the user's session is immediately invalidated."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.6" } ] } ] }
-      },
-      {
-        "uuid": "activity-2.7", "title": "Verify Concurrent Session Control", "description": "Verify concurrent sessions are managed by the IdP.",
-        "steps": [
-          {"uuid": "step-2.7.1", "description": "Examine the concurrent session control policies in the integrated identity provider."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.7" } ] } ] }
-      },
-      {
-        "uuid": "activity-2.8", "title": "Verify Auditable Events", "description": "Verify detailed audit logs are generated.",
-        "steps": [
-          {"uuid": "step-2.8.1", "description": "Examine the OpenShift documentation for 'Configuring audit log policies' to confirm the audit log policy is configured to log requests and responses at the metadata level."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.8" } ] } ] }
-      },
-      {
-        "uuid": "activity-2.9", "title": "Verify Audit Storage Capacity", "description": "Verify logs are forwarded to a SIEM with capacity monitoring.",
-        "steps": [
-          {"uuid": "step-2.9.1", "description": "Examine the OpenShift documentation for 'Viewing audit logs' to confirm logs are being sent to the SIEM."},
-          {"uuid": "step-2.9.2", "description": "Interview the SIEM administration team to confirm that capacity alerts are configured for the log storage."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.9" } ] } ] }
-      },
-      {
-        "uuid": "activity-2.10", "title": "Verify Response to Audit Processing Failures", "description": "Verify log forwarding is resilient.",
-        "steps": [
-          {"uuid": "step-2.10.1", "description": "Examine the log forwarding configuration to confirm that local buffering is enabled on the nodes."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.10" } ] } ] }
-      },
-      {
-        "uuid": "activity-2.11", "title": "Verify Timestamps", "description": "Verify nodes use a trusted time source.",
-        "steps": [
-          {"uuid": "step-2.11.1", "description": "Examine the OpenShift documentation for 'Using PTP' to verify that `chronyd` is configured to use a trusted, internal NTP server."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.11" } ] } ] }
-      },
-      {
-        "uuid": "activity-2.12", "title": "Verify Non-repudiation", "description": "Verify audit logs link actions to unique identities.",
-        "steps": [
-          {"uuid": "step-2.12.1", "description": "Examine a sample of audit log entries in the SIEM and trace the user and source IP for a given action back to an authenticated session from the identity provider."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-2.12" } ] } ] }
-      },
-      {
-        "uuid": "activity-3.1", "title": "Verify Communication Integrity", "description": "Verify all cluster communication is encrypted.",
-        "steps": [
-          {"uuid": "step-3.1.1", "description": "Examine the OpenShift documentation for 'TLS security profiles' to confirm that TLS security profiles are set to a restrictive level."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-3.1" } ] } ] }
-      },
-      {
-        "uuid": "activity-sar-3.2", "title": "Verify Protection from Malicious Code", "description": "Verify multiple layers of protection are active.",
-        "steps": [
-          {"uuid": "step-sar-3.2.1", "description": "Examine the OpenShift documentation for the 'Security Profiles Operator' to confirm that SELinux is in enforcing mode."},
-          {"uuid": "step-sar-3.2.2", "description": "Interview the security team to review the runtime threat detection alerts generated by ACS."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "sar-3.2" } ] } ] }
-      },
-      {
-        "uuid": "activity-3.3", "title": "Verify Security Functionality Verification", "description": "Verify compliance scanning is automated.",
-        "steps": [
-          {"uuid": "step-3.3.1", "description": "Examine the OpenShift documentation for the 'Compliance Operator' to confirm that scans are scheduled to run continuously."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-3.3" } ] } ] }
-      },
-      {
-        "uuid": "activity-3.4", "title": "Verify Software and Information Integrity", "description": "Verify that OpenShift provides mechanisms to check the authenticity and integrity of software and configuration, with automated notifications.",
-        "steps": [
-          {"uuid": "step-3.4.1", "description": "Examine the OpenShift documentation for the 'File Integrity Operator' and verify it is active and monitoring critical host paths."},
-          {"uuid": "step-3.4.2", "description": "Examine the configuration of Red Hat Advanced Cluster Security (ACS) to verify that an admission control policy is in place to block unsigned or un-scanned container images from being deployed."},
-          {"uuid": "step-3.4.3", "description": "Test the integrity controls by attempting to deploy a container image from an untrusted, unsigned registry. Verify that the deployment is blocked by the ACS admission controller."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-3.4" } ] } ] }
-      },
-      {
-        "uuid": "activity-3.5", "title": "Verify Input Validation", "description": "Verify the API server rejects malformed input.",
-        "steps": [
-          {"uuid": "step-3.5.1", "description": "Test the API server by attempting to create a resource with a syntactically incorrect manifest file. Verify the API server rejects the request with a validation error."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-3.5" } ] } ] }
-      },
-      {
-        "uuid": "activity-3.6", "title": "Verify Deterministic Output", "description": "Verify operators enforce a deterministic state.",
-        "steps": [
-          {"uuid": "step-3.6.1", "description": "Test the operator reconciliation loop by manually deleting a pod managed by a `Deployment`. Verify that the `Deployment`'s operator automatically creates a new pod to match the desired state."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-3.6" } ] } ] }
-      },
-      {
-        "uuid": "activity-3.7", "title": "Verify Error Handling", "description": "Verify error messages do not leak sensitive information.",
-        "steps": [
-          {"uuid": "step-3.7.1", "description": "Examine the OpenShift documentation for 'Audit log view' and 'Audit log policy config' to confirm error handling procedures."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-3.7" } ] } ] }
-      },
-      {
-        "uuid": "activity-3.8", "title": "Verify Session Integrity", "description": "Verify session identifiers are secure.",
-        "steps": [
-          {"uuid": "step-3.8.1", "description": "Examine the OpenShift documentation for 'Configuring an OIDC identity provider' to confirm session integrity procedures."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-3.8" } ] } ] }
-      },
-      {
-        "uuid": "activity-3.9", "title": "Verify Protection of Audit Information", "description": "Verify audit logs are stored immutably.",
-        "steps": [
-          {"uuid": "step-3.9.1", "description": "Examine the OpenShift documentation for 'Cluster logging support' and interview the SIEM administration team to confirm that the storage for OpenShift audit logs is configured for write-once, read-many (WORM) immutability."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-3.9" } ] } ] }
-      },
-      {
-        "uuid": "activity-4.1", "title": "Verify Information Confidentiality", "description": "Verify data is encrypted at rest and in transit.",
-        "steps": [
-          {"uuid": "step-4.1.1", "description": "Examine the OpenShift documentation for 'TLS security profiles' and 'Network bound disk encryption' to confirm data encryption procedures."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-4.1" } ] } ] }
-      },
-      {
-        "uuid": "activity-4.2", "title": "Verify Information Persistence", "description": "Verify procedures for data erasure.",
-        "steps": [
-          {"uuid": "step-4.2.1", "description": "Examine the OpenShift documentation for 'Understanding persistent storage' and interview the system owner to review the documented procedures for decommissioning cluster nodes and verifying data erasure."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-4.2" } ] } ] }
-      },
-      {
-        "uuid": "activity-4.3", "title": "Verify Use of Cryptography", "description": "Verify the cluster is in FIPS mode.",
-        "steps": [
-          {"uuid": "step-4.3.1", "description": "Examine the OpenShift documentation for 'Installing FIPS' to verify that FIPS mode is enabled for all nodes."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-4.3" } ] } ] }
-      },
-      {
-        "uuid": "activity-5.1", "title": "Verify Network Segmentation", "description": "Verify network policies enforce segmentation.",
-        "steps": [
-          {"uuid": "step-5.1.1", "description": "Examine the OpenShift documentation for 'About disconnected environments' and the `NetworkPolicy` objects in a critical application's namespace to confirm a default-deny ingress policy is in place."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-5.1" } ] } ] }
-      },
-      {
-        "uuid": "activity-6.1", "title": "Verify Audit Log Accessibility", "description": "Verify logs are accessible in the SIEM.",
-        "steps": [
-          {"uuid": "step-6.1.1", "description": "Examine the OpenShift documentation for 'Audit log view' and test the SIEM by performing a query for OpenShift API audit events and verifying that results are returned in near real-time."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-6.1" } ] } ] }
-      },
-      {
-        "uuid": "activity-6.2", "title": "Verify Continuous Monitoring", "description": "Verify security monitoring tools are active.",
-        "steps": [
-          {"uuid": "step-6.2.1", "description": "Examine the OpenShift documentation for 'Cluster logging support', the 'Compliance Operator', and the ACS and SIEM dashboards to confirm that security events are being actively monitored."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-6.2" } ] } ] }
-      },
-      {
-        "uuid": "activity-7.1", "title": "Verify Denial of Service Protection", "description": "Verify resource limits are enforced.",
-        "steps": [
-          {"uuid": "step-7.1.1", "description": "Examine the OpenShift documentation for 'Red Hat's Secure Software Development Lifecycle' and the `ResourceQuota` and `LimitRange` objects in application namespaces to confirm that CPU, memory, and storage limits are defined."},
-          {"uuid": "step-7.1.2", "description": "Test the limits by deploying an application that attempts to exceed its memory quota and verifying it is terminated by the platform."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-7.1" } ] } ] }
-      },
-      {
-        "uuid": "activity-7.2", "title": "Verify Resource Management", "description": "Verify critical components have guaranteed resources.",
-        "steps": [
-          {"uuid": "step-7.2.1", "description": "Examine the OpenShift documentation for 'Controlling pod placement' and the pod definitions for critical components to confirm they have defined resource requests."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-7.2" } ] } ] }
-      },
-      {
-        "uuid": "activity-7.3", "title": "Verify Control System Backup", "description": "Verify backup procedures are in place.",
-        "steps": [
-          {"uuid": "step-7.3.1", "description": "Examine the OpenShift documentation for 'Backup and restore overview' and the cluster's etcd backup configuration."},
-          {"uuid": "step-7.3.2", "description": "Interview an administrator to review the backup logs and confirm successful completion."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-7.3" } ] } ] }
-      },
-      {
-        "uuid": "activity-7.4", "title": "Verify Control System Recovery and Reconstitution", "description": "Verify a DR plan exists.",
-        "steps": [
-          {"uuid": "step-7.4.1", "description": "Examine the OpenShift documentation for 'Backup and restore' and interview the system owner to review the documented disaster recovery plan."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-7.4" } ] } ] }
-      },
-      {
-        "uuid": "activity-7.6", "title": "Verify Network and Security Configuration Settings", "description": "Verify configuration is managed as code.",
-        "steps": [
-          {"uuid": "step-7.6.1", "description": "Examine the OpenShift documentation for 'Network security' and the GitOps repository that contains the cluster configuration manifests to verify that all security settings are defined as version-controlled code."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-7.6" } ] } ] }
-      },
-      {
-        "uuid": "activity-7.7", "title": "Verify Least Functionality", "description": "Verify the principle of least privilege is enforced.",
-        "steps": [
-          {"uuid": "step-7.7.1", "description": "Examine the OpenShift documentation for 'Cluster capabilities' and the cluster's `SecurityContextConstraints` and confirm that the default is `restricted`."},
-          {"uuid": "step-7.7.2", "description": "Test least functionality by attempting to deploy a pod that requires `privileged` access and verifying it is blocked by default."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-7.7" } ] } ] }
-      },
-      {
-        "uuid": "activity-7.8", "title": "Verify Control System Component Inventory", "description": "Verify the API provides a complete inventory.",
-        "steps": [
-          {"uuid": "step-7.8.1", "description": "Examine the OpenShift documentation for 'Red Hat Security Data' and test the inventory capability by running `oc get nodes` and `oc get pods --all-namespaces -o wide`."}
-        ],
-        "reviewed-controls": { "control-selections": [ { "include-controls": [ { "control-id": "cr-7.8" } ] } ] }
-      }
-    ],
-    "back-matter": {
-      "resources": [
-        {
-          "uuid": "a8f9b9a8-7a1a-4b2b-8e0e-2a2a2a2a2a2a",
-          "title": "ISA/IEC 62443-4-2 OSCAL Catalog",
-          "citation": {
-            "text": "ISA/IEC 62443-4-2 OSCAL Catalog, Version 1.1"
-          }
-        },
-        {
-          "uuid": "placeholder-ssp-uuid",
-          "title": "System Security Plan for the Production ICS OpenShift Cluster"
-        }
-      ]
-    }
+    ]
   }
 }
+
