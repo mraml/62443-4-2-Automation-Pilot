@@ -1,51 +1,48 @@
 {
   "system-security-plan": {
-    "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5-ssp",
+    "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
     "metadata": {
       "title": "System Security Plan for [System Name]",
-      "last-modified": "2025-08-28T21:20:00.000Z",
-      "version": "1.0",
+      "last-modified": "2025-08-29T18:30:00Z",
+      "version": "1.0.0",
       "oscal-version": "1.0.0",
-      "role": [
+      "roles": [
         {
           "id": "system-owner",
           "title": "System Owner"
+        },
+        {
+          "id": "system-administrator",
+          "title": "System Administrator"
         }
       ],
-      "party": [
+      "parties": [
         {
-          "uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c",
+          "uuid": "p1",
           "type": "organization",
           "name": "[Customer Organization Name]"
-        }
-      ],
-      "responsible-party": [
-        {
-          "role-id": "system-owner",
-          "party-uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c"
         }
       ]
     },
     "import-profile": {
-      "href": "profiles/ocp4_oscal_profile.json",
-      "remarks": "This SSP uses the OpenShift 4 SL-4 Profile as its security baseline."
+      "href": "aap_oscal_profile.json"
     },
     "system-characteristics": {
       "system-ids": [
         {
-          "id": "[UNIQUE-SYSTEM-IDENTIFIER]",
+          "id": "[System Acronym]",
           "identifier-type": "https://ietf.org/rfc/rfc4122"
         }
       ],
-      "system-name": "[System Name]",
-      "description": "[Provide a detailed description of the system, its purpose, and the industrial process it supports.]",
-      "security-sensitivity-level": "High",
+      "system-name": "[Full System Name, e.g., Industrial Control System Automation Platform]",
+      "description": "[A detailed description of the system, its purpose, and the industrial process it supports.]",
+      "security-sensitivity-level": "high",
       "system-information": {
         "information-types": [
           {
-            "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-info-type-1",
-            "title": "Process Control Data",
-            "description": "Real-time and historical data related to the industrial control process.",
+            "uuid": "it-1",
+            "title": "Industrial Process Control Data",
+            "description": "Real-time and historical data related to the industrial process, including sensor readings, actuator commands, and operational setpoints.",
             "confidentiality-impact": {
               "base": "fips-199-high"
             },
@@ -58,68 +55,98 @@
           }
         ]
       },
+      "security-impact-level": {
+        "security-objective-confidentiality": "high",
+        "security-objective-integrity": "high",
+        "security-objective-availability": "high"
+      },
       "status": {
         "state": "operational"
+      },
+      "authorization-boundary": {
+        "description": "The authorization boundary includes the Ansible Automation Platform application, the underlying Red Hat Enterprise Linux 9 operating systems, and the network infrastructure they reside on. The boundary extends to the managed nodes and the integrated identity provider."
       }
     },
     "system-implementation": {
-      "remarks": "This section describes the components and inventory of the system.",
+      "description": "This SSP describes the implementation of ISA/IEC 62443-4-2 SL-4 controls for the [System Name]. The system is composed of Ansible Automation Platform (AAP) running on Red Hat Enterprise Linux (RHEL) 9 hosts.",
       "components": [
         {
-          "uuid": "e9f8a7b6-c5d4-4e3f-a92f-5d5d5d5d5d5d",
+          "uuid": "component-aap",
           "type": "software",
-          "title": "Red Hat OpenShift Container Platform 4",
-          "description": "The primary container orchestration platform for the system.",
-          "status": { "state": "operational" },
-          "source": { "component-definition-uuid": "b9c8d7e6-f5a4-4b3c-8a2f-3b3b3b3b3b3b" }
+          "title": "Ansible Automation Platform 2.5+",
+          "description": "The centralized automation application.",
+          "status": {
+            "state": "operational"
+          }
+        },
+        {
+          "uuid": "component-rhel9",
+          "type": "os",
+          "title": "Red Hat Enterprise Linux 9",
+          "description": "The underlying operating system for all AAP nodes.",
+          "status": {
+            "state": "operational"
+          }
+        },
+        {
+          "uuid": "component-procedural",
+          "type": "policy",
+          "title": "Organizational Procedures",
+          "description": "Security controls implemented through documented organizational policies and procedures.",
+          "status": {
+            "state": "operational"
+          }
+        },
+        {
+          "uuid": "component-infrastructure",
+          "type": "interconnection",
+          "title": "Supporting Infrastructure",
+          "description": "Security controls implemented by the physical hardware, data center facilities, and external services.",
+          "status": {
+            "state": "operational"
+          }
         }
       ],
-      "inventory-items": [
-        {
-          "uuid": "inv-item-1",
-          "description": "The production OpenShift 4 cluster.",
-          "props": [
-            { "name": "hostname", "value": "ocp-cluster-prod.example.com" },
-            { "name": "asset-id", "value": "ICS-OCP-01" }
-          ],
-          "implemented-components": [
-            { "component-uuid": "e9f8a7b6-c5d4-4e3f-a92f-5d5d5d5d5d5d" }
-          ]
-        }
-      ]
-    },
-    "control-implementation": {
-      "description": "This section describes how the controls from the imported profile are implemented by the components in this system.",
       "implemented-requirements": [
         {
+          "uuid": "ir-cr-1.1",
           "control-id": "cr-1.1",
-          "description": "[System-Specific Implementation Details: Describe how this system's configuration of OpenShift meets this control. For example: 'The ocp-cluster-prod.example.com cluster is integrated with the corporate Azure AD tenant (tenant-id: ...). All users are required to authenticate using the 'ICS-MFA-Policy' which enforces FIDO2 security keys.']",
-          "by-components": [
-            { "component-uuid": "e9f8a7b6-c5d4-4e3f-a92f-5d5d5d5d5d5d" }
+          "description": "Human user authentication to AAP is enforced through integration with [Identity Provider Name, e.g., Microsoft Entra ID] via SAML. System administrators and operators must authenticate with their corporate credentials.",
+          "responsible-roles": [
+            { "role-id": "system-administrator" }
           ]
         },
         {
-          "control-id": "cr-2.1",
-          "description": "[System-Specific Implementation Details: Describe how this system's RBAC is configured. For example: 'The cluster-admin role is restricted to the 'ICS-Platform-Admins' group in Azure AD. All application changes are managed via a GitOps workflow in the 'ics-gitops' repository, which requires peer review before merging to the main branch.']",
-          "by-components": [
-            { "component-uuid": "e9f8a7b6-c5d4-4e3f-a92f-5d5d5d5d5d5d" }
+          "uuid": "ir-cr-1.1_re.2",
+          "control-id": "cr-1.1_re.2",
+          "description": "Multi-factor authentication is enforced by a policy named '[MFA Policy Name]' in the integrated identity provider. All users in the '[AAP User Group Name]' are required to use an MFA token to log in.",
+          "responsible-roles": [
+            { "role-id": "system-administrator" }
           ]
         },
         {
-          "control-id": "cr-5.1",
-          "description": "[System-Specific Implementation Details: Describe how network segmentation is implemented. For example: 'The 'critical-ics-app' namespace has a default-deny ingress policy applied. It only allows ingress traffic from the openshift-ingress namespace on TCP port 8080.']",
-          "by-components": [
-            { "component-uuid": "e9f8a7b6-c5d4-4e3f-a92f-5d5d5d5d5d5d" }
+          "uuid": "ir-cr-4.3",
+          "control-id": "cr-4.3",
+          "description": "The underlying RHEL 9 hosts are configured in FIPS 140-2 mode. This is enforced by the Ansible playbook which runs 'fips-mode-setup --enable'. All cryptographic modules used by the OS and AAP meet this standard.",
+          "responsible-roles": [
+            { "role-id": "system-administrator" }
           ]
-        }
-      ]
-    },
-    "back-matter": {
-      "resources": [
+        },
         {
-          "uuid": "b9c8d7e6-f5a4-4b3c-8a2f-3b3b3b3b3b3b",
-          "title": "Red Hat OpenShift 4 Component Definition",
-          "citation": { "text": "ocp4_component-definition.json" }
+          "uuid": "ir-cr-7.7",
+          "control-id": "cr-7.7",
+          "description": "The RHEL 9 hosts are hardened to a principle of least functionality using the 'rhel9_iac_for_62443' Ansible playbook. This includes removing unnecessary packages such as 'cockpit' and disabling unused services.",
+          "responsible-roles": [
+            { "role-id": "system-administrator" }
+          ]
+        },
+        {
+            "uuid": "ir-cr-3.11",
+            "control-id": "cr-3.11",
+            "description": "This control is a compensating control. The physical servers hosting the AAP environment are located in the [Data Center Name and Room Number] data center. The facility provides physical tamper resistance and detection through locked server cages, 24/7 video surveillance, and biometric access controls as detailed in the [Data Center Security Policy Document Name].",
+            "responsible-roles": [
+              { "role-id": "system-owner" }
+            ]
         }
       ]
     }
