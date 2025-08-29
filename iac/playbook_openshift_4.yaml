@@ -18,7 +18,7 @@ spec:
     mappingMethod: claim
     type: OpenID
     openID:
-      clientID: "<your-client-id>"
+      clientID: "[customer-client-id]"
       clientSecret:
         name: oidc-client-secret
       issuer: "https://idp.example.com/auth/realms/my-realm"
@@ -43,7 +43,7 @@ spec:
     inactivityTimeoutSeconds: 900 # 15 minutes - Also implements CR-2.5
   customization:
     loginNotification:
-      text: "This is a private computer system. All activities are logged. Unauthorized access is strictly prohibited."
+      text: "This is a private computer system intended for authorized users only. All activities are logged and monitored. By proceeding, you consent to these terms."
 
 ---
 
@@ -60,7 +60,7 @@ roleRef:
   kind: ClusterRole
   name: cluster-admin
 groupNames:
-- ocp-cluster-admins # This group should be managed in your external IdP
+- "[ocp-cluster-admins-group]" # This group should be managed in your external IdP
 
 ---
 
@@ -111,10 +111,10 @@ metadata:
 spec:
   repositoryDigestMirrors:
   - mirrors:
-    - registry.example.com/mirror/redhat
+    - "[customer-trusted-registry.example.com]/mirror/redhat"
     source: registry.redhat.io
   - mirrors:
-    - registry.example.com/mirror/openshift
+    - "[customer-trusted-registry.example.com]/mirror/openshift"
     source: registry.openshift.com
 
 ---
@@ -235,7 +235,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: default-deny-ingress
-  namespace: critical-ics-app # Apply to your critical application namespaces
+  namespace: "[critical-app-namespace]" # Apply to your critical application namespaces
 spec:
   podSelector: {}
   policyTypes:
@@ -250,7 +250,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-from-openshift-ingress
-  namespace: critical-ics-app
+  namespace: "[critical-app-namespace]"
 spec:
   podSelector:
     matchLabels:
@@ -301,7 +301,7 @@ apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: compute-resources
-  namespace: critical-ics-app
+  namespace: "[critical-app-namespace]"
 spec:
   hard:
     requests.cpu: "10"
@@ -317,7 +317,7 @@ apiVersion: v1
 kind: LimitRange
 metadata:
   name: resource-limits
-  namespace: critical-ics-app
+  namespace: "[critical-app-namespace]"
 spec:
   limits:
   - default:
@@ -351,3 +351,4 @@ spec:
           limits:
             cpu: 200m
             memory: 512Mi
+
