@@ -1,0 +1,203 @@
+{
+  "component-definition": {
+    "uuid": "d3c1b0a9-8e7f-4b6d-8f3a-1e2c3d4e5f6a",
+    "metadata": {
+      "title": "Ansible Automation Platform 2.5+ Component Definition for ISA/IEC 62443-4-2 SL-4",
+      "last-modified": "2025-08-29T14:45:00Z",
+      "version": "1.2.0",
+      "oscal-version": "1.0.0",
+      "parties": [
+        {
+          "uuid": "p1",
+          "type": "organization",
+          "name": "Red Hat, Inc."
+        }
+      ]
+    },
+    "components": [
+      {
+        "uuid": "c1-aap",
+        "type": "software",
+        "title": "Red Hat Ansible Automation Platform 2.5 and newer",
+        "description": "An enterprise automation platform for building and operating automation at scale, configured to meet ISA/IEC 62443-4-2 SL-4.",
+        "responsible-parties": [
+          {
+            "role-id": "provider",
+            "party-uuids": ["p1"]
+          }
+        ],
+        "control-implementations": [
+          {
+            "uuid": "ci-1-aap",
+            "source": "#catalog-62443-4-2",
+            "description": "Implementation of ISA/IEC 62443-4-2 controls for an SL-4 baseline for the Ansible Automation Platform application.",
+            "implemented-requirements": [
+              {
+                "uuid": "ir-aap-1.1",
+                "control-id": "cr-1.1",
+                "description": "**Method:** Procedural (Identity Provider Configuration)\n\nAnsible Automation Platform (AAP) delegates user authentication to external identity providers (IdPs) via SAML, OIDC, or LDAP. The customer is responsible for configuring the integration with their central IdP.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-aap-1.1-re2",
+                "control-id": "cr-1.1_re.2",
+                "description": "**Method:** Procedural (Identity Provider Configuration)\n\nMulti-factor authentication (MFA) is enforced by the external IdP. The customer must configure their IdP to require MFA for all users accessing AAP.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-aap-1.2",
+                "control-id": "cr-1.2",
+                "description": "**Method:** Built-in\n\nSoftware processes within AAP, such as automation jobs running in execution environments, are identified by a unique job ID. The application itself is identified to the underlying OS by its systemd service and user.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-aap-1.3",
+                "control-id": "cr-1.3",
+                "description": "**Method:** Procedural (Identity Provider Configuration)\n\nThe full lifecycle of user account management is handled by the external IdP. AAP synchronizes user and group information but does not manage the accounts directly.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-aap-1.5-re1",
+                "control-id": "cr-1.5_re.1",
+                "description": "**Method:** Procedural (Vault Integration)\n\nHardware security for authenticators (credentials) used in automation is achieved by integrating AAP with an external credential vault (e.g., HashiCorp Vault, CyberArk) that is backed by a Hardware Security Module (HSM). The customer is responsible for configuring this integration.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-aap-1.7",
+                "control-id": "cr-1.7",
+                "description": "**Method:** Procedural (Identity Provider Configuration)\n\nPassword policies are defined and enforced by the external IdP.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-aap-1.8",
+                "control-id": "cr-1.8",
+                "description": "**Method:** Responsibility of Host OS\n\nAAP relies on the underlying RHEL 9 operating system's PKI trust store for validating TLS certificates.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-aap-1.12",
+                "control-id": "cr-1.12",
+                "description": "**Method:** Procedural (Application Configuration)\n\nA system use notification banner can be configured to be displayed on the AAP login page.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-aap-2.1",
+                "control-id": "cr-2.1",
+                "description": "**Method:** Procedural (Application Configuration)\n\nAuthorization is enforced by AAP's granular Role-Based Access Control (RBAC) model. The customer is responsible for defining Teams, Roles, and Permissions to grant access to specific automation resources (e.g., inventories, templates, credentials), enforcing the principle of least privilege.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-aap-2.1-re4",
+                "control-id": "cr-2.1_re.4",
+                "description": "**Method:** Built-in\n\nA dual-approval mechanism is provided by the Workflow Approvals feature. A workflow can be designed to pause at a specific step and require manual approval from a second, authorized user before proceeding.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-aap-2.5",
+                "control-id": "cr-2.5",
+                "description": "**Method:** Procedural (Application Configuration)\n\nSession timeouts for the web UI and API are configurable within the AAP settings.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-aap-2.8",
+                "control-id": "cr-2.8",
+                "description": "**Method:** Built-in & Procedural (SIEM Integration)\n\nAAP maintains a detailed, immutable activity stream that records every action performed within the platform. The customer is responsible for configuring log forwarding to a central SIEM for long-term storage and analysis.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-aap-2.12",
+                "control-id": "cr-2.12",
+                "description": "**Method:** Built-in\n\nNon-repudiation is achieved via the detailed activity stream, which links every action to the specific user who initiated it, along with a timestamp.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-aap-3.1",
+                "control-id": "cr-3.1",
+                "description": "**Method:** Responsibility of Host OS\n\nCommunication integrity is provided by the web server (nginx) that fronts the AAP application, which is configured to use TLS. The underlying RHEL 9 host's firewall and crypto policies provide additional layers of protection.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-aap-sar-3.2",
+                "control-id": "sar-3.2",
+                "description": "**Method:** Built-in & Responsibility of Host OS\n\nAAP is protected from malicious code by the security features of the underlying RHEL 9 host (e.g., SELinux). Additionally, automation content is run within isolated Execution Environments (containers), which limits the impact of any potentially malicious code.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-aap-sar-2.4",
+                "control-id": "sar-2.4",
+                "description": "**Method:** Procedural\n\nThe execution of unauthorized 'mobile code' (automation content) is prevented by using signed Execution Environments and by configuring AAP's RBAC to restrict which users can create or use specific automation templates.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-aap-3.3",
+                "control-id": "cr-3.3",
+                "description": "**Method:** Procedural\n\nSecurity functionality is verified by reviewing the activity stream for unauthorized actions and by monitoring the logs forwarded to the central SIEM.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-aap-4.1",
+                "control-id": "cr-4.1",
+                "description": "**Method:** Responsibility of Host OS\n\nConfidentiality of data at rest (e.g., the application database) is the responsibility of the underlying RHEL 9 host, which should be configured with LUKS full-disk encryption.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-aap-4.3",
+                "control-id": "cr-4.3",
+                "description": "**Method:** Responsibility of Host OS\n\nAAP relies on the cryptographic modules of the underlying RHEL 9 host, which can be configured in FIPS 140-2/3 mode.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-aap-5.1",
+                "control-id": "cr-5.1",
+                "description": "**Method:** Responsibility of Host OS & Network\n\nNetwork segmentation is provided by the host-based firewall on the RHEL 9 server and the physical/virtual network infrastructure.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-aap-7.1",
+                "control-id": "cr-7.1",
+                "description": "**Method:** Responsibility of Host OS\n\nDoS protection is primarily the responsibility of the underlying RHEL 9 host, which can be configured with resource limits (cgroups) for the AAP services.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-aap-7.3",
+                "control-id": "cr-7.3",
+                "description": "**Method:** Procedural\n\nThe customer is responsible for regularly backing up the AAP application data and configuration using the provided `awx-manage` utility.",
+                "props": [ { "name": "implementation-method", "value": "Procedural" } ]
+              },
+              {
+                "uuid": "ir-aap-7.7",
+                "control-id": "cr-7.7",
+                "description": "**Method:** Built-in\n\nThe principle of least functionality is a core concept of Execution Environments. Each EE is designed to contain only the specific collections and libraries needed for a particular automation task, minimizing the attack surface.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-aap-7.8",
+                "control-id": "cr-7.8",
+                "description": "**Method:** Built-in\n\nAn inventory of AAP components and their versions is available within the application's UI and API.",
+                "props": [ { "name": "implementation-method", "value": "Built-in" } ]
+              },
+              {
+                "uuid": "ir-aap-gap-3.11",
+                "control-id": "cr-3.11",
+                "description": "**Method:** Infrastructure\n\nThis control is not satisfied by the AAP software. The customer is responsible for the physical security of the server hardware.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-aap-gap-3.14",
+                "control-id": "cr-3.14",
+                "description": "**Method:** Infrastructure\n\nThis control is the responsibility of the underlying server hardware and the RHEL 9 operating system.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              },
+              {
+                "uuid": "ir-aap-gap-7.5",
+                "control-id": "cr-7.5",
+                "description": "**Method:** Infrastructure\n\nThis control is not satisfied by the AAP software. The customer is responsible for ensuring the data center has adequate emergency power.",
+                "props": [ { "name": "implementation-method", "value": "Infrastructure" } ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
