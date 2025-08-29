@@ -3,8 +3,8 @@
     "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
     "metadata": {
       "title": "OpenShift Container Platform 4 Component Definition for ISA/IEC 62443-4-2 SL-4",
-      "last-modified": "2025-08-29T13:14:00Z",
-      "version": "1.1.0",
+      "last-modified": "2025-08-29T14:30:00Z",
+      "version": "1.2.0",
       "oscal-version": "1.0.0",
       "parties": [
         {
@@ -63,11 +63,27 @@
                 ]
               },
               {
+                "uuid": "ir-1.3",
+                "control-id": "cr-1.3",
+                "description": "**Method:** Procedural (Identity Provider Configuration)\n\nThe full lifecycle of user account management (creation, modification, disabling, deletion) is handled by the external IdP. OpenShift synchronizes group membership from the IdP to apply permissions but does not store user credentials or manage accounts directly.",
+                "props": [
+                  { "name": "implementation-method", "value": "Procedural" }
+                ]
+              },
+              {
                 "uuid": "ir-1.5-re1",
                 "control-id": "cr-1.5_re.1",
                 "description": "**Method:** Automated (Manifest) & Procedural (KMS Configuration)\n\nOpenShift can protect authenticators and other secrets at rest (e.g., etcd data) by integrating with an external Key Management Service (KMS) that is backed by a Hardware Security Module (HSM). The customer is responsible for provisioning the KMS/HSM and configuring the integration via the APIServer custom resource.",
                 "props": [
                   { "name": "implementation-method", "value": "Automated" }
+                ]
+              },
+              {
+                "uuid": "ir-1.7",
+                "control-id": "cr-1.7",
+                "description": "**Method:** Procedural (Identity Provider Configuration)\n\nPassword policies, including complexity, length, history, and lifetime, are defined and enforced by the external IdP. The customer is responsible for configuring these policies to meet SL-4 requirements.",
+                "props": [
+                  { "name": "implementation-method", "value": "Procedural" }
                 ]
               },
               {
@@ -79,9 +95,17 @@
                 ]
               },
               {
+                "uuid": "ir-1.10",
+                "control-id": "cr-1.10",
+                "description": "**Method:** Built-in\n\nThe OpenShift login interfaces (web console, `oc` CLI) are designed to provide generic failure messages that do not distinguish between an invalid username and an invalid password. This is a default, non-configurable behavior that protects against user enumeration attacks.",
+                "props": [
+                  { "name": "implementation-method", "value": "Built-in" }
+                ]
+              },
+              {
                 "uuid": "ir-1.11",
                 "control-id": "cr-1.11",
-                "description": "**Method:** Procedural (Identity Provider Configuration)\n\nThe external IdP is responsible for detecting and mitigating brute-force attacks by enforcing policies for unsuccessful login attempts, including account lockout.",
+                "description": "**Method:** Procedural (Identity Provider Configuration)\n\nThe external IdP is responsible for detecting and mitigating brute-force attacks by enforcing policies for unsuccessful login attempts, including temporary or permanent account lockout.",
                 "props": [
                   { "name": "implementation-method", "value": "Procedural" }
                 ]
@@ -119,9 +143,25 @@
                 ]
               },
               {
+                "uuid": "ir-2.7",
+                "control-id": "cr-2.7",
+                "description": "**Method:** Procedural (Identity Provider Configuration)\n\nThe capability to limit the number of concurrent user sessions is a feature of the external IdP. The customer is responsible for configuring this policy within their IdP.",
+                "props": [
+                  { "name": "implementation-method", "value": "Procedural" }
+                ]
+              },
+              {
                 "uuid": "ir-2.8",
                 "control-id": "cr-2.8",
                 "description": "**Method:** Built-in & Procedural (SIEM Integration)\n\nOpenShift generates detailed, structured audit logs for every API server request, capturing all necessary event details. The customer is responsible for forwarding these logs to a centralized SIEM for long-term storage, correlation, and analysis by configuring the `ClusterLogForwarder` custom resource.",
+                "props": [
+                  { "name": "implementation-method", "value": "Procedural" }
+                ]
+              },
+              {
+                "uuid": "ir-2.9",
+                "control-id": "cr-2.9",
+                "description": "**Method:** Procedural (SIEM Integration)\n\nAudit storage capacity is managed by the external SIEM solution. The customer is responsible for provisioning sufficient storage in their SIEM and configuring alerts for when storage thresholds are reached.",
                 "props": [
                   { "name": "implementation-method", "value": "Procedural" }
                 ]
@@ -132,6 +172,14 @@
                 "description": "**Method:** Automated (Manifest)\n\nTime source integrity is ensured by configuring all cluster nodes to synchronize with multiple, trusted internal NTP servers. This is configured via a `MachineConfig` object.",
                 "props": [
                   { "name": "implementation-method", "value": "Automated" }
+                ]
+              },
+              {
+                "uuid": "ir-2.12",
+                "control-id": "cr-2.12",
+                "description": "**Method:** Built-in\n\nNon-repudiation is achieved through the detailed and immutable audit logging system. Every action is tied to a unique user or ServiceAccount identity and timestamped, creating a strong evidentiary trail.",
+                "props": [
+                  { "name": "implementation-method", "value": "Built-in" }
                 ]
               },
               {
@@ -167,9 +215,41 @@
                 ]
               },
               {
+                "uuid": "ir-3.5",
+                "control-id": "cr-3.5",
+                "description": "**Method:** Not Applicable\n\nThis control is for validating industrial process control inputs (e.g., sensor readings, setpoints). As a general-purpose application platform, OpenShift does not directly interface with or process this type of industrial data. The responsibility for this validation lies with the specific IACS application running on the platform.",
+                "props": [
+                  { "name": "implementation-method", "value": "Not Applicable" }
+                ]
+              },
+              {
+                "uuid": "ir-3.6",
+                "control-id": "cr-3.6",
+                "description": "**Method:** Not Applicable\n\nThis control requires a component to set physical outputs to a predetermined safe state upon failure. As a software platform, OpenShift does not have direct control over physical actuators or outputs.",
+                "props": [
+                  { "name": "implementation-method", "value": "Not Applicable" }
+                ]
+              },
+              {
+                "uuid": "ir-3.7",
+                "control-id": "cr-3.7",
+                "description": "**Method:** Built-in\n\nThe Kubernetes API server is designed to provide structured error responses that indicate the nature of a failure without revealing sensitive internal state, stack traces, or other potentially exploitable information.",
+                "props": [
+                  { "name": "implementation-method", "value": "Built-in" }
+                ]
+              },
+              {
                 "uuid": "ir-4.1",
                 "control-id": "cr-4.1",
                 "description": "**Method:** Procedural (Storage Configuration)\n\nConfidentiality for persistent application data is the responsibility of the underlying storage system. The customer must use a `StorageClass` that is configured to provide encryption-at-rest for all persistent volumes.",
+                "props": [
+                  { "name": "implementation-method", "value": "Procedural" }
+                ]
+              },
+              {
+                "uuid": "ir-4.2",
+                "control-id": "cr-4.2",
+                "description": "**Method:** Procedural\n\nOpenShift provides the mechanisms to delete data (e.g., `PersistentVolumes`). However, the customer is responsible for the procedural, secure erasure of data from physical media during hardware decommissioning, in accordance with standards like NIST SP 800-88.",
                 "props": [
                   { "name": "implementation-method", "value": "Procedural" }
                 ]
@@ -188,6 +268,14 @@
                 "description": "**Method:** Automated (Manifest)\n\nNetwork segmentation and restricted data flow within the cluster are achieved through Kubernetes `NetworkPolicy` objects. A 'default-deny' policy should be applied to critical namespaces to block all ingress traffic by default, with additional policies to explicitly allow required communication paths.",
                 "props": [
                   { "name": "implementation-method", "value": "Automated" }
+                ]
+              },
+              {
+                "uuid": "ir-6.1",
+                "control-id": "cr-6.1",
+                "description": "**Method:** Procedural (SIEM Integration)\n\nAuthorized personnel are granted read-only access to audit logs via the SIEM. Direct access to cluster audit logs is highly restricted.",
+                "props": [
+                  { "name": "implementation-method", "value": "Procedural" }
                 ]
               },
               {
@@ -210,6 +298,22 @@
                 "uuid": "ir-7.3",
                 "control-id": "cr-7.3",
                 "description": "**Method:** Automated (Operator) & Procedural\n\nBackup and recovery are managed by the OpenShift API for Data Protection (OADP) operator. The customer is responsible for installing and configuring this operator to perform regular backups of cluster resources and persistent data to a secure, off-site location.",
+                "props": [
+                  { "name": "implementation-method", "value": "Procedural" }
+                ]
+              },
+              {
+                "uuid": "ir-7.4",
+                "control-id": "cr-7.4",
+                "description": "**Method:** Procedural\n\nThe customer is responsible for creating, documenting, and testing a disaster recovery plan that uses the backups created by the OADP operator (`CR-7.3`) to recover and reconstitute the system to a known secure state.",
+                "props": [
+                  { "name": "implementation-method", "value": "Procedural" }
+                ]
+              },
+              {
+                "uuid": "ir-7.6",
+                "control-id": "cr-7.6",
+                "description": "**Method:** Built-in & Procedural (GitOps)\n\nThe platform's current network and security settings are viewable via `oc` commands. The recommended practice is to manage all configuration settings as code in a GitOps repository, which serves as a machine-readable record of the intended configuration.",
                 "props": [
                   { "name": "implementation-method", "value": "Procedural" }
                 ]
@@ -261,3 +365,4 @@
     ]
   }
 }
+
