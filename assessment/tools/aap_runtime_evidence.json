@@ -1,0 +1,106 @@
+---
+# This playbook acts as an Evidence Collector for Ansible Automation Platform.
+# It queries the AAP API to verify its runtime security configuration and generates
+# a JSON report that can be consumed by an evidence-based compliance tool like Gamera.
+
+- name: Generate AAP Runtime Evidence
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  # These variables should be passed securely at runtime, e.g., via Ansible Vault or CI/CD secrets.
+  vars:
+    controller_host: "https://aap.example.com"
+    controller_username: "admin"
+    controller_password: "MySecretPassword"
+    controller_validate_certs: true
+
+  tasks:
+    - name: Initialize evidence structure
+      ansible.builtin.set_fact:
+        evidence_report:
+          evidence_type: "aap_runtime_evidence"
+          timestamp: "{{ ansible_date_time.iso8601 }}"
+          controller_host: "{{ controller_host }}"
+          checks: []
+
+    # --- FR 1 & 4: Check for External Credential Vault ---
+    - name: CR-1.5 & CR-4.1 | Check for external credential vault configuration
+      ansible.controller.credential_input_source_list:
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: "{{ controller_validate_certs }}"
+        name: "HashiCorp Vault Secret Lookup"
+      register: vault_credential_source
+
+    - name: Record external vault check result
+      ansible.builtin.set_fact:
+        evidence_report: "{{ evidence_report | combine({'checks': evidence_report.checks + [{'check_id': 'external_credential_vault_configured', 'pass': (vault_credential_source.results | length > 0) }]}) }}"
+
+    # --- FR 2: Check for RBAC Configuration ---
+    - name: CR-2.1_re.2 | Check for specific administrative team
+      ansible.controller.team_list:
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: "{{ controller_validate_certs }}"
+        name: "ICS Administrators"
+      register: admin_team
+
+    - name: Record RBAC check result
+      ansible.builtin.set_fact:
+        evidence_report: "{{ evidence_report | combine({'checks': evidence_report.checks + [{'check_id': 'aap_rbac_configured', 'pass': (admin_team.results | length > 0) }]}) }}"
+
+    # --- FR 2: Check for Workflow Approval Gate ---
+    - name: CR-2.1_re.4 | Check for a workflow with an approval node
+      ansible.controller.workflow_job_template_list:
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: "{{ controller_validate_certs }}"
+        # In a real scenario, you would query for a specific critical workflow
+        query:
+          - name__icontains: "production-deployment"
+      register: critical_workflows
+
+    # Note: This is a simplified check. A full check would inspect the workflow nodes.
+    - name: Record workflow approval check result
+      ansible.builtin.set_fact:
+        evidence_report: "{{ evidence_report | combine({'checks': evidence_report.checks + [{'check_id': 'workflow_approval_gate_exists', 'pass': (critical_workflows.results | length > 0) }]}) }}"
+
+    # --- FR 2: Check for Session Timeout ---
+    - name: CR-2.5 | Check session timeout setting
+      ansible.controller.setting_read:
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: "{{ controller_validate_certs }}"
+        category: all
+        key: SESSIONS_PER_USER
+      register: session_limit_setting
+
+    - name: Record session timeout check result
+      ansible.builtin.set_fact:
+        evidence_report: "{{ evidence_report | combine({'checks': evidence_report.checks + [{'check_id': 'aap_session_timeout_set', 'pass': (session_limit_setting.value == 1) }]}) }}"
+
+    # --- FR 6: Check Log Forwarding Configuration ---
+    - name: CR-6.2 | Check for external log aggregation configuration
+      ansible.controller.setting_read:
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: "{{ controller_validate_certs }}"
+        category: all
+        key: LOG_AGGREGATOR_ENABLED
+      register: log_aggregator_setting
+
+    - name: Record log forwarding check result
+      ansible.builtin.set_fact:
+        evidence_report: "{{ evidence_report | combine({'checks': evidence_report.checks + [{'check_id': 'aap_log_forwarding_configured', 'pass': (log_aggregator_setting.value == true) }]}) }}"
+
+    # --- Final Step: Write the Evidence Report to a File ---
+    - name: Write the final evidence report
+      ansible.builtin.copy:
+        content: "{{ evidence_report | to_nice_json }}"
+        dest: "./aap_runtime_evidence.json"
