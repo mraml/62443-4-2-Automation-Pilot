@@ -1,0 +1,161 @@
+{
+  "assessment-results": {
+    "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-results-1",
+    "metadata": {
+      "title": "Assessment Results for Production ICS OpenShift Cluster",
+      "last-modified": "2025-09-18T14:00:00.000Z",
+      "version": "1.0",
+      "oscal-version": "1.0.0",
+      "role": [
+        {
+          "id": "assessor",
+          "title": "Security Assessor"
+        }
+      ],
+      "party": [
+        {
+          "uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c",
+          "type": "organization",
+          "name": "Example Corporation"
+        }
+      ],
+      "responsible-party": [
+        {
+          "role-id": "assessor",
+          "party-uuid": "d9e8f7a6-b5c4-4d3e-9a2f-4c4c4c4c4c4c"
+        }
+      ]
+    },
+    "import-ap": {
+      "href": "assessment-plans/ocp4_assessment-plan.json"
+    },
+    "results": [
+      {
+        "uuid": "result-fr1",
+        "title": "Assessment of FR 1: Identification and Authentication Control",
+        "start": "2025-09-15T09:00:00.000Z",
+        "end": "2025-09-15T17:00:00.000Z",
+        "findings": [
+          {
+            "uuid": "finding-cr-1.1", "title": "Finding for CR-1.1", "description": "Control is satisfied.", "related-observations": [{"observation-uuid": "obs-cr-1.1"}]
+          },
+          {
+            "uuid": "finding-cr-1.2", "title": "Finding for CR-1.2", "description": "Control is satisfied.", "related-observations": [{"observation-uuid": "obs-cr-1.2"}]
+          },
+          {
+            "uuid": "finding-cr-1.5", "title": "Finding for CR-1.5", "description": "Control is satisfied.", "related-observations": [{"observation-uuid": "obs-cr-1.5"}]
+          },
+          {
+            "uuid": "finding-cr-1.12", "title": "Finding for CR-1.12", "description": "Control is satisfied.", "related-observations": [{"observation-uuid": "obs-cr-1.12"}]
+          }
+        ],
+        "observations": [
+          {
+            "uuid": "obs-cr-1.1", "title": "Observation for CR-1.1", "description": "MFA for human users was verified.", "methods": ["EXAMINE", "TEST"], "relevant-evidence": [{"href": "#evidence-oauth-config"}, {"href": "#evidence-mfa-test-video"}]
+          },
+          {
+            "uuid": "obs-cr-1.2", "title": "Observation for CR-1.2", "description": "Pod ServiceAccount identity was verified.", "methods": ["EXAMINE"], "relevant-evidence": [{"href": "#evidence-sa-list"}]
+          },
+          {
+            "uuid": "obs-cr-1.5", "title": "Observation for CR-1.5", "description": "Etcd encryption with KMS was verified.", "methods": ["EXAMINE"], "relevant-evidence": [{"href": "#evidence-apiserver-config"}]
+          },
+          {
+            "uuid": "obs-cr-1.12", "title": "Observation for CR-1.12", "description": "System use notification banner was verified.", "methods": ["EXAMINE"], "relevant-evidence": [{"href": "#evidence-console-banner-screenshot"}]
+          }
+        ]
+      },
+      {
+        "uuid": "result-fr2",
+        "title": "Assessment of FR 2: Use Control",
+        "start": "2025-09-16T09:00:00.000Z",
+        "end": "2025-09-16T17:00:00.000Z",
+        "findings": [
+           {
+            "uuid": "finding-cr-2.1", "title": "Finding for CR-2.1", "description": "Control is satisfied.", "related-observations": [{"observation-uuid": "obs-cr-2.1"}]
+          }
+        ],
+        "observations": [
+           {
+            "uuid": "obs-cr-2.1", "title": "Observation for CR-2.1", "description": "RBAC for cluster-admin role was verified.", "methods": ["EXAMINE"], "relevant-evidence": [{"href": "#evidence-cluster-admin-binding"}]
+          }
+        ]
+      },
+      {
+        "uuid": "result-fr5",
+        "title": "Assessment of FR 5: Restricted Data Flow",
+        "start": "2025-09-17T09:00:00.000Z",
+        "end": "2025-09-17T17:00:00.000Z",
+        "findings": [
+          {
+            "uuid": "finding-cr-5.1",
+            "title": "Finding for CR-5.1",
+            "description": "The 'critical-ics-app' namespace was found to be missing the required default-deny ingress NetworkPolicy. This is a non-compliant finding.",
+            "related-observations": [
+              {
+                "observation-uuid": "obs-cr-5.1"
+              }
+            ]
+          }
+        ],
+        "observations": [
+          {
+            "uuid": "obs-cr-5.1",
+            "title": "Observation for CR-5.1",
+            "description": "Verification of Network Segmentation",
+            "methods": [
+              "TEST"
+            ],
+            "relevant-evidence": [
+              {
+                "href": "#evidence-netpol-check-log",
+                "description": "Command output of 'oc get networkpolicy -n critical-ics-app' shows no policies are present."
+              }
+            ]
+          }
+        ],
+        "risks": [
+          {
+            "uuid": "risk-cr-5.1",
+            "title": "Missing Network Segmentation",
+            "description": "The lack of a default-deny NetworkPolicy allows any pod in the cluster to initiate traffic to the critical application, violating the principle of least privilege and restricted data flow.",
+            "statement": "A critical application namespace is not properly isolated, allowing for potential unauthorized access from other workloads.",
+            "status": "open",
+            "related-risk-responses": [
+              {
+                "risk-response-uuid": "poam-cr-5.1"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "back-matter": {
+      "resources": [
+        {
+          "uuid": "evidence-oauth-config", "description": "YAML output of the cluster OAuth object.", "rlinks": [{"href": "evidence/oauth.yaml"}]
+        },
+        {
+          "uuid": "evidence-mfa-test-video", "description": "Screen recording of a successful MFA login.", "rlinks": [{"href": "evidence/mfa_test.mp4"}]
+        },
+        {
+          "uuid": "evidence-sa-list", "description": "List of ServiceAccounts in a sample project.", "rlinks": [{"href": "evidence/serviceaccounts.log"}]
+        },
+        {
+          "uuid": "evidence-apiserver-config", "description": "YAML output of the cluster APIServer object showing etcd encryption enabled.", "rlinks": [{"href": "evidence/apiserver.yaml"}]
+        },
+        {
+          "uuid": "evidence-console-banner-screenshot", "description": "Screenshot of the OpenShift web console login page.", "rlinks": [{"href": "evidence/banner.png"}]
+        },
+        {
+          "uuid": "evidence-cluster-admin-binding", "description": "YAML output of the cluster-admin ClusterRoleBinding.", "rlinks": [{"href": "evidence/cluster-admin.yaml"}]
+        },
+        {
+          "uuid": "evidence-netpol-check-log", "description": "CLI output for NetworkPolicy check.", "rlinks": [{"href": "evidence/netpol-check.log"}]
+        },
+        {
+          "uuid": "poam-cr-5.1", "title": "POA&M for Missing NetworkPolicy", "description": "This is a reference to a separate POA&M file that would track the remediation for the finding related to CR-5.1."
+        }
+      ]
+    }
+  }
+}
